@@ -13,6 +13,6 @@ app.listen(3100, function() {
 
 app.get('/dan', function (req, res){
     console.log('client connected!');
-    // res.send('I got the message');
+    res.send('I got the message');
     // next();
 });
