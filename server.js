@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 var cors= require('cors');
 var DbUtils = require("./DbUtils.js");
+var request = require('tedious').Request;
 app.use(cors());
 
 var config={    userName: 'dangl',
@@ -20,8 +21,6 @@ var config={    userName: 'dangl',
 
 var connection = new Connection(config);
 
-var request = require('tedious').Request;
-var Types = require('tedious').TYPES;
 
 
 connection.on('connect',function (err) {
@@ -30,10 +29,7 @@ connection.on('connect',function (err) {
         return;
     }
     console.log('connected to Azure!')
-
-
    // queryDataBase()
-
 });
 
 function queryDataBase() {
@@ -55,24 +51,62 @@ function queryDataBase() {
 }
 
 
-
+// server is open and listening on port 3100, to access: localhost:3100 in any browser.
 app.listen(3100, function() {
     console.log('I am listening on localhost:3100');
-    // server is open and listening on port 3100, to access: localhost:3100 in any browser.
+
 });
 
-app.get('/dan', function (req, res){
-    console.log('*** client connected! ***');
+
+// happens each connection to the server - log request
+app.use(function (req,res,next) {
+    var loggedIn= CheckCookie(req); // cookie?
+    if(loggedIn)
+        next();
+    else{
+        res.send("Log in failed - no cookie")
+
+    }
+}  )
+
+function CheckCookie(cookie) {
+   return true;
+}
+
+function logRequest(username, pswd) {
+    //TODO select from clients where user id and passward match, if not null so log in, return true.
+    console.log("Got Log Request with details "+ username + pswd)
+    return true;
+}
+
+
+app.post('/logIn',function (req,res,next) {
+
+    console.log("body: /n")
+    console.log(req.body);
+
+
+    var userName= req.body.username;
+    var password= req.body.password;
+    var loggedIn = logRequest(userName,password);
+     if(loggedIn){
+         res.send("You logged in succecfully");
+     }
+     else{
+         res.send("Log in failed: wrong UserName/Password")
+     }
+
+});
+
+app.get('/dan', function (req, res, next){
+    console.log("Now on Dan`s Page");
     DbUtils.Select(connection,'Select * from [dbo].[clients] where ClientID = 1')
         .then(function (ans) {
             res.send(ans);
         })
         .catch(function (err) {
-
             //console.log('error message: ' +err.message);
             res.send(err.message);
         })
-
-
 });
 

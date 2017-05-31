@@ -2,7 +2,7 @@
  * Created by Dan gleyzer on 30-May-17.
  */
 var Promise = require('promise')
-var Request = require('request-promise')
+var Request = require('tedious').Request;
 
 exports.Select=function (connection,query) {
     return new Promise(function (resolve, reject) {
@@ -17,7 +17,7 @@ exports.Select=function (connection,query) {
         req.on('columnMetadata', function (columns) {
             columns.forEach(function (column) {
                 if (column.colName != null)
-                    properties.push(coumn.colName);
+                    properties.push(column.colName);
             });
         });
         req.on('row', function (row) {
