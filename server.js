@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 var cors= require('cors');
 var DbUtils = require("./DbUtils.js");
 var request = require('tedious').Request;
+var squel = require("squel");
 app.use(cors());
 
 var config={    userName: 'dangl',
@@ -79,12 +80,8 @@ function logRequest(username, pswd) {
     return true;
 }
 
-
+//log in
 app.post('/logIn',function (req,res,next) {
-
-    console.log("body: /n")
-    console.log(req.body);
-
 
     var userName= req.body.username;
     var password= req.body.password;
@@ -98,6 +95,13 @@ app.post('/logIn',function (req,res,next) {
 
 });
 
+
+//register
+app.post('/register', function (req,res,next) {
+
+
+})
+
 app.get('/dan', function (req, res, next){
     console.log("Now on Dan`s Page");
     DbUtils.Select(connection,'Select * from [dbo].[clients] where ClientID = 1')
@@ -110,3 +114,9 @@ app.get('/dan', function (req, res, next){
         })
 });
 
+
+/**
+var s = squel.select();
+s.from("[dbo].[clients]");
+s.where("ClientID = 1")
+console.log( s.toString() );    /* SELECT * FROM [dbo].[clients] where (ClientID = 1) */
