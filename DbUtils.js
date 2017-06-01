@@ -35,3 +35,15 @@ exports.Select=function (connection,query) {
         connection.execSql(req);
     });
 }
+
+exports.Insert = function (connection,query) {
+    var req = new Request(query, function (err, rowCount) {
+        if(err){
+            console.log(err);
+        }
+        req.on('requestCompleted',function () {
+            console.log('requestCompleted with' + req.rowCount + ' row(s)')
+        });
+    });
+    connection.execSql(req);
+}

@@ -21,36 +21,15 @@ var config={    userName: 'dangl',
 };
 
 var connection = new Connection(config);
-
-
-
+// connect to database
 connection.on('connect',function (err) {
     if(err) {
         console.error('error connecting: ' + err.stack);
         return;
     }
     console.log('connected to Azure!')
-   // queryDataBase()
+
 });
-
-function queryDataBase() {
-
-    var req = new request("Select * from [dbo].[clients] where ClientID = 1", function (err, rowCount, rows) {
-        if (err) {
-            console.error('Error Message: '+ err.message)
-        }
-        console.log(rows)
-    });
-
-    req.on('row', function (columns) {
-        console.log("starts print row:")
-        columns.forEach(function (column) {
-            console.log("%s\t%s", column.metadata.colName, column.value);
-        });
-    });
-    connection.execSql(req);
-}
-
 
 // server is open and listening on port 3100, to access: localhost:3100 in any browser.
 app.listen(3100, function() {
@@ -95,11 +74,13 @@ app.post('/logIn',function (req,res,next) {
 
 });
 
-
 //register
 app.post('/register', function (req,res,next) {
-
-
+  var qeury = squel.insert();
+  qeury.into("[dbo].[clients]")
+      .set("UserName","dangl_2")
+       .set("Password", "1111111").toString();
+  DbUtils.Insert(connection,qeury);
 })
 
 app.get('/dan', function (req, res, next){
