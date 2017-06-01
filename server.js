@@ -80,12 +80,12 @@ app.post('/logIn',function (req,res,next) {
 
 //register
 app.post('/register', function (req,res,next) {
-        var qeury=squel.select().from("[dbo].[clients]").where("UserName=+'"+req.body.UserName+"'").toString(); //
+        var qeury=squel.select().from("[dbo].[clients]").where("UserName='"+req.body.UserName+"'").toString(); //
 DbUtils.Select(connection,qeury)
     .then(function (records) {
         if(Object.keys(records).length<1){
             var body = req.body;
-            qeury = squel.insert()
+            qeury = squel.insert()  // set Query for Client Insert
                 .into("[dbo].[clients]")
                 .set("UserName", body.UserName)
                 .set("FirstName", body.FirstName)
@@ -97,16 +97,36 @@ DbUtils.Select(connection,qeury)
                 .set("Phone", body.Phone)
                 .set("Cellular", body.Cellular)
                 .set("Mail", body.Mail)
-                .set("CreditCardNumber", body.CreditNumber)
+                .set("CreditCardNumber", body.CreditCardNumber)
                 .toString();
-            //TODO care of categories
-            DbUtils.Insert(connection,qeury).then(function(message){
-                res.send(message)
+            // insert new client
+            DbUtils.Insert(connection,qeury).then(function(ClientInsert_message){
+                var summaryMessage = ClientInsert_message
+                var categories=req.body.Categories;
+                var userIDQuery= squel.select().field("ClientID") // set Query for selecting user ID
+                    .from("[dbo].[clients]").
+                    where("UserName='"+req.body.UserName+"'").toString();
+                DbUtils.Select(connection,userIDQuery).then(function (ClientID) { // get ClientID
+                    var fields = [];
+                    categories.forEach(function (category) {  // add all categories to the fields
+                        var item = {ClientID:ClientID[0].ClientID, CategoryName:category};
+                        fields.push(item)
+                })
+                    var InsertCategoryQeury = squel.insert() // create  insert query
+                        .into("[dbo].[ClientCategory]")
+                        .setFieldsRows(fields).toString();
+                    DbUtils.Insert(connection,InsertCategoryQeury). // insert
+                    then(function (CategoryInsert_message) {
+                        summaryMessage= summaryMessage+ "/n"+CategoryInsert_message
+                        res.send(summaryMessage);
+                    })
             }).catch(function (err) {
                 res.send(err)
-    })
-        }
-        else
+              })
+        }).catch(function (err) {
+                res.send(err)
+            })
+        } else
             res.send("The userName already exist")
     }).catch(function (err) {
     res.send(err)
