@@ -4,6 +4,9 @@
 var Promise = require('promise')
 var Request = require('tedious').Request;
 
+var connection ;
+
+
 exports.Select=function (connection,query) {
     return new Promise(function (resolve, reject) {
         var req=new Request(query,function (err,rowCount) {
@@ -16,7 +19,7 @@ exports.Select=function (connection,query) {
         var properties = [];
         req.on('columnMetadata', function (columns) {
             columns.forEach(function (column) {
-                if (column.colName != null)
+                if (column.colName !== null)
                     properties.push(column.colName);
             });
         });
@@ -28,7 +31,7 @@ exports.Select=function (connection,query) {
             res.push(item)
         });
         req.on('requestCompleted', function () {
-            console.log('requestCompleted with' + req.rowCount + 'rows');
+            console.log('Select request Completed with ' + req.rowCount + ' rows');
             console.log(res);
             resolve(res);
         });
@@ -37,13 +40,15 @@ exports.Select=function (connection,query) {
 }
 
 exports.Insert = function (connection,query) {
+    return new Promise(function (resolve, reject) {
     var req = new Request(query, function (err, rowCount) {
-        if(err){
-            console.log(err);
-        }
-        req.on('requestCompleted',function () {
-            console.log('requestCompleted with' + req.rowCount + ' row(s)')
+            if (err) {
+              reject(err);
+            }
+            req.on('requestCompleted', function () {
+               resolve('Insert request Completed with ' + req.rowCount + ' row(s)')
+            });
         });
-    });
-    connection.execSql(req);
+        connection.execSql(req);
+    })
 }
