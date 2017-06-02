@@ -1,20 +1,29 @@
 /**
  * Created by Dan gleyzer on 30-May-17.
  */
-var express = require('express'); // Loading the express module to the server.
-var app = express(); // activating express
-var bodyParser = require('body-parser')
+let express = require('express'); // Loading the express module to the server.
+let app = express(); // activating express
+let bodyParser = require('body-parser')
+let cors= require('cors');
+let Connection =require('tedious').Connection;
+let request = require('tedious').Request;
+let squel = require("squel");
+let cookieParser = require('cookie-parser');
+let users = require('./routes/users');
+let DbUtils = require("./DbUtils.js");
+
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-var cors= require('cors');
-var DbUtils = require("./DbUtils.js");
-var Connection =require('tedious').Connection;
-var request = require('tedious').Request;
-var squel = require("squel");
 app.use(cors());
-var users = require('./routes/users');
+app.use(cookieParser());
 
 
+
+//<editor-fold desc="Server Connection and DataBase">
+// server is open and listening on port 3100, to access: localhost:3100 in any browser.
+app.listen(3100, function() {
+    console.log('I am listening on localhost:3100');
+});
 
 var config={    userName: 'dangl',
                 password: 'danDB123',
@@ -23,7 +32,8 @@ var config={    userName: 'dangl',
                 options:{encrypt:true, database: 'DanDB'}
 };
 
-var connection = new Connection(config);
+let connection = new Connection(config);
+
 // connect to database
 connection.on('connect',function (err) {
     if(err) {
@@ -31,56 +41,91 @@ connection.on('connect',function (err) {
         return;
     }
     console.log('connected to Azure!')
-  //  DbUtils.setConnection(connection);
 });
 
-// server is open and listening on port 3100, to access: localhost:3100 in any browser.
-app.listen(3100, function() {
-    console.log('I am listening on localhost:3100');
-});
+//</editor-fold>
 
 
-// happens each connection to the server - log request
-/*
+// happens each connection to the server - cookie check
 app.use(function (req,res,next) {
-    var loggedIn= CheckCookie(req); // cookie?
-    if(loggedIn)
+    let loggedIn= CheckCookie(req);
+    //ToDO to decide here about the logic
+    if(loggedIn) {
+        req.userloggedIn = true;
+        res.send("The server Found Cookie of Client " +
+           req.cookies['DrinkShop'].ClientID +
+           " last log in on : " + req.cookies['DrinkShop'].LastLoginDate)
         next();
+    }
     else{
-        res.send("Log in failed - no cookie")
+        next();
     }
 }  )
 
-function CheckCookie(cookie) {
+function CheckCookie(req) {
+    let cookie = req.cookies['DrinkShop'];
+    if(!cookie)
+        return false;
+    else
+        true;
+
    return true;
-}
-*/
-
-
-function logRequest(username, pswd) {
-    //TODO select from clients where user id and passward match, if not null so log in, return true.
-    console.log("Got Log Request with details "+ username + pswd)
-    return true;
 }
 
 //log in
 app.post('/logIn',function (req,res,next) {
-
-    var userName= req.body.username;
-    var password= req.body.password;
-    var loggedIn = logRequest(userName,password);
-     if(loggedIn){
-         res.send("You logged in succecfully");
-     }
-     else{
-         res.send("Log in failed: wrong UserName/Password")
-     }
-
+    if (!req.userloggedIn){ // TODO to remove this later..
+        let UserName = req.body.UserName;
+        let Password = req.body.Password;
+    logRequest(UserName, Password, res, req).then(function () {
+        // TODO to send products?
+        res.send("You logged in")
+    }).catch(function () {
+        res.send("Wrong password/UserName")
+    })
+}
 });
+
+// sets here the login if correct details and also set the cookie
+function logRequest(username, pswd ,res, req) {
+    return new Promise(function (resolve, reject) {
+        let userIDQuery = squel.select().field("ClientID") // set Query for selecting user ID after validating UserName and Password
+            .from("[dbo].[clients]")
+            .where("UserName ='" + username + "'")
+            .where("Password ='" + pswd + "'")
+            .toString();
+
+        DbUtils.Select(connection, userIDQuery).then(function (ClientID) {
+            if (Object.keys(ClientID).length > 0) {
+                createCookie(ClientID[0].ClientID, res);
+                resolve(true);
+            }
+            else {
+                reject(false);
+            }
+        }).catch(function () {
+            return false;
+        })
+    })
+}
+// get the current date in format of d/m/yy
+function GetDate() {
+    let dateFormat = require('dateformat');
+    let now = new Date();
+    let date = dateFormat(now, "d/m/yy");
+    return date;
+}
+
+function createCookie(ClientID,res){
+    res.cookie("DrinkShop",{ClientID:ClientID,LastLoginDate:GetDate()});
+}
+
+
+
 
 //register
 app.post('/register', function (req,res,next) {
-        var qeury=squel.select().from("[dbo].[clients]").where("UserName='"+req.body.UserName+"'").toString(); //
+        let qeury=squel.select().from("[dbo].[clients]").where("UserName='"+req.body.UserName+"'").toString(); //
 DbUtils.Select(connection,qeury)
     .then(function (records) {
         if(Object.keys(records).length<1){
@@ -90,7 +135,7 @@ DbUtils.Select(connection,qeury)
                 .set("UserName", body.UserName)
                 .set("FirstName", body.FirstName)
                 .set("LastName", body.LastName)
-                .set("Password", body.Passwords)
+                .set("Password", body.Password)
                 .set("Address", body.Address)
                 .set("City", body.City)
                 .set("Country", body.Country)
@@ -101,15 +146,17 @@ DbUtils.Select(connection,qeury)
                 .toString();
             // insert new client
             DbUtils.Insert(connection,qeury).then(function(ClientInsert_message){
-                var summaryMessage = ClientInsert_message
-                var categories=req.body.Categories;
-                var userIDQuery= squel.select().field("ClientID") // set Query for selecting user ID
+                let summaryMessage = ClientInsert_message
+                let categories=req.body.Categories;
+
+                let userIDQuery= squel.select().field("ClientID") // set Query for selecting user ID
                     .from("[dbo].[clients]").
                     where("UserName='"+req.body.UserName+"'").toString();
-                DbUtils.Select(connection,userIDQuery).then(function (ClientID) { // get ClientID
-                    var fields = [];
+                DbUtils.Select(connection,userIDQuery).// get ClientID
+                then(function (ClientID) {
+                    let fields = [];
                     categories.forEach(function (category) {  // add all categories to the fields
-                        var item = {ClientID:ClientID[0].ClientID, CategoryName:category};
+                        let item = {ClientID:ClientID[0].ClientID, CategoryName:category};
                         fields.push(item)
                 })
                     var InsertCategoryQeury = squel.insert() // create  insert query
@@ -120,12 +167,8 @@ DbUtils.Select(connection,qeury)
                         summaryMessage= summaryMessage+ "/n"+CategoryInsert_message
                         res.send(summaryMessage);
                     })
-            }).catch(function (err) {
-                res.send(err)
-              })
-        }).catch(function (err) {
-                res.send(err)
             })
+        })
         } else
             res.send("The userName already exist")
     }).catch(function (err) {

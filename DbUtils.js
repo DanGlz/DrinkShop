@@ -4,8 +4,6 @@
 var Promise = require('promise')
 var Request = require('tedious').Request;
 
-var connection ;
-
 
 exports.Select=function (connection,query) {
     return new Promise(function (resolve, reject) {
