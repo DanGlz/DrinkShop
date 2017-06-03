@@ -5,11 +5,11 @@ let express = require('express'); // Loading the express module to the server.
 let app = express(); // activating express
 let bodyParser = require('body-parser')
 let cors= require('cors');
-let Connection =require('tedious').Connection;
-let request = require('tedious').Request;
+//let Connection =require('tedious').Connection;
+//let request = require('tedious').Request;
 let squel = require("squel");
 let cookieParser = require('cookie-parser');
-let users = require('./routes/users');
+let products = require('./routes/products');
 let DbUtils = require("./DbUtils.js");
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -18,32 +18,31 @@ app.use(cors());
 app.use(cookieParser());
 
 
-app.use("/users",users);
-
 //<editor-fold desc="Server Connection and DataBase">
 // server is open and listening on port 3100, to access: localhost:3100 in any browser.
 app.listen(3100, function() {
     console.log('I am listening on localhost:3100');
 });
 
-var config={    userName: 'dangl',
+/*var config={    userName: 'dangl',
                 password: 'danDB123',
                 server: 'gleyzer.database.windows.net',
                 requestTimeout:30000,
                 options:{encrypt:true, database: 'DanDB'}
 };
-
-let connection = new Connection(config);
+*/
+//let connection = new Connection(config);
 
 // connect to database
-connection.on('connect',function (err) {
+/*connection.on('connect',function (err) {
     if(err) {
         console.error('error connecting: ' + err.stack);
         return;
     }
+    DbUtils.SetDBconnection(connection);
     console.log('connected to Azure!')
 });
-
+*/
 //</editor-fold>
 
 
@@ -53,7 +52,7 @@ app.use("/",function (req,res,next) {
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
-        res.send("The server Found Cookie of Client " +
+        console.log("The server Found Cookie of Client " +
            req.cookies['DrinkShop'].ClientID +
            " last log in on : " + req.cookies['DrinkShop'].LastLoginDate)
         next();
@@ -62,6 +61,8 @@ app.use("/",function (req,res,next) {
         next();
     }
 }  )
+
+app.use("/Products",products);
 
 function CheckCookie(req) {
     let cookie = req.cookies['DrinkShop'];
@@ -91,7 +92,7 @@ app.post('/logIn',function (req,res,next) {
 function logRequest(username, pswd ,res, req) {
     return new Promise(function (resolve, reject) {
         let ClientIDQuery = DbUtils.ClientIDLoginQuery(username,pswd);
-        DbUtils.Select(connection, ClientIDQuery).then(function (ClientID) {
+        DbUtils.Select(ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
                 createCookie(ClientID[0].ClientID, res);
                 resolve(true);
@@ -122,18 +123,18 @@ function createCookie(ClientID,res){
 app.post('/register', function (req,res,next) {
         let UserName= req.body.UserName;
         let qeury= DbUtils.ClientRecordRegisterQuery(UserName); // get query
-DbUtils.Select(connection,qeury)
+DbUtils.Select(qeury)
     .then(function (records) {
         if(Object.keys(records).length<1){
             var body = req.body;
             qeury = DbUtils.registerQuery(body);
             // insert new client
-            DbUtils.Insert(connection,qeury).then(function(ClientInsert_message){
+            DbUtils.Insert(qeury).then(function(ClientInsert_message){
                 let summaryMessage = ClientInsert_message
                 let categories=req.body.Categories;
 
                 let ClientIDQuery= DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
-                DbUtils.Select(connection,ClientIDQuery).// get ClientID
+                DbUtils.Select(ClientIDQuery).// get ClientID
                 then(function (ClientID) {
                     let fields = [];
                     categories.forEach(function (category) {  // add all categories to the fields
@@ -143,7 +144,7 @@ DbUtils.Select(connection,qeury)
                     var InsertCategoryQeury = squel.insert() // create  insert query
                         .into("[dbo].[ClientCategory]")
                         .setFieldsRows(fields).toString();
-                    DbUtils.Insert(connection,InsertCategoryQeury). // insert
+                    DbUtils.Insert(InsertCategoryQeury). // insert
                     then(function (CategoryInsert_message) {
                         summaryMessage= summaryMessage+ "/n"+CategoryInsert_message
                         res.send(summaryMessage);
@@ -160,7 +161,7 @@ DbUtils.Select(connection,qeury)
 
 app.get('/dan', function (req, res, next){
     console.log("Now on Dan`s Page");
-    DbUtils.Select(connection,'Select * from [dbo].[clients] where ClientID = 1')
+    DbUtils.Select('Select * from [dbo].[clients] where ClientID = 1')
         .then(function (ans) {
             res.send(ans);
         })

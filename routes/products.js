@@ -4,15 +4,23 @@ var router = express.Router();
 var bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({extended:false}));
 router.use(bodyParser.json());
-var squel = require("squel");
-var validator = require('validator');
 
 
-/* GET users listing.
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+
+//GET all products.
+router.get('/allProducts', function(req, res) {
+
+let query = DbUtils.AllProductsQuery();
+
+DbUtils.Select(query).then(function (AllDrinkProducts) {
+  res.send(AllDrinkProducts) ;
+}).catch(function (err) {
+    res.send(err.message);
+})
+
+
 });
-*/
+
 
 
 

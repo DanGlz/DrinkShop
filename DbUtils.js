@@ -2,56 +2,87 @@
  * Created by Dan gleyzer on 30-May-17.
  */
 var Promise = require('promise')
+var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
+var TYPES = require('tedious').TYPES;
 let squel = require("squel");
 
 
-exports.Select=function (connection,query) {
-    return new Promise(function (resolve, reject) {
-        var req=new Request(query,function (err,rowCount) {
-            if(err) {
-                console.log('err');
-                reject(err.message);
-            }
-        });
-        var res = [] ;
+var config={    userName: 'dangl',
+    password: 'danDB123',
+    server: 'gleyzer.database.windows.net',
+    requestTimeout:30000,
+    options:{encrypt:true, database: 'DanDB'}
+};
+
+var connection;
+
+exports.Select=function (query) {
+    return new Promise(function(resolve,reject) {
+        connection = new Connection(config);
+        var ans = [];
         var properties = [];
-        req.on('columnMetadata', function (columns) {
-            columns.forEach(function (column) {
-                if (column.colName !== null)
-                    properties.push(column.colName);
-            });
-        });
-        req.on('row', function (row) {
-            var item = {};
-            for (i = 0; i < row.length; i++) {
-                item[properties[i]] = row[i].value;
+        connection.on('connect', function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.message);
+                reject(err);
             }
-            res.push(item)
+            console.log('Azure DB connection on');
+            var dbReq = new Request(query, function (err, rowCount) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+            });
+
+            dbReq.on('columnMetadata', function (columns) {
+                columns.forEach(function (column) {
+                    if (column.colName != null)
+                        properties.push(column.colName);
+                });
+            });
+            dbReq.on('row', function (row) {
+                var item = {};
+                for (i=0; i<row.length; i++) {
+                    item[properties[i]] = row[i].value;
+                }
+                ans.push(item);
+            });
+
+            dbReq.on('requestCompleted', function () {
+                console.log('Select Completed With : '+ dbReq.rowCount + ' row(s) returned');
+                console.log(ans);
+                connection.close();
+                resolve(ans);
+            });
+            connection.execSql(dbReq);
         });
-        req.on('requestCompleted', function () {
-            console.log('Select request Completed with ' + req.rowCount + ' rows');
-            console.log(res);
-            resolve(res);
-        });
-        connection.execSql(req);
     });
 }
 
-exports.Insert = function (connection,query) {
+exports.Insert = function (query) {
     return new Promise(function (resolve, reject) {
-    var req = new Request(query, function (err, rowCount) {
+        connection = new Connection(config);
+        connection.on('connect', function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.message);
+                reject(err);
+            }
+            console.log('Azure DB connection on');
+    var dbReq = new Request(query, function (err, rowCount) {
             if (err) {
               reject(err);
             }
-            req.on('requestCompleted', function () {
-               resolve('Insert request Completed with ' + req.rowCount + ' row(s)')
+            dbReq.on('requestCompleted', function () {
+                console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
+                connection.close();
+                resolve('Insert request Completed with ' + dbReq.rowCount + ' row(s)')
             });
         });
-        connection.execSql(req);
-    })
+        connection.execSql(dbReq);
+    });
+    });
 }
-
 //register (insert)
 exports.registerQuery=function(body){
 
@@ -66,6 +97,8 @@ exports.registerQuery=function(body){
         .set("Country", body.Country)
         .set("Phone", body.Phone)
         .set("Cellular", body.Cellular)
+        .set("AnswersQ1",body.AnswersQ1)
+        .set("AnswersQ2",body.AnswersQ2)
         .set("Mail", body.Mail)
         .set("CreditCardNumber", body.CreditCardNumber)
         .toString();
@@ -92,14 +125,20 @@ exports.ClientRecordRegisterQuery=function (UserName) {
         .toString();
     return ClientRecordQuery;
 }
-
+// set Query for selecting user ID from UserName
 exports.ClientIdFromUserNameQuery= function (UserName) {
-    let ClientIdQuery= squel.select().field("ClientID") // set Query for selecting user ID
+    let ClientIdQuery= squel.select().field("ClientID")
         .from("[dbo].[clients]").
         where("UserName='"+UserName+"'")
         .toString();
     return ClientIdQuery;
 
+}
 
+exports.AllProductsQuery= function () {
+    let AllProductsQuery= squel.select()
+        .from("[dbo].[Drinks]")
+        .toString();
+    return AllProductsQuery;
 }
 
