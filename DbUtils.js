@@ -3,6 +3,7 @@
  */
 var Promise = require('promise')
 var Request = require('tedious').Request;
+let squel = require("squel");
 
 
 exports.Select=function (connection,query) {
@@ -50,3 +51,26 @@ exports.Insert = function (connection,query) {
         connection.execSql(req);
     })
 }
+
+//register
+exports.registerQuery=function(body){
+
+    let query = squel.insert()  // set Query for Client Insert
+        .into("[dbo].[clients]")
+        .set("UserName", body.UserName)
+        .set("FirstName", body.FirstName)
+        .set("LastName", body.LastName)
+        .set("Password", body.Password)
+        .set("Address", body.Address)
+        .set("City", body.City)
+        .set("Country", body.Country)
+        .set("Phone", body.Phone)
+        .set("Cellular", body.Cellular)
+        .set("Mail", body.Mail)
+        .set("CreditCardNumber", body.CreditCardNumber)
+        .toString();
+
+    return query;
+}
+
+

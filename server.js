@@ -18,6 +18,7 @@ app.use(cors());
 app.use(cookieParser());
 
 
+app.use("/users",users);
 
 //<editor-fold desc="Server Connection and DataBase">
 // server is open and listening on port 3100, to access: localhost:3100 in any browser.
@@ -47,7 +48,7 @@ connection.on('connect',function (err) {
 
 
 // happens each connection to the server - cookie check
-app.use(function (req,res,next) {
+app.use("/",function (req,res,next) {
     let loggedIn= CheckCookie(req);
     //ToDO to decide here about the logic
     if(loggedIn) {
@@ -122,7 +123,6 @@ function createCookie(ClientID,res){
 
 
 
-
 //register
 app.post('/register', function (req,res,next) {
         let qeury=squel.select().from("[dbo].[clients]").where("UserName='"+req.body.UserName+"'").toString(); //
@@ -130,20 +130,7 @@ DbUtils.Select(connection,qeury)
     .then(function (records) {
         if(Object.keys(records).length<1){
             var body = req.body;
-            qeury = squel.insert()  // set Query for Client Insert
-                .into("[dbo].[clients]")
-                .set("UserName", body.UserName)
-                .set("FirstName", body.FirstName)
-                .set("LastName", body.LastName)
-                .set("Password", body.Password)
-                .set("Address", body.Address)
-                .set("City", body.City)
-                .set("Country", body.Country)
-                .set("Phone", body.Phone)
-                .set("Cellular", body.Cellular)
-                .set("Mail", body.Mail)
-                .set("CreditCardNumber", body.CreditCardNumber)
-                .toString();
+            qeury = DbUtils.registerQuery(body);
             // insert new client
             DbUtils.Insert(connection,qeury).then(function(ClientInsert_message){
                 let summaryMessage = ClientInsert_message
