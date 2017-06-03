@@ -18,33 +18,12 @@ app.use(cors());
 app.use(cookieParser());
 
 
-//<editor-fold desc="Server Connection and DataBase">
+//<editor-fold desc="Server Connection">
 // server is open and listening on port 3100, to access: localhost:3100 in any browser.
 app.listen(3100, function() {
     console.log('I am listening on localhost:3100');
 });
-
-/*var config={    userName: 'dangl',
-                password: 'danDB123',
-                server: 'gleyzer.database.windows.net',
-                requestTimeout:30000,
-                options:{encrypt:true, database: 'DanDB'}
-};
-*/
-//let connection = new Connection(config);
-
-// connect to database
-/*connection.on('connect',function (err) {
-    if(err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-    DbUtils.SetDBconnection(connection);
-    console.log('connected to Azure!')
-});
-*/
 //</editor-fold>
-
 
 // happens each connection to the server - cookie check
 app.use("/",function (req,res,next) {
@@ -117,8 +96,6 @@ function createCookie(ClientID,res){
     res.cookie("DrinkShop",{ClientID:ClientID,LastLoginDate:GetDate()});
 }
 
-
-
 //register
 app.post('/register', function (req,res,next) {
         let UserName= req.body.UserName;
@@ -159,15 +136,21 @@ DbUtils.Select(qeury)
 })
 
 
-app.get('/dan', function (req, res, next){
-    console.log("Now on Dan`s Page");
-    DbUtils.Select('Select * from [dbo].[clients] where ClientID = 1')
-        .then(function (ans) {
-            res.send(ans);
+//password retrieve
+app.post('/PasswordRetrieve',function (req,res) {
+// TODO to remove this later..
+        let UserName = req.body.UserName;
+        let AnswersQ1 = req.body.AnswersQ1;
+        let AnswersQ2 = req.body.AnswersQ2;
+        let PasswordRetQuery=DbUtils.PasswordRetrieveQuery(UserName,AnswersQ1,AnswersQ2);
+        DbUtils.Select(PasswordRetQuery).then(function (password) {
+           if(Object.keys(password).length>0) {
+               res.send(password[0]);
+           }
+           else
+               res.send("Wrong details for Password Retrieve")
+        }).catch(function (err) {
+            console.log(err.message);
         })
-        .catch(function (err) {
-            //console.log('error message: ' +err.message);
-            res.send(err.message);
-        })
-});
 
+});

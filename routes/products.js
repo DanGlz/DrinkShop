@@ -18,7 +18,6 @@ DbUtils.Select(query).then(function (AllDrinkProducts) {
     res.send(err.message);
 })
 
-
 });
 
 

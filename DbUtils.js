@@ -142,3 +142,13 @@ exports.AllProductsQuery= function () {
     return AllProductsQuery;
 }
 
+// select Password from given user name and 2 true answers
+exports.PasswordRetrieveQuery=function (UserName,AnswersQ1,AnswersQ2) {
+    let PasswordRetQuery = squel.select().field("Password") // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[clients]")
+        .where("UserName ='" + UserName + "'")
+        .where("AnswersQ1 ='" + AnswersQ1 + "'")
+        .where("AnswersQ2 ='" + AnswersQ2 + "'")
+        .toString();
+    return PasswordRetQuery;
+}
