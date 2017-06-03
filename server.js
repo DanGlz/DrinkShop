@@ -90,13 +90,8 @@ app.post('/logIn',function (req,res,next) {
 // sets here the login if correct details and also set the cookie
 function logRequest(username, pswd ,res, req) {
     return new Promise(function (resolve, reject) {
-        let userIDQuery = squel.select().field("ClientID") // set Query for selecting user ID after validating UserName and Password
-            .from("[dbo].[clients]")
-            .where("UserName ='" + username + "'")
-            .where("Password ='" + pswd + "'")
-            .toString();
-
-        DbUtils.Select(connection, userIDQuery).then(function (ClientID) {
+        let ClientIDQuery = DbUtils.ClientIDLoginQuery(username,pswd);
+        DbUtils.Select(connection, ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
                 createCookie(ClientID[0].ClientID, res);
                 resolve(true);
@@ -125,7 +120,8 @@ function createCookie(ClientID,res){
 
 //register
 app.post('/register', function (req,res,next) {
-        let qeury=squel.select().from("[dbo].[clients]").where("UserName='"+req.body.UserName+"'").toString(); //
+        let UserName= req.body.UserName;
+        let qeury= DbUtils.ClientRecordRegisterQuery(UserName); // get query
 DbUtils.Select(connection,qeury)
     .then(function (records) {
         if(Object.keys(records).length<1){
@@ -136,10 +132,8 @@ DbUtils.Select(connection,qeury)
                 let summaryMessage = ClientInsert_message
                 let categories=req.body.Categories;
 
-                let userIDQuery= squel.select().field("ClientID") // set Query for selecting user ID
-                    .from("[dbo].[clients]").
-                    where("UserName='"+req.body.UserName+"'").toString();
-                DbUtils.Select(connection,userIDQuery).// get ClientID
+                let ClientIDQuery= DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
+                DbUtils.Select(connection,ClientIDQuery).// get ClientID
                 then(function (ClientID) {
                     let fields = [];
                     categories.forEach(function (category) {  // add all categories to the fields

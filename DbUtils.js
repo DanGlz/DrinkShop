@@ -52,7 +52,7 @@ exports.Insert = function (connection,query) {
     })
 }
 
-//register
+//register (insert)
 exports.registerQuery=function(body){
 
     let query = squel.insert()  // set Query for Client Insert
@@ -73,4 +73,33 @@ exports.registerQuery=function(body){
     return query;
 }
 
+// select ClientID from given user name and password
+exports.ClientIDLoginQuery=function (UserName,Password) {
+    let ClientIDQuery = squel.select().field("ClientID") // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[clients]")
+        .where("UserName ='" + UserName + "'")
+        .where("Password ='" + Password + "'")
+        .toString();
+
+    return ClientIDQuery;
+}
+
+// select from given user name- to check if username exist
+exports.ClientRecordRegisterQuery=function (UserName) {
+    let ClientRecordQuery = squel.select()
+        .from("[dbo].[clients]")
+        .where("UserName='"+UserName+"'")
+        .toString();
+    return ClientRecordQuery;
+}
+
+exports.ClientIdFromUserNameQuery= function (UserName) {
+    let ClientIdQuery= squel.select().field("ClientID") // set Query for selecting user ID
+        .from("[dbo].[clients]").
+        where("UserName='"+UserName+"'")
+        .toString();
+    return ClientIdQuery;
+
+
+}
 
