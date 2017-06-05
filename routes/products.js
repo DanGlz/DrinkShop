@@ -43,4 +43,16 @@ router.get('/GetRecommendedProducts', function(req, res) {
     })
 });
 
+//GET last month products
+router.get('/LastMonthProducts', function(req, res) {
+
+
+    let query = DbUtils.GetProductsFromLastMonth();
+    DbUtils.Select(query).then(function (LastMonthProducts) {
+        res.send(LastMonthProducts) ;
+    }).catch(function (err) {
+        res.send(err.message);
+    })
+});
+
 module.exports = router;

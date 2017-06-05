@@ -206,7 +206,11 @@ exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
 }
 
 exports.TopFiveProductsQuery= function () {
-    let TopFiveQuery= "SELECT * FROM [dbo].[Drinks] Where DrinkId IN( SELECT TOP 6 DrinkId FROM [dbo].[Orders] GROUP BY DrinkId order by count (*)  desc)"
+
+    let TopFiveQuery= "SELECT * FROM [dbo].[Drinks]" +
+        " Where DrinkId IN( SELECT TOP 6 DrinkId FROM [dbo].[Orders]" +
+        " GROUP BY DrinkId " +
+        "order by count (*)  desc)"
   // console.log(TopFiveQuery);
     return TopFiveQuery;
 
@@ -214,6 +218,8 @@ exports.TopFiveProductsQuery= function () {
 
 // recommendation to user based on favorite categories and top products
 exports.RecommendedProductsQuery= function (userID) {
+
+
     let RecommendedProductsQuery= "SELECT * FROM [dbo].[Drinks]" +
         " Where DrinkId IN( SELECT TOP 10 DrinkId FROM [dbo].[Orders]" +
         " GROUP BY DrinkId " +
@@ -224,3 +230,19 @@ exports.RecommendedProductsQuery= function (userID) {
     return RecommendedProductsQuery;
 
 }
+
+
+exports.GetProductsFromLastMonth =function () {
+    let d = new Date();
+    let dateFormat = require('dateformat');
+    d.setMonth(d.getMonth() - 1);
+    let MinDate = dateFormat(d, "d/m/yy");
+    let GetProductsByDateQuery = squel.select()
+        .from("[dbo].[Drinks]")
+        .where("Date >='"+MinDate+"'")
+        .toString();
+    return GetProductsByDateQuery ;
+}
+
+
+
