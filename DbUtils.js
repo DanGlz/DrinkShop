@@ -204,3 +204,23 @@ exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
 
     return query;
 }
+
+exports.TopFiveProductsQuery= function () {
+    let TopFiveQuery= "SELECT * FROM [dbo].[Drinks] Where DrinkId IN( SELECT TOP 6 DrinkId FROM [dbo].[Orders] GROUP BY DrinkId order by count (*)  desc)"
+  // console.log(TopFiveQuery);
+    return TopFiveQuery;
+
+}
+
+// recommendation to user based on favorite categories and top products
+exports.RecommendedProductsQuery= function (userID) {
+    let RecommendedProductsQuery= "SELECT * FROM [dbo].[Drinks]" +
+        " Where DrinkId IN( SELECT TOP 10 DrinkId FROM [dbo].[Orders]" +
+        " GROUP BY DrinkId " +
+        "order by count (*)  desc)"+
+        "AND CategoryName IN " +
+        "(SELECT CategoryName FROM [dbo].[ClientCategory] Where ( ClientID ="+ userID+"))"
+
+    return RecommendedProductsQuery;
+
+}

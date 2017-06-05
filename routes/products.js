@@ -21,6 +21,30 @@ DbUtils.Select(query).then(function (AllDrinkProducts) {
 });
 
 
+//GET Top 5 Products
+router.get('/TopFiveProducts', function(req, res) {
+
+    let query = DbUtils.TopFiveProductsQuery();
+    DbUtils.Select(query).then(function (TopFiveProductsID) {
+        res.send(TopFiveProductsID) ;
+    }).catch(function (err) {
+        res.send(err.message);
+    })
+});
+
+//GET Top 5 Products
+router.get('/RecommendedProducts', function(req, res) {
+
+    let userID =req.cookies['DrinkShop'].ClientID;
+    let query = DbUtils.RecommendedProductsQuery(userID);
+    DbUtils.Select(query).then(function (TopFiveProductsID) {
+        res.send(TopFiveProductsID) ;
+    }).catch(function (err) {
+        res.send(err.message);
+    })
+});
+
+
 
 
 
