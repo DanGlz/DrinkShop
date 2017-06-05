@@ -191,7 +191,7 @@ exports.checkIfInStockQuary =function (itemID) {
     return checkIfInStockQuary ;
 
 }
-exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
+exports.purchaseProductQuary=function(ProductID ,quantity, clientID, date ,Currency){
 
     let query = squel.insert()  // set Query for Client Insert
         .into("[dbo].[Orders]")
@@ -203,4 +203,11 @@ exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
         .toString();
 
     return query;
+}
+exports.MakeOrderCheckStokQuery=function (ListOfProducts, ListOfQuantity) {
+    let MakeOrderCheckStokQuery = squel.select().field("StockAmount" )
+        .from("[dbo].[Drinks]")
+        .where('DrinkID IN ('+ListOfProducts.join()+')')
+        .toString();
+    return MakeOrderCheckStokQuery ;
 }
