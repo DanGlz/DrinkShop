@@ -152,3 +152,55 @@ exports.PasswordRetrieveQuery=function (UserName,AnswersQ1,AnswersQ2) {
         .toString();
     return PasswordRetQuery;
 }
+exports.SearchProductQuery=function (porductName) {
+    let SearchProductQuery = squel.select().field("DrinkName" ) // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[Drinks]")
+        .where("DrinkName ='" + porductName + "'")
+        .toString();
+    return SearchProductQuery;
+}
+exports.GetInformationOnProductByNameQuery=function (porductName) {
+    let GetInformationOnProductByNameQuery = squel.select() // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[Drinks]")
+        .where("DrinkName ='" + porductName + "'")
+        .toString();
+    return GetInformationOnProductByNameQuery;
+
+}
+exports.GetInformationOnProductByIDQuery=function (porductID) {
+    let GetInformationOnProductByIDQuery = squel.select() // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[Drinks]")
+        .where("DrinkID ='" + porductID + "'")
+        .toString();
+    return GetInformationOnProductByIDQuery;
+
+}
+exports.GetPastOrdersQuary =function (clientID) {
+    let GetPastOrdersQuary = squel.select()
+        .from("[dbo].[Orders]")
+        .where("clientId ='"+clientID+"'")
+        .toString();
+    return GetPastOrdersQuary ;
+
+}
+exports.checkIfInStockQuary =function (itemID) {
+    let checkIfInStockQuary = squel.select().field("StockAmount" )
+        .from("[dbo].[Drinks]")
+        .where("DrinkID ='"+itemID+"'")
+        .toString();
+    return checkIfInStockQuary ;
+
+}
+exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
+
+    let query = squel.insert()  // set Query for Client Insert
+        .into("[dbo].[Orders]")
+        .set("ClientId", clientID)
+        .set("DrinkId",ProductID)
+        .set("Quantity", quantity)
+        .set("PurchaseDate",date)
+        .set("Currency", Currency)
+        .toString();
+
+    return query;
+}
