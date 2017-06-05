@@ -232,7 +232,6 @@ app.post('/MakeOrder',function(req,res){
         res.send("You need to login first");
     }
     else {
-        //res.send( "the Product  is not in stock");
 
         let clientID = GetClientIdFromCookie(req);
         let query = DbUtils.MakeOrderCheckStokQuery (req.body.ListOfProducts, req.body.ListOfQuantity);
@@ -241,65 +240,35 @@ app.post('/MakeOrder',function(req,res){
                 for( var i = 0 ; i < Object.keys(Prodactes).length ; i++ ){
                     let parseStockAmount = parseInt(Prodactes[i].StockAmount);
                     let parseQuantity =parseInt(req.body.ListOfQuantity[i]);
-                    console.log("S: "+parseStockAmount+" Q: "+parseQuantity);
                     if (parseStockAmount < parseQuantity){
                         res.send("the Product " + req.body.ListOfProducts[i] + " is not in stock");
+                        reject();
                     }
                 }
             }
         }).then(()=> {
+            let fields = [];
+            for (var i = 0; i < req.body.ListOfProducts.length; i++) {
+                let item = {ClientId:clientID, DrinkId:req.body.ListOfProducts[i]
+                    ,Quantity:req.body.ListOfQuantity[i], PurchaseDate:GetDate(),Currency:req.body.currency
+                    ,Price:req.body.Price[i]};
+                fields.push(item)
+            }
+            var InsertOrderQeury = squel.insert() // create  insert query
+                .into("[dbo].[Orders]")
+                .setFieldsRows(fields).toString();
+            DbUtils.Insert(InsertOrderQeury). // insert
+            then(()=>{
 
 
+            })
+
+
+
+            then(function () {
+                res.send("The order was successful");
+            })
         })
-
-
-
-        /*
-        var p1 = new Promise((resolve, reject) => {
-            for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-                if (!checkIfInStock(req.body.ListOfProducts[i], req.body.ListOfQuantity[i])) {
-                    console.log("1");
-                    res.send(false, "the Product " + req.body.ListOfProducts[i] + " is not in stock");
-                    reject();
-                }
-            }
-            resolve();
-        }).then(() => {
-            for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-                console.log("2")
-                purchaseProduct(req.body.ListOfProducts[i], req.body.ListOfQuantity[i], clientID, req.body.currency)
-            }
-        }).then(() => {
-            res.send(true, "order completed")
-        });
-        */
     }
     })
-// checks if the item in stcok
-function checkIfInStock(itemId ,quantity) {
-        let ans = true  ;
-        let query = DbUtils.checkIfInStockQuary(itemId);
-        DbUtils.Select(query).then(function (StockAmount) {
-            if (Object.keys(StockAmount).length > 0) {
-                let parseStockAmount = parseInt(StockAmount[0].StockAmount);
-                console.log("S: "+parseStockAmount+" Q: "+quantity);
-                if (parseStockAmount >= quantity) {
-                    console.log("nitzan");
-                   ans =true ;
-                }
-            }
-        }).catch(function (err) {
 
-        });
-    return ans ;
-}
-
-function purchaseProduct (ProductID ,quantity ,clientID ,currency ){
-    let query = DbUtils.purchaseProductQuary(ProductID,quantity,clientID, GetDate(),currency);
-    DbUtils.Insert(query).then(function(ClientInsert_message){
-        console.log("purchase succsid");
-        }).catch(function (err) {
-        console.log("purchase faild");
-       return false ;
-    });
-}
