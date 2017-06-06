@@ -57,7 +57,7 @@ function GetClientIdFromCookie(req) {
    return req.cookies['DrinkShop'].ClientID;
 }
 //log in
-app.post('/logIn',function (req,res,next) {
+app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn){ // TODO to remove this later..
         let UserName = req.body.UserName;
         let Password = req.body.Password;
@@ -103,8 +103,8 @@ function createCookie(ClientID,res){
    res.cookie("DrinkShop",{ClientID:ClientID,LastLoginDate:GetDate()});
 }
 
-//register
-app.post('/register', function (req,res,next) {
+//Register
+app.post('/Register', function (req,res,next) {
         let UserName= req.body.UserName;
         let qeury= DbUtils.ClientRecordRegisterQuery(UserName); // get query
 DbUtils.Select(qeury)

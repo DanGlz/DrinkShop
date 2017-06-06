@@ -12,7 +12,7 @@ var config={    userName: 'dangl',
     password: 'danDB123',
     server: 'gleyzer.database.windows.net',
     requestTimeout:30000,
-    options:{encrypt:true, database: 'DanDB', multipleStatements: true}
+    options:{encrypt:true, database: 'DanDB'}
 };
 
 var connection;
@@ -76,7 +76,6 @@ exports.Insert = function (query) {
               reject(err);
             }
             dbReq.on('requestCompleted', function () {
-
                 connection.close();
                 console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
                 resolve('Insert request Completed with ' + dbReq.rowCount + ' row(s)')
@@ -231,3 +230,45 @@ exports.updateStockAmount1 = function (ProdactID ,QuantityToUpdate) {
         .where("DrinkID ='" + ProdactID + "'").toString();
     return Query;
 }
+
+exports.TopFiveProductsQuery= function () {
+
+    let TopFiveQuery= "SELECT * FROM [dbo].[Drinks]" +
+        " Where DrinkId IN( SELECT TOP 6 DrinkId FROM [dbo].[Orders]" +
+        " GROUP BY DrinkId " +
+        "order by count (*)  desc)"
+  // console.log(TopFiveQuery);
+    return TopFiveQuery;
+
+}
+
+// recommendation to user based on favorite categories and top products
+exports.RecommendedProductsQuery= function (userID) {
+
+
+    let RecommendedProductsQuery= "SELECT * FROM [dbo].[Drinks]" +
+        " Where DrinkId IN( SELECT TOP 10 DrinkId FROM [dbo].[Orders]" +
+        " GROUP BY DrinkId " +
+        "order by count (*)  desc)"+
+        "AND CategoryName IN " +
+        "(SELECT CategoryName FROM [dbo].[ClientCategory] Where ( ClientID ="+ userID+"))"
+
+    return RecommendedProductsQuery;
+
+}
+
+
+exports.GetProductsFromLastMonth =function () {
+    let d = new Date();
+    let dateFormat = require('dateformat');
+    d.setMonth(d.getMonth() - 1);
+    let MinDate = dateFormat(d, "d/m/yy");
+    let GetProductsByDateQuery = squel.select()
+        .from("[dbo].[Drinks]")
+        .where("Date >='"+MinDate+"'")
+        .toString();
+    return GetProductsByDateQuery ;
+}
+
+
+
