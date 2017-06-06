@@ -227,29 +227,37 @@ app.get('/GetPastOrders' , function (req,res) {
 });
 
 app.post('/MakeOrder',function(req,res){
-
+    let StockNumbersUpdate = [];
     if (!CheckCookie(req)) {
         res.send("You need to login first");
     }
     else {
 
         let clientID = GetClientIdFromCookie(req);
-        let query = DbUtils.MakeOrderCheckStokQuery (req.body.ListOfProducts, req.body.ListOfQuantity);
+        let query = DbUtils.MakeOrderCheckStokQuery(req.body.ListOfProducts, req.body.ListOfQuantity);
         DbUtils.Select(query).then(function (Prodactes) {
-            if (Object.keys(Prodactes).length > 0) {
+            console.log("nitz: "+Object.keys(Prodactes).length);
+            if (Object.keys(Prodactes).length == req.body.ListOfProducts.length) {
+
                 for( var i = 0 ; i < Object.keys(Prodactes).length ; i++ ){
+
                     let parseStockAmount = parseInt(Prodactes[i].StockAmount);
                     let parseQuantity =parseInt(req.body.ListOfQuantity[i]);
                     if (parseStockAmount < parseQuantity){
                         res.send("the Product " + req.body.ListOfProducts[i] + " is not in stock");
                         reject();
+                    }else {
+                        let a = parseStockAmount - parseQuantity ;
+                        StockNumbersUpdate.push(a);
                     }
+
                 }
             }
         }).then(()=> {
+            console.log("4");
             let fields = [];
             for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-                let item = {ClientId:clientID, DrinkId:req.body.ListOfProducts[i]
+                let item = {ClientId:clientID, DrinkId:req.body.ListOfProducts[i] ,CategoryName:req.body.CategoryName[i]
                     ,Quantity:req.body.ListOfQuantity[i], PurchaseDate:GetDate(),Currency:req.body.currency
                     ,Price:req.body.Price[i]};
                 fields.push(item)
@@ -257,14 +265,12 @@ app.post('/MakeOrder',function(req,res){
             var InsertOrderQeury = squel.insert() // create  insert query
                 .into("[dbo].[Orders]")
                 .setFieldsRows(fields).toString();
+            console.log("3");
             DbUtils.Insert(InsertOrderQeury). // insert
             then(()=>{
-
-
+                console.log("2");
+                DbUtils.updateStockAmount(req.body.ListOfProducts ,StockNumbersUpdate);
             })
-
-
-
             then(function () {
                 res.send("The order was successful");
             })

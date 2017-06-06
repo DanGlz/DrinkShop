@@ -191,6 +191,34 @@ exports.checkIfInStockQuary =function (itemID) {
     return checkIfInStockQuary ;
 
 }
-exports.updateStockAmount = function () {
-    
+exports.purchaseProductQuary=function(ProductID ,quantity, clientID, date ,Currency){
+
+    let query = squel.insert()  // set Query for Client Insert
+        .into("[dbo].[Orders]")
+        .set("ClientId", clientID)
+        .set("DrinkId",ProductID)
+        .set("Quantity", quantity)
+        .set("PurchaseDate",date)
+        .set("Currency", Currency)
+        .toString();
+
+    return query;
+}
+exports.MakeOrderCheckStokQuery=function (ListOfProducts, ListOfQuantity) {
+    let MakeOrderCheckStokQuery = squel.select().field("StockAmount" )
+        .from("[dbo].[Drinks]")
+        .where('DrinkID IN ('+ListOfProducts.join()+')')
+        .toString();
+    return MakeOrderCheckStokQuery ;
+}
+
+exports.updateStockAmount = function (arrayOfProdacts ,arrayOfQuantityToUpdate) {
+    let query;
+    console.log("1");
+    for (var i = 0; i < arrayOfProdacts.length; i++) {
+        let tmpQuery = squel.update().table("[dbo].[clients]").set("StockAmount", arrayOfQuantityToUpdate[i]).where("DrinkID", arrayOfProdacts[i]);
+        query += tmpQuery;
+    }
+    console.log(query.toString());
+    return query.toString();
 }
