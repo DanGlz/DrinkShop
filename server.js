@@ -310,6 +310,21 @@ app.get('/GetStockDetails',function(req,res){
         console.log(err.message);
     })
 });
+
+app.get('/GetOrdersDetails',function(req,res){
+    let GetOrdersDetailsQuary = DbUtils.GetOrdersDetailsQuary();
+    DbUtils.Select(GetOrdersDetailsQuary).then(function (OrdersDetails) {
+        if(Object.keys(OrdersDetails).length>0) {
+            res.send(OrdersDetails);
+        }
+        else {
+            res.send("there is no stock ");
+        }
+    }).catch(function (err) {
+        console.log(err.message);
+    })
+});
+
 //add product by the admin
 app.post('/AddProduct',function(req,res){
     if(! checkIfAdminConnected(req)){
@@ -319,11 +334,11 @@ app.post('/AddProduct',function(req,res){
 let AddProductQuery =DbUtils.AddProductQuery(req);
     DbUtils.Insert(AddProductQuery). // insert
     then(function () {
-        res.send("Product added successfully")
+        res.send(true)
 
     }).catch(function (err) {
         console.log(err.message);
-        res.send("Product didn't added successfully")
+        res.send(false);
     })
 });
 
@@ -337,13 +352,13 @@ app.post('/DeleteProduct',function(req,res) {
     then(function (DrinkID) {
         console.log("jg "+DrinkID)
         if (Object.keys(DrinkID).length > 0){
-            res.send("Product deleted successfully")
+            res.send(true)
         }else{
-            res.send("Product does not exist in the system")
+            res.send(false)
         }
     }).catch(function (err) {
         console.log(err.message);
-        res.send("Product didn't deleted successfully")
+        res.send(false)
     })
 
 });
@@ -356,13 +371,13 @@ app.post('/DeleteClient',function(req,res) {
     DbUtils.Insert(DeleteClientQuery).// insert
     then(function (clientId) {
         if (Object.keys(DrinkID).length > 0) {
-            res.send("Client deleted successfully")
+            res.send(true)
         } else {
-            res.send("Client does not exist in the system")
+            res.send(false)
         }
     }).catch(function (err) {
         console.log(err.message);
-        res.send("Client didn't deleted successfully")
+        res.send(false)
     })
 })
 app.post('/changeProductInventory',function(req,res) {
@@ -370,12 +385,12 @@ app.post('/changeProductInventory',function(req,res) {
     DbUtils.Insert(changeProductInventoryQuery).// insert
     then(function (StockAmount) {
         if (Object.keys(StockAmount).length > 0){
-            res.send("Drink Inventory was updated successfully")
+            res.send(true)
         }else{
-            res.send("Drink id isn't in the system ")
+            res.send(false)
         }
     }).catch(function (err) {
         console.log(err.message);
-        res.send("Drink Inventory wasn't updated successfully")
+        res.send(true)
     })
 });

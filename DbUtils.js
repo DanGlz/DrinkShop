@@ -155,7 +155,7 @@ exports.PasswordRetrieveQuery=function (UserName,AnswersQ1,AnswersQ2) {
     return PasswordRetQuery;
 }
 exports.SearchProductQuery=function (porductName) {
-    let SearchProductQuery = squel.select().field("DrinkName" ) // set Query for selecting user ID after validating UserName and Password
+    let SearchProductQuery = squel.select() // set Query for selecting user ID after validating UserName and Password
         .from("[dbo].[Drinks]")
         .where("DrinkName ='" + porductName + "'")
         .toString();
@@ -315,4 +315,10 @@ exports.changeProductInventoryQuery= function(DrinkId, newIInventory){
         .set("StockAmount", newIInventory)
         .where("DrinkID ='" + DrinkId + "'").toString();
     return Query;
+}
+exports.GetOrdersDetailsQuary = function () {
+    let GetOrdersDetailsQuary = squel.select()
+        .from("[dbo].[Orders]")
+        .toString();
+    return GetOrdersDetailsQuary ;
 }
