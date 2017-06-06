@@ -61,7 +61,7 @@ app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn){ // TODO to remove this later..
         let UserName = req.body.UserName;
         let Password = req.body.Password;
-        console.log(UserName+" "+Password);
+        //console.log(UserName+" "+Password);
     logRequest(UserName, Password, res, req).then(function () {
         // TODO to send products?
         res.send("You logged in")
@@ -73,14 +73,18 @@ app.post('/LogIn',function (req,res,next) {
 
 // sets here the login if correct details and also set the cookie
 function logRequest(username, pswd ,res, req) {
-    //console.log("nitz")
     return new Promise(function (resolve, reject) {
         let ClientIDQuery = DbUtils.ClientIDLoginQuery(username,pswd);
         DbUtils.Select(ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
-                //console.log(Object.keys(ClientID).length);
-                createCookie(ClientID[0].ClientID, res);
-                resolve(true);
+                if (ClientID[0].isADmin=='1') {
+                    createCookie(ClientID[0].ClientID, res, true);
+                    console.log("admin");
+                }else {
+                    createCookie(ClientID[0].ClientID, res, false);
+                    console.log("not admin");
+                }
+                resolve(true)
             }
             else {
                 reject(false);
@@ -99,10 +103,22 @@ function GetDate() {
     return date;
 }
 
-function createCookie(ClientID,res){
-   res.cookie("DrinkShop",{ClientID:ClientID,LastLoginDate:GetDate()});
-}
+function createCookie(ClientID,res,isAdmin){
 
+        res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: GetDate(),Admin:isAdmin })
+
+
+}
+function checkIfAdminConnected (req){
+    let cookie = req.cookies['DrinkShop'];
+    if (cookie){
+       if(req.cookies['DrinkShop'].Admin)
+       {
+           return true ;
+       }
+    }
+    return false ;
+}
 //Register
 app.post('/Register', function (req,res,next) {
         let UserName= req.body.UserName;
@@ -225,7 +241,7 @@ app.get('/GetPastOrders' , function (req,res) {
         })
     }
 });
-
+// make an order, checks if the order is in stock before
 app.post('/MakeOrder',function(req,res){
     let StockNumbersUpdate = [];
     if (!CheckCookie(req)) {
@@ -279,5 +295,77 @@ app.post('/MakeOrder',function(req,res){
 
         })
     }
+    });
+
+app.get('/GetStockDetails',function(req,res){
+    let GetStockDetailsQuary = DbUtils.GetStockDetails();
+    DbUtils.Select(GetStockDetailsQuary).then(function (StockDetails) {
+
+        if(Object.keys(StockDetails).length>0) {
+            res.send(StockDetails);
+        }
+        else
+            res.send("there is no stock ")
+    }).catch(function (err) {
+        console.log(err.message);
+    })
+});
+//add product by the admin
+app.post('/AddProduct',function(req,res){
+    if(! checkIfAdminConnected(req)){
+       res.send("only admins can add products");
+       return ;
+   }
+let AddProductQuery =DbUtils.AddProductQuery(req);
+    DbUtils.Insert(AddProductQuery). // insert
+    then(function () {
+        res.send("Product added successfully")
+
+    }).catch(function (err) {
+        console.log(err.message);
+        res.send("Product didn't added successfully")
+    })
+});
+
+app.post('/DeleteProduct',function(req,res) {
+    if (!checkIfAdminConnected(req)) {
+        res.send("only admins can delete products");
+        return;
+    }
+    let DeleteProductQuery = DbUtils.DeleteProductQuery(req.body.DrinkId);
+    DbUtils.Insert(DeleteProductQuery).// insert
+    then(function (DrinkID) {
+        console.log("jg "+DrinkID)
+        if (Object.keys(DrinkID).length > 0){
+            res.send("Product deleted successfully")
+        }else{
+            res.send("Product does not exist in the system")
+        }
+    }).catch(function (err) {
+        console.log(err.message);
+        res.send("Product didn't deleted successfully")
     })
 
+});
+app.post('/DeleteClient',function(req,res) {
+    if (!checkIfAdminConnected(req)) {
+        res.send("only admins can delete products");
+        return;
+    }
+    let DeleteClientQuery = DbUtils.DeleteClientQuery(req.body.ClientId);
+    DbUtils.Insert(DeleteClientQuery).// insert
+    then(function (clientId) {
+        if (Object.keys(DrinkID).length > 0){
+            res.send("Client deleted successfully")
+        }else{
+            res.send("Client does not exist in the system")
+        }
+    }).catch(function (err) {
+        console.log(err.message);
+        res.send("Client didn't deleted successfully")
+    })
+
+
+
+
+})

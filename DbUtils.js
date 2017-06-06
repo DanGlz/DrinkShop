@@ -110,7 +110,7 @@ exports.registerQuery=function(body){
 
 // select ClientID from given user name and password
 exports.ClientIDLoginQuery=function (UserName,Password) {
-    let ClientIDQuery = squel.select().field("ClientID") // set Query for selecting user ID after validating UserName and Password
+    let ClientIDQuery = squel.select().field("ClientID").field("isADmin") // set Query for selecting user ID after validating UserName and Password
         .from("[dbo].[clients]")
         .where("UserName ='" + UserName + "'")
         .where("Password ='" + Password + "'")
@@ -193,7 +193,7 @@ exports.checkIfInStockQuary =function (itemID) {
     return checkIfInStockQuary ;
 
 }
-exports.purchaseProductQuary=function(ProductID ,quantity, clientID, date ,Currency){
+exports.purchaseProduct=function(ProductID ,quantity, clientID, date ,Currency){
 
     let query = squel.insert()  // set Query for Client Insert
         .into("[dbo].[Orders]")
@@ -269,6 +269,44 @@ exports.GetProductsFromLastMonth =function () {
         .toString();
     return GetProductsByDateQuery ;
 }
+exports.GetStockDetails = function (){
+    let checkIfInStockQuary = squel.select().field("DrinkName" ).field("StockAmount")
+        .from("[dbo].[Drinks]")
+        .toString();
+    return checkIfInStockQuary ;
 
+}
+exports.AddProductQuery = function (req) {
+    let query = squel.insert()  // set Query for Client Insert
+        .into("[dbo].[Drinks]")
+        .set("DrinkName", req.body.DrinkName)
+        .set("CategoryName",req.body.CategoryName)
+        .set("Type", req.body.Type)
+        .set("Year",req.body.Year)
+        .set("Country", req.body.Country)
+        .set("ABV",req.body.ABV)
+        .set("Description", req.body.Description)
+        .set("Price",req.body.Price)
+        .set("StockAmount", req.body.StockAmount)
+        .toString();
 
+    return query;
 
+}
+
+exports.DeleteProductQuery =function (productID) {
+    let query = squel.delete()
+        .from("[dbo].[Drinks]")
+        .where("DrinkID ='" + productID + "'")
+        .toString();
+    return query;
+
+}
+exports.DeleteClientQuery =function (ClientID) {
+    let query = squel.delete()
+        .from("[dbo].[Clients]")
+        .where("ClientID ='" + ClientID + "'")
+        .toString();
+    return query;
+
+}
