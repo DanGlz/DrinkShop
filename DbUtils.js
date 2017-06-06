@@ -310,3 +310,9 @@ exports.DeleteClientQuery =function (ClientID) {
     return query;
 
 }
+exports.changeProductInventoryQuery= function(DrinkId, newIInventory){
+    let Query = squel.update().table("[dbo].[Drinks]")
+        .set("StockAmount", newIInventory)
+        .where("DrinkID ='" + DrinkId + "'").toString();
+    return Query;
+}

@@ -355,17 +355,27 @@ app.post('/DeleteClient',function(req,res) {
     let DeleteClientQuery = DbUtils.DeleteClientQuery(req.body.ClientId);
     DbUtils.Insert(DeleteClientQuery).// insert
     then(function (clientId) {
-        if (Object.keys(DrinkID).length > 0){
+        if (Object.keys(DrinkID).length > 0) {
             res.send("Client deleted successfully")
-        }else{
+        } else {
             res.send("Client does not exist in the system")
         }
     }).catch(function (err) {
         console.log(err.message);
         res.send("Client didn't deleted successfully")
     })
-
-
-
-
 })
+app.post('/changeProductInventory',function(req,res) {
+    let changeProductInventoryQuery=DbUtils.changeProductInventoryQuery(req.body.DrinkId, req.body.newInventory);
+    DbUtils.Insert(changeProductInventoryQuery).// insert
+    then(function (StockAmount) {
+        if (Object.keys(StockAmount).length > 0){
+            res.send("Drink Inventory was updated successfully")
+        }else{
+            res.send("Drink id isn't in the system ")
+        }
+    }).catch(function (err) {
+        console.log(err.message);
+        res.send("Drink Inventory wasn't updated successfully")
+    })
+});
