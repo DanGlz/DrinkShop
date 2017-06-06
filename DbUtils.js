@@ -12,7 +12,7 @@ var config={    userName: 'dangl',
     password: 'danDB123',
     server: 'gleyzer.database.windows.net',
     requestTimeout:30000,
-    options:{encrypt:true, database: 'DanDB'}
+    options:{encrypt:true, database: 'DanDB', multipleStatements: true}
 };
 
 var connection;
@@ -69,13 +69,16 @@ exports.Insert = function (query) {
                 reject(err);
             }
             console.log('Azure DB connection on');
-    var dbReq = new Request(query, function (err, rowCount) {
+           // console.log(query);
+
+            var dbReq = new Request(query, function (err, rowCount) {
             if (err) {
               reject(err);
             }
             dbReq.on('requestCompleted', function () {
-                console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
+
                 connection.close();
+                console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
                 resolve('Insert request Completed with ' + dbReq.rowCount + ' row(s)')
             });
         });
@@ -214,11 +217,17 @@ exports.MakeOrderCheckStokQuery=function (ListOfProducts, ListOfQuantity) {
 
 exports.updateStockAmount = function (arrayOfProdacts ,arrayOfQuantityToUpdate) {
     let query;
-    console.log("1");
+
     for (var i = 0; i < arrayOfProdacts.length; i++) {
-        let tmpQuery = squel.update().table("[dbo].[clients]").set("StockAmount", arrayOfQuantityToUpdate[i]).where("DrinkID", arrayOfProdacts[i]);
+        let tmpQuery = squel.update().table("[dbo].[Drinks]").set("StockAmount", arrayOfQuantityToUpdate[i])
+            .where("DrinkID ='"+ arrayOfProdacts[i]+"'")+" ;";
         query += tmpQuery;
     }
-    console.log(query.toString());
     return query.toString();
+}
+exports.updateStockAmount1 = function (ProdactID ,QuantityToUpdate) {
+    let Query = squel.update().table("[dbo].[Drinks]")
+        .set("StockAmount", QuantityToUpdate)
+        .where("DrinkID ='" + ProdactID + "'").toString();
+    return Query;
 }
