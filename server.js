@@ -269,30 +269,40 @@ app.post('/MakeOrder',function(req,res){
                 }
             }
         }).then(() => {
-            let fields = [];
-            for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-                let item = {
-                    ClientId: clientID, DrinkId: req.body.ListOfProducts[i], CategoryName: req.body.CategoryName[i]
-                    , Quantity: req.body.ListOfQuantity[i], PurchaseDate: GetDate(), Currency: req.body.currency
-                    , Price: req.body.Price[i]
-                };
-                fields.push(item)
-            }
-            var InsertOrderQeury = squel.insert() // create  insert query
-                .into("[dbo].[Orders]")
-                .setFieldsRows(fields).toString();
-            DbUtils.Insert(InsertOrderQeury) // insert
+            let query = DbUtils.updateStockAmount(req.body.ListOfProducts, StockNumbersUpdate);
+            DbUtils.Insert(query)
                 .then(() => {
-                  /*  for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-
-                        DbUtils.Insert(DbUtils.updateStockAmount1(req.body.ListOfProducts[i], StockNumbersUpdate[i]));
-                    }*/
-                    //let query = DbUtils.updateStockAmount(req.body.ListOfProducts, StockNumbersUpdate);
-                    // DbUtils.Insert(query)
-                }).then(function () {
-                res.send("The order was successful");
+                    let query = DbUtils.updateStockAmount(req.body.ListOfProducts, StockNumbersUpdate);
+                    DbUtils.Insert(query)
+                    let fields = [];
+                    for (var i = 0; i < req.body.ListOfProducts.length; i++) {
+                        let item = {
+                            ClientId: clientID,
+                            DrinkId: req.body.ListOfProducts[i],
+                            CategoryName: req.body.CategoryName[i]
+                            ,
+                            Quantity: req.body.ListOfQuantity[i],
+                            PurchaseDate: GetDate(),
+                            Currency: req.body.currency
+                            ,
+                            Price: req.body.Price[i]
+                        };
+                        fields.push(item)
+                    }
+                    var InsertOrderQeury = squel.insert() // create  insert query
+                        .into("[dbo].[Orders]")
+                        .setFieldsRows(fields).toString();
+                    DbUtils.Insert(InsertOrderQeury) // insert
+                        .then(function () {
+                            res.send("The order was successful");
+                        }).catch(function (err) {
+                        console.log(err.message);
+                    })
+                }).catch(function (err) {
+                console.log(err.message);
             })
-
+        }).catch(function (err) {
+            console.log(err.message);
         })
     }
     });
