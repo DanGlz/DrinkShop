@@ -155,7 +155,7 @@ exports.PasswordRetrieveQuery=function (UserName,AnswersQ1,AnswersQ2) {
     return PasswordRetQuery;
 }
 exports.SearchProductQuery=function (porductName) {
-    let SearchProductQuery = squel.select().field("DrinkName" ) // set Query for selecting user ID after validating UserName and Password
+    let SearchProductQuery = squel.select() // set Query for selecting user ID after validating UserName and Password
         .from("[dbo].[Drinks]")
         .where("DrinkName ='" + porductName + "'")
         .toString();
@@ -215,21 +215,15 @@ exports.MakeOrderCheckStokQuery=function (ListOfProducts, ListOfQuantity) {
 }
 
 exports.updateStockAmount = function (arrayOfProdacts ,arrayOfQuantityToUpdate) {
-    let query;
+    let query="";
 
     for (var i = 0; i < arrayOfProdacts.length; i++) {
-        let tmpQuery = squel.update().table("[dbo].[Drinks]").set("StockAmount", arrayOfQuantityToUpdate[i])
-            .where("DrinkID ='"+ arrayOfProdacts[i]+"'")+" ;";
-        query += tmpQuery;
+        query+= "UPDATE Drinks SET StockAmount="+arrayOfQuantityToUpdate[i]+" WHERE DrinkID = "+arrayOfProdacts[i]+";"
     }
-    return query.toString();
+
+    return query;
 }
-exports.updateStockAmount1 = function (ProdactID ,QuantityToUpdate) {
-    let Query = squel.update().table("[dbo].[Drinks]")
-        .set("StockAmount", QuantityToUpdate)
-        .where("DrinkID ='" + ProdactID + "'").toString();
-    return Query;
-}
+
 
 exports.TopFiveProductsQuery= function () {
 
@@ -315,4 +309,10 @@ exports.changeProductInventoryQuery= function(DrinkId, newIInventory){
         .set("StockAmount", newIInventory)
         .where("DrinkID ='" + DrinkId + "'").toString();
     return Query;
+}
+exports.GetOrdersDetailsQuary = function () {
+    let GetOrdersDetailsQuary = squel.select()
+        .from("[dbo].[Orders]")
+        .toString();
+    return GetOrdersDetailsQuary ;
 }

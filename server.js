@@ -8,10 +8,15 @@ let cors= require('cors');
 //let Connection =require('tedious').Connection;
 //let request = require('tedious').Request;
 let squel = require("squel");
+
 let cookieParser = require('cookie-parser');
 let products = require('./routes/products');
-let Products = require("./routes/products.js");
+let Orders = require('./routes/Orders');
+let Admin = require('./routes/Admin');
+
+
 let DbUtils = require("./DbUtils.js");
+let server = require("./server.js");
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -28,7 +33,7 @@ app.listen(3100, function() {
 
 // happens each connection to the server - cookie check
 app.use("/",function (req,res,next) {
-    let loggedIn= CheckCookie(req);
+    let loggedIn=server.CheckCookie(req);
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
@@ -41,8 +46,22 @@ app.use("/",function (req,res,next) {
 }  )
 
 app.use("/Products",products);
+app.use("/Orders",Orders);
+app.use("/Admin",Admin);
 
-function CheckCookie(req) {
+exports.GetDate =function () {
+    let dateFormat = require('dateformat');
+    let now = new Date();
+    let date = dateFormat(now, "d/m/yy");
+    return date;
+}
+exports.createCookie =function (ClientID,res,isAdmin){
+
+    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
+
+
+}
+exports.CheckCookie =function (req) {
     let cookie = req.cookies['DrinkShop'];
     if(!cookie)
         return false;
@@ -52,7 +71,7 @@ function CheckCookie(req) {
    return true;
 }
 //get the user id from the cookie
-function GetClientIdFromCookie(req) {
+exports.GetClientIdFromCookie =  function (req) {
    return req.cookies['DrinkShop'].ClientID;
 }
 
@@ -94,6 +113,7 @@ GetLogInData = function (req){
 }
 
 
+
 //log in
 app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn){ // TODO to remove this later..
@@ -120,7 +140,6 @@ else {
         })
     }
 });
-
 // sets here the login if correct details and also set the cookie
 function logRequest(username, pswd ,res, req) {
     return new Promise(function (resolve, reject) {
@@ -128,10 +147,10 @@ function logRequest(username, pswd ,res, req) {
         DbUtils.Select(ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
                 if (ClientID[0].isADmin=='1') {
-                    createCookie(ClientID[0].ClientID, res, true);
+                    server.createCookie(ClientID[0].ClientID, res, true);
                     console.log("admin");
                 }else {
-                    createCookie(ClientID[0].ClientID, res, false);
+                    server.createCookie(ClientID[0].ClientID, res, false);
                     console.log("not admin");
                 }
                 resolve();
@@ -171,19 +190,8 @@ GetLastMonthProducts = function() {
 
 
 // get the current date in format of d/m/yy
-function GetDate() {
-    let dateFormat = require('dateformat');
-    let now = new Date();
-    let date = dateFormat(now, "d/m/yy");
-    return date;
-}
-
-function createCookie(ClientID,res,isAdmin){
-
-        res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: GetDate(),Admin:isAdmin })
 
 
-}
 
 function updateCookie(req,res){
 
@@ -269,8 +277,9 @@ app.post('/PasswordRetrieve',function (req,res) {
         })
 
 });
+/*
 //bring the client the prodact that he looked up
-app.post('/SearchProduct',function (req,res) {
+ app.post('/SearchProduct',function (req,res) {
 
     let porductName = req.body.porductName;
     let SearchProductQuery = DbUtils.SearchProductQuery(porductName);
@@ -285,6 +294,7 @@ app.post('/SearchProduct',function (req,res) {
         console.log(err.message);
     })
 });
+*/
 //get the client information on the prodact he looked up by the name
 app.post('/GetInformationOnProductByName',function (req,res){
     let porductName = req.body.porductName;
@@ -313,163 +323,5 @@ app.post('/GetInformationOnProductByID',function (req,res){
             res.send("there is no such product ")
     }).catch(function (err) {
         console.log(err.message);
-    })
-});
-// get all the past order of a user
-app.get('/GetPastOrders' , function (req,res) {
-    if (!CheckCookie(req)) {
-        res.send("You need to login first");
-    }
-    else {
-        let clientID = GetClientIdFromCookie(req);
-        let GetPastOrdersQuary = DbUtils.GetPastOrdersQuary(clientID);
-        DbUtils.Select(GetPastOrdersQuary).then(function (pastOrders) {
-
-            if(Object.keys(pastOrders).length>0) {
-                res.send(pastOrders);
-            }
-            else
-                res.send("there is no past orders ")
-        }).catch(function (err) {
-            console.log(err.message);
-        })
-    }
-});
-// make an order, checks if the order is in stock before
-app.post('/MakeOrder',function(req,res){
-    let StockNumbersUpdate = [];
-    if (!CheckCookie(req)) {
-        res.send("You need to login first");
-    }
-    else {
-
-        let clientID = GetClientIdFromCookie(req);
-        let query = DbUtils.MakeOrderCheckStokQuery(req.body.ListOfProducts, req.body.ListOfQuantity);
-        DbUtils.Select(query).then(function (Prodactes) {
-            if (Object.keys(Prodactes).length == req.body.ListOfProducts.length) {
-
-                for (var i = 0; i < Object.keys(Prodactes).length; i++) {
-
-                    let parseStockAmount = parseInt(Prodactes[i].StockAmount);
-                    let parseQuantity = parseInt(req.body.ListOfQuantity[i]);
-                    if (parseStockAmount < parseQuantity) {
-                        res.send("the Product " + req.body.ListOfProducts[i] + " is not in stock");
-                        reject();
-                    } else {
-                        let a = parseStockAmount - parseQuantity;
-                        StockNumbersUpdate.push(a);
-                    }
-
-                }
-            }
-        }).then(() => {
-            let fields = [];
-            for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-                let item = {
-                    ClientId: clientID, DrinkId: req.body.ListOfProducts[i], CategoryName: req.body.CategoryName[i]
-                    , Quantity: req.body.ListOfQuantity[i], PurchaseDate: GetDate(), Currency: req.body.currency
-                    , Price: req.body.Price[i]
-                };
-                fields.push(item)
-            }
-            var InsertOrderQeury = squel.insert() // create  insert query
-                .into("[dbo].[Orders]")
-                .setFieldsRows(fields).toString();
-            DbUtils.Insert(InsertOrderQeury) // insert
-                .then(() => {
-                  /*  for (var i = 0; i < req.body.ListOfProducts.length; i++) {
-
-                        DbUtils.Insert(DbUtils.updateStockAmount1(req.body.ListOfProducts[i], StockNumbersUpdate[i]));
-                    }*/
-                    //let query = DbUtils.updateStockAmount(req.body.ListOfProducts, StockNumbersUpdate);
-                    // DbUtils.Insert(query)
-                }).then(function () {
-                res.send("The order was successful");
-            })
-
-        })
-    }
-    });
-
-app.get('/GetStockDetails',function(req,res){
-    let GetStockDetailsQuary = DbUtils.GetStockDetails();
-    DbUtils.Select(GetStockDetailsQuary).then(function (StockDetails) {
-
-        if(Object.keys(StockDetails).length>0) {
-            res.send(StockDetails);
-        }
-        else
-            res.send("there is no stock ")
-    }).catch(function (err) {
-        console.log(err.message);
-    })
-});
-//add product by the admin
-app.post('/AddProduct',function(req,res){
-    if(! checkIfAdminConnected(req)){
-       res.send("only admins can add products");
-       return ;
-   }
-let AddProductQuery =DbUtils.AddProductQuery(req);
-    DbUtils.Insert(AddProductQuery). // insert
-    then(function () {
-        res.send("Product added successfully")
-
-    }).catch(function (err) {
-        console.log(err.message);
-        res.send("Product didn't added successfully")
-    })
-});
-
-app.post('/DeleteProduct',function(req,res) {
-    if (!checkIfAdminConnected(req)) {
-        res.send("only admins can delete products");
-        return;
-    }
-    let DeleteProductQuery = DbUtils.DeleteProductQuery(req.body.DrinkId);
-    DbUtils.Insert(DeleteProductQuery).// insert
-    then(function (DrinkID) {
-        console.log("jg "+DrinkID)
-        if (Object.keys(DrinkID).length > 0){
-            res.send("Product deleted successfully")
-        }else{
-            res.send("Product does not exist in the system")
-        }
-    }).catch(function (err) {
-        console.log(err.message);
-        res.send("Product didn't deleted successfully")
-    })
-
-});
-app.post('/DeleteClient',function(req,res) {
-    if (!checkIfAdminConnected(req)) {
-        res.send("only admins can delete products");
-        return;
-    }
-    let DeleteClientQuery = DbUtils.DeleteClientQuery(req.body.ClientId);
-    DbUtils.Insert(DeleteClientQuery).// insert
-    then(function (clientId) {
-        if (Object.keys(DrinkID).length > 0) {
-            res.send("Client deleted successfully")
-        } else {
-            res.send("Client does not exist in the system")
-        }
-    }).catch(function (err) {
-        console.log(err.message);
-        res.send("Client didn't deleted successfully")
-    })
-})
-app.post('/changeProductInventory',function(req,res) {
-    let changeProductInventoryQuery=DbUtils.changeProductInventoryQuery(req.body.DrinkId, req.body.newInventory);
-    DbUtils.Insert(changeProductInventoryQuery).// insert
-    then(function (StockAmount) {
-        if (Object.keys(StockAmount).length > 0){
-            res.send("Drink Inventory was updated successfully")
-        }else{
-            res.send("Drink id isn't in the system ")
-        }
-    }).catch(function (err) {
-        console.log(err.message);
-        res.send("Drink Inventory wasn't updated successfully")
     })
 });
