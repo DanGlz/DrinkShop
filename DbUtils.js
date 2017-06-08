@@ -6,6 +6,7 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 let squel = require("squel");
+let server = require("./server.js");
 
 
 var config={    userName: 'dangl',
@@ -103,6 +104,7 @@ exports.registerQuery=function(body){
         .set("AnswersQ2",body.AnswersQ2)
         .set("Mail", body.Mail)
         .set("CreditCardNumber", body.CreditCardNumber)
+        .set("isADmin",body.isAdmin)
         .toString();
 
     return query;

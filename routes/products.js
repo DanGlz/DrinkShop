@@ -22,7 +22,6 @@ DbUtils.Select(query).then(function (AllDrinkProducts) {
 
 //GET Top 5 Products
 router.get('/GetTopFiveProducts', function(req, res) {
-
     let query = DbUtils.TopFiveProductsQuery();
     DbUtils.Select(query).then(function (TopFiveProductsID) {
         res.send(TopFiveProductsID) ;
@@ -48,14 +47,18 @@ exports.GetTopFiveProducts = function() {
 
 //GET Recommended Products
 router.get('/GetRecommendedProducts', function(req, res) {
-
-    let userID =req.cookies['DrinkShop'].ClientID;
-    let query = DbUtils.RecommendedProductsQuery(userID);
-    DbUtils.Select(query).then(function (TopFiveProductsID) {
-        res.send(TopFiveProductsID) ;
-    }).catch(function (err) {
-        res.send(err.message);
-    })
+    if(req.userloggedIn) {
+        let userID = req.cookies['DrinkShop'].ClientID;
+        let query = DbUtils.RecommendedProductsQuery(userID);
+        DbUtils.Select(query).then(function (TopFiveProductsID) {
+            res.send(TopFiveProductsID);
+        }).catch(function (err) {
+            res.send(err.message);
+        })
+    }
+    else {
+        res.send("You Must Login to get recommendation")
+    }
 });
 
 //GET last month products

@@ -108,9 +108,6 @@ GetLogInData = function (req){
     })
     });
 }
-
-
-
 //log in
 app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn) { // TODO to remove this later..
@@ -120,18 +117,15 @@ app.post('/LogIn',function (req,res,next) {
         //console.log(UserName+" "+Password);
         logRequest(UserName, Password, res, req).then(function () {
             GetLogInData(req).then(function (ans) {
-                console.log("check!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 res.send(ans)
             })
             // TODO to send products?
         }).catch(function (ans) {
-            console.log("check  errror!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             res.send(ans)
         })
     }
     else {
         GetLogInData(req).then(function (ans) {
-            console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             res.send(ans);
         })
     }
