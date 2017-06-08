@@ -90,22 +90,10 @@ GetLogInData = function (req){
                       Status: true,
                       NewestProducts: LastMonthProducts,
                       Top5Products: TopFiveProducts,
-                      LastLoginDate: "",
+                      LastLoginDate: LastLogin,
                       CurrencyRate: 3.4}
                 resolve(ans);
-            }). catch(function (err) {
-
-                let ans1 =
-                    {   Status: false,
-                        NewestProducts:[],
-                        Top5Products:[],
-                        LastLoginDate: [],
-                        CurrencyRate: 3.4
-                    }
-                //console.log(ans);
-                reject(ans1)
             })
-
         }). catch(function (err) {
 
              let ans2 =
@@ -144,7 +132,7 @@ app.post('/LogIn',function (req,res,next) {
     else {
         GetLogInData(req).then(function (ans) {
             console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            res.send("ans");
+            res.send(ans);
         })
     }
 });
