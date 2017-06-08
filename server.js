@@ -125,6 +125,7 @@ GetLogInData = function (req){
 
 //log in
 app.post('/LogIn',function (req,res,next) {
+
     if (!req.userloggedIn) { // TODO to remove this later..
         let ans;
         let UserName = req.body.UserName;

@@ -94,34 +94,7 @@ router.post('/MakeOrder',function(req,res){
         })
     }
 });
-//get all the stock in the DB
-router.get('/GetStockDetails',function(req,res){
-    let GetStockDetailsQuary = DbUtils.GetStockDetails();
-    DbUtils.Select(GetStockDetailsQuary).then(function (StockDetails) {
 
-        if(Object.keys(StockDetails).length>0) {
-            res.send(StockDetails);
-        }
-        else
-            res.send("there is no stock ")
-    }).catch(function (err) {
-        console.log(err.message);
-    })
-});
-//get all the orders in the DB
-router.get('/GetOrdersDetails',function(req,res){
-    let GetOrdersDetailsQuary = DbUtils.GetOrdersDetailsQuary();
-    DbUtils.Select(GetOrdersDetailsQuary).then(function (OrdersDetails) {
-        if(Object.keys(OrdersDetails).length>0) {
-            res.send(OrdersDetails);
-        }
-        else {
-            res.send("there is no stock ");
-        }
-    }).catch(function (err) {
-        console.log(err.message);
-    })
-});
 
 module.exports = router;
 
