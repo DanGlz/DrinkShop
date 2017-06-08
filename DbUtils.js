@@ -50,8 +50,8 @@ exports.Select=function (query) {
             });
 
             dbReq.on('requestCompleted', function () {
-                console.log('Select Completed With : '+ dbReq.rowCount + ' row(s) returned');
-                console.log(ans);
+              //  console.log('Select Completed With : '+ dbReq.rowCount + ' row(s) returned');
+               // console.log(ans);
                 connection.close();
                 resolve(ans);
             });
