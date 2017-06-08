@@ -92,7 +92,7 @@ GetLogInData = function (req){
                       Top5Products: TopFiveProducts,
                       LastLoginDate: "",
                       CurrencyRate: 3.4}
-                console.log("robi");
+                resolve(ans);
             }). catch(function (err) {
 
                 let ans1 =
@@ -105,7 +105,7 @@ GetLogInData = function (req){
                 //console.log(ans);
                 reject(ans1)
             })
-            resolve(ans);
+
         }). catch(function (err) {
 
              let ans2 =
@@ -143,10 +143,8 @@ app.post('/LogIn',function (req,res,next) {
     }
     else {
         GetLogInData(req).then(function (ans) {
-            console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            console.log(ans)
-            console.log("robi");
-            res.send("asda")
+            console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            res.send("ans");
         })
     }
 });
