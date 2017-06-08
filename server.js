@@ -59,7 +59,6 @@ exports.createCookie =function (ClientID,res,isAdmin){
 
     res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
 
-
 }
 exports.CheckCookie =function (req) {
     let cookie = req.cookies['DrinkShop'];
