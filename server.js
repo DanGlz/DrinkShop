@@ -194,9 +194,9 @@ GetLastMonthProducts = function() {
 
 function updateCookie(req,res){
 
-    let ClientID= GetClientIdFromCookie(req);
+    let ClientID= server.GetClientIdFromCookie(req);
     let isAdmin=checkIfAdminConnected(req);
-    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: GetDate(),Admin:isAdmin })
+    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
 }
 function checkIfAdminConnected (req){
     let cookie = req.cookies['DrinkShop'];
