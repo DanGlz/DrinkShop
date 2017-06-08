@@ -10,6 +10,7 @@ let cors= require('cors');
 let squel = require("squel");
 let cookieParser = require('cookie-parser');
 let products = require('./routes/products');
+let Products = require("./routes/products.js");
 let DbUtils = require("./DbUtils.js");
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -31,9 +32,7 @@ app.use("/",function (req,res,next) {
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
-        console.log("The server Found Cookie of Client " +
-           req.cookies['DrinkShop'].ClientID +
-           " last log in on : " + req.cookies['DrinkShop'].LastLoginDate)
+        updateCookie(req,res);
         next();
     }
     else{
@@ -56,19 +55,70 @@ function CheckCookie(req) {
 function GetClientIdFromCookie(req) {
    return req.cookies['DrinkShop'].ClientID;
 }
+
+GetLogInData = function (req){
+    return new Promise(function (resolve, reject) {
+        let ans;
+        GetTopFiveProducts().then(function (TopFiveProducts){
+            GetLastMonthProducts().then(function (LastMonthProducts) {
+
+               var LastLogin = req.cookies['DrinkShop'];
+              if(LastLogin=== undefined)
+                   LastLogin= "";
+                else
+                    LastLogin=req.cookies['DrinkShop'].LastLoginDate;
+                 ans =
+                    {   Status: true,
+                        NewestProducts:LastMonthProducts,
+                        Top5Products:TopFiveProducts,
+                        LastLoginDate:"",
+                        CurrencyRate: 3.4
+                    }
+                console.log(ans);
+
+            })
+            resolve(ans);
+        }). catch()
+        {
+             ans =
+                {   Status: false,
+                    NewestProducts:[],
+                    Top5Products:[],
+                    LastLoginDate: [],
+                    CurrencyRate: 3.4
+                }
+            console.log(ans);
+            reject(ans)
+        }
+    });
+}
+
+
 //log in
 app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn){ // TODO to remove this later..
+        let ans;
         let UserName = req.body.UserName;
         let Password = req.body.Password;
         //console.log(UserName+" "+Password);
     logRequest(UserName, Password, res, req).then(function () {
+        GetLogInData(req).then(function (ans) {
+            console.log("check!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            res.send(ans)
+        })
         // TODO to send products?
-        res.send("You logged in")
-    }).catch(function () {
-        res.send("Wrong password/UserName")
+    }).catch(function (ans) {
+        console.log("check  errror!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        res.send(ans)
     })
 }
+else {
+
+        GetLogInData(req).then(function (ans) {
+            console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            res.send(ans)
+        })
+    }
 });
 
 // sets here the login if correct details and also set the cookie
@@ -84,17 +134,42 @@ function logRequest(username, pswd ,res, req) {
                     createCookie(ClientID[0].ClientID, res, false);
                     console.log("not admin");
                 }
-                resolve(true)
+                resolve();
             }
             else {
-                reject(false);
+                reject();
             }
         }).catch(function () {
 
-            return false;
+            reject();
         })
     })
 }
+
+
+GetTopFiveProducts = function() {
+    return new Promise(function(resolve,reject) {
+        let query = DbUtils.TopFiveProductsQuery();
+        DbUtils.Select(query).then(function (TopFiveProductsID) {
+            resolve(TopFiveProductsID);
+        }).catch(function (err) {
+            reject(err.message);
+        })
+    });
+};
+
+GetLastMonthProducts = function() {
+    return new Promise(function(resolve,reject) {
+        let query = DbUtils.GetProductsFromLastMonth();
+        DbUtils.Select(query).then(function (LastMonthProducts) {
+            resolve(LastMonthProducts) ;
+        }).catch(function (err) {
+            reject(err.message);
+        })
+    });
+};
+
+
 // get the current date in format of d/m/yy
 function GetDate() {
     let dateFormat = require('dateformat');
@@ -109,6 +184,13 @@ function createCookie(ClientID,res,isAdmin){
 
 
 }
+
+function updateCookie(req,res){
+
+    let ClientID= GetClientIdFromCookie(req);
+    let isAdmin=checkIfAdminConnected(req);
+    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: GetDate(),Admin:isAdmin })
+}
 function checkIfAdminConnected (req){
     let cookie = req.cookies['DrinkShop'];
     if (cookie){
@@ -122,40 +204,52 @@ function checkIfAdminConnected (req){
 //Register
 app.post('/Register', function (req,res,next) {
         let UserName= req.body.UserName;
-        let qeury= DbUtils.ClientRecordRegisterQuery(UserName); // get query
-DbUtils.Select(qeury)
-    .then(function (records) {
-        if(Object.keys(records).length<1){
-            var body = req.body;
-            qeury = DbUtils.registerQuery(body);
-            // insert new client
-            DbUtils.Insert(qeury).then(function(ClientInsert_message){
-                let summaryMessage = ClientInsert_message
-                let categories=req.body.Categories;
+        if(UserName===undefined){
+            let ans= {Status: false,Message : "Register failed, wrong parameters!" }
+            res.send(ans)
+        }
+        else {
+            let qeury = DbUtils.ClientRecordRegisterQuery(UserName); // get query
+            DbUtils.Select(qeury)
+                .then(function (records) {
+                    if (Object.keys(records).length < 1) {
+                        var body = req.body;
+                        qeury = DbUtils.registerQuery(body);
+                        // insert new client
+                        DbUtils.Insert(qeury).then(function (ClientInsert_message) {
+                            let summaryMessage = ClientInsert_message
+                            let categories = req.body.Categories;
 
-                let ClientIDQuery= DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
-                DbUtils.Select(ClientIDQuery).// get ClientID
-                then(function (ClientID) {
-                    let fields = [];
-                    categories.forEach(function (category) {  // add all categories to the fields
-                        let item = {ClientID:ClientID[0].ClientID, CategoryName:category};
-                        fields.push(item)
-                })
-                    var InsertCategoryQeury = squel.insert() // create  insert query
-                        .into("[dbo].[ClientCategory]")
-                        .setFieldsRows(fields).toString();
-                    DbUtils.Insert(InsertCategoryQeury). // insert
-                    then(function (CategoryInsert_message) {
-                        summaryMessage= summaryMessage+ "/n"+CategoryInsert_message
-                        res.send(summaryMessage);
-                    })
+                            let ClientIDQuery = DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
+                            DbUtils.Select(ClientIDQuery).// get ClientID
+                            then(function (ClientID) {
+                                let fields = [];
+                                categories.forEach(function (category) {  // add all categories to the fields
+                                    let item = {ClientID: ClientID[0].ClientID, CategoryName: category};
+                                    fields.push(item)
+                                })
+                                var InsertCategoryQeury = squel.insert() // create  insert query
+                                    .into("[dbo].[ClientCategory]")
+                                    .setFieldsRows(fields).toString();
+                                DbUtils.Insert(InsertCategoryQeury).// insert
+                                then(function () {
+                                    let ans = {
+                                        Status: true,
+                                        Message: "New client was created with Client ID: " + ClientID[0].ClientID
+                                    };
+                                    res.send(ans);
+                                })
+                            })
+                        })
+                    } else {
+                        let ans = {Status: false, Message: "The User Name already in use"}
+                        res.send(ans)
+                    }
+                }).catch(function (err) {
+                let ans = {Status: false, Message: err.message}
+                res.send(ans)
             })
-        })
-        } else
-            res.send("The userName already exist")
-    }).catch(function (err) {
-    res.send(err)
-})
+        }
 })
 //password retrieve
 app.post('/PasswordRetrieve',function (req,res) {

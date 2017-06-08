@@ -260,9 +260,9 @@ exports.RecommendedProductsQuery= function (userID) {
 
 exports.GetProductsFromLastMonth =function () {
     let d = new Date();
-    let dateFormat = require('dateformat');
     d.setMonth(d.getMonth() - 1);
-    let MinDate = dateFormat(d, "d/m/yy");
+    let dateFormat = require('dateformat');
+    let MinDate = dateFormat(d, "mm/dd/yy");
     let GetProductsByDateQuery = squel.select()
         .from("[dbo].[Drinks]")
         .where("Date >='"+MinDate+"'")

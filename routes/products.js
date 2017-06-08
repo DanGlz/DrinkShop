@@ -32,6 +32,21 @@ router.get('/GetTopFiveProducts', function(req, res) {
 });
 
 //GET Top 5 Products
+exports.GetTopFiveProducts = function() {
+    return new Promise(function(resolve,reject) {
+    let query = DbUtils.TopFiveProductsQuery();
+    DbUtils.Select(query).then(function (TopFiveProductsID) {
+        resolve(TopFiveProductsID);
+    }).catch(function () {
+        reject();
+    })
+    });
+};
+
+
+
+
+//GET Recommended Products
 router.get('/GetRecommendedProducts', function(req, res) {
 
     let userID =req.cookies['DrinkShop'].ClientID;
@@ -44,6 +59,7 @@ router.get('/GetRecommendedProducts', function(req, res) {
 });
 
 //GET last month products
+
 router.get('/LastMonthProducts', function(req, res) {
 
 
@@ -54,5 +70,20 @@ router.get('/LastMonthProducts', function(req, res) {
         res.send(err.message);
     })
 });
+
+
+//GET Top 5 Products
+exports.GetLastMonthProducts = function() {
+    return new Promise(function(resolve,reject) {
+        let query = DbUtils.GetProductsFromLastMonth();
+        DbUtils.Select(query).then(function (LastMonthProducts) {
+            resolve(LastMonthProducts) ;
+        }).catch(function (err) {
+            reject(err.message);
+        })
+    });
+};
+
+
 
 module.exports = router;
