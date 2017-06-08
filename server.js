@@ -8,6 +8,7 @@ let cors= require('cors');
 //let Connection =require('tedious').Connection;
 //let request = require('tedious').Request;
 let squel = require("squel");
+
 let cookieParser = require('cookie-parser');
 let products = require('./routes/products');
 let Orders = require('./routes/Orders');
@@ -15,6 +16,7 @@ let Admin = require('./routes/Admin');
 
 
 let DbUtils = require("./DbUtils.js");
+let server = require("./server.js");
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -31,7 +33,7 @@ app.listen(3100, function() {
 
 // happens each connection to the server - cookie check
 app.use("/",function (req,res,next) {
-    let loggedIn= CheckCookie(req);
+    let loggedIn=server.CheckCookie(req);
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
@@ -49,8 +51,19 @@ app.use("/Products",products);
 app.use("/Orders",Orders);
 app.use("/Admin",Admin);
 
+exports.GetDate =function () {
+    let dateFormat = require('dateformat');
+    let now = new Date();
+    let date = dateFormat(now, "d/m/yy");
+    return date;
+}
+exports.createCookie =function (ClientID,res,isAdmin){
 
-function CheckCookie(req) {
+    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
+
+
+}
+exports.CheckCookie =function (req) {
     let cookie = req.cookies['DrinkShop'];
     if(!cookie)
         return false;
@@ -60,9 +73,10 @@ function CheckCookie(req) {
    return true;
 }
 //get the user id from the cookie
-function GetClientIdFromCookie(req) {
+exports.GetClientIdFromCookie =  function (req) {
    return req.cookies['DrinkShop'].ClientID;
 }
+
 //log in
 app.post('/LogIn',function (req,res,next) {
     if (!req.userloggedIn){ // TODO to remove this later..
@@ -77,7 +91,6 @@ app.post('/LogIn',function (req,res,next) {
     })
 }
 });
-
 // sets here the login if correct details and also set the cookie
 function logRequest(username, pswd ,res, req) {
     return new Promise(function (resolve, reject) {
@@ -85,10 +98,10 @@ function logRequest(username, pswd ,res, req) {
         DbUtils.Select(ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
                 if (ClientID[0].isADmin=='1') {
-                    createCookie(ClientID[0].ClientID, res, true);
+                    server.createCookie(ClientID[0].ClientID, res, true);
                     console.log("admin");
                 }else {
-                    createCookie(ClientID[0].ClientID, res, false);
+                    server.createCookie(ClientID[0].ClientID, res, false);
                     console.log("not admin");
                 }
                 resolve(true)
@@ -103,29 +116,7 @@ function logRequest(username, pswd ,res, req) {
     })
 }
 // get the current date in format of d/m/yy
-function GetDate() {
-    let dateFormat = require('dateformat');
-    let now = new Date();
-    let date = dateFormat(now, "d/m/yy");
-    return date;
-}
 
-function createCookie(ClientID,res,isAdmin){
-
-        res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: GetDate(),Admin:isAdmin })
-
-
-}
-function checkIfAdminConnected (req){
-    let cookie = req.cookies['DrinkShop'];
-    if (cookie){
-       if(req.cookies['DrinkShop'].Admin)
-       {
-           return true ;
-       }
-    }
-    return false ;
-}
 //Register
 app.post('/Register', function (req,res,next) {
         let UserName= req.body.UserName;

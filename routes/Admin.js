@@ -4,8 +4,20 @@ var router = express.Router();
 var bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({extended:false}));
 router.use(bodyParser.json());
+let server = require("../server.js");
+let squel = require("squel");
 
 
+function checkIfAdminConnected (req){
+    let cookie = req.cookies['DrinkShop'];
+    if (cookie){
+        if(req.cookies['DrinkShop'].Admin)
+        {
+            return true ;
+        }
+    }
+    return false ;
+}
 //add a new product by the admin
 router.post('/AddProduct',function(req,res){
     if(! checkIfAdminConnected(req)){

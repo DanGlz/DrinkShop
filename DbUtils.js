@@ -215,24 +215,15 @@ exports.MakeOrderCheckStokQuery=function (ListOfProducts, ListOfQuantity) {
 }
 
 exports.updateStockAmount = function (arrayOfProdacts ,arrayOfQuantityToUpdate) {
-    console.log("soo")
     let query="";
-        /*"UPDATE Drinks SET StockAmount=66 WHERE DrinkID = 10;"
-    +"UPDATE Drinks SET StockAmount=66 WHERE DrinkID = 9;"
-   +"UPDATE Drinks SET StockAmount=66 WHERE DrinkID = 16;";
-*/
+
     for (var i = 0; i < arrayOfProdacts.length; i++) {
         query+= "UPDATE Drinks SET StockAmount="+arrayOfQuantityToUpdate[i]+" WHERE DrinkID = "+arrayOfProdacts[i]+";"
     }
-    console.log(query)
+
     return query;
 }
-exports.updateStockAmount1 = function (ProdactID ,QuantityToUpdate) {
-    let Query = squel.update().table("[dbo].[Drinks]")
-        .set("StockAmount", QuantityToUpdate)
-        .where("DrinkID ='" + ProdactID + "'").toString();
-    return Query;
-}
+
 
 exports.TopFiveProductsQuery= function () {
 
