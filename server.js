@@ -90,22 +90,10 @@ GetLogInData = function (req){
                       Status: true,
                       NewestProducts: LastMonthProducts,
                       Top5Products: TopFiveProducts,
-                      LastLoginDate: "",
+                      LastLoginDate: LastLogin,
                       CurrencyRate: 3.4}
                 resolve(ans);
-            }). catch(function (err) {
-
-                let ans1 =
-                    {   Status: false,
-                        NewestProducts:[],
-                        Top5Products:[],
-                        LastLoginDate: [],
-                        CurrencyRate: 3.4
-                    }
-                //console.log(ans);
-                reject(ans1)
             })
-
         }). catch(function (err) {
 
              let ans2 =
@@ -120,9 +108,6 @@ GetLogInData = function (req){
     })
     });
 }
-
-
-
 //log in
 app.post('/LogIn',function (req,res,next) {
 
@@ -133,19 +118,16 @@ app.post('/LogIn',function (req,res,next) {
         //console.log(UserName+" "+Password);
         logRequest(UserName, Password, res, req).then(function () {
             GetLogInData(req).then(function (ans) {
-                console.log("check!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 res.send(ans)
             })
             // TODO to send products?
         }).catch(function (ans) {
-            console.log("check  errror!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             res.send(ans)
         })
     }
     else {
         GetLogInData(req).then(function (ans) {
-            console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            res.send("ans");
+            res.send(ans);
         })
     }
 });
@@ -233,10 +215,8 @@ app.post('/Register', function (req,res,next) {
                         var body = req.body;
                         qeury = DbUtils.registerQuery(body);
                         // insert new client
-                        DbUtils.Insert(qeury).then(function (ClientInsert_message) {
-                            let summaryMessage = ClientInsert_message
+                        DbUtils.Insert(qeury).then(function () {
                             let categories = req.body.Categories;
-
                             let ClientIDQuery = DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
                             DbUtils.Select(ClientIDQuery).// get ClientID
                             then(function (ClientID) {
