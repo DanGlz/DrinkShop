@@ -44,7 +44,6 @@ app.use("/",function (req,res,next) {
         next();
     }
 }  )
-
 app.use("/Products",products);
 app.use("/Orders",Orders);
 app.use("/Admin",Admin);
@@ -81,33 +80,44 @@ GetLogInData = function (req){
             GetLastMonthProducts().then(function (LastMonthProducts) {
 
                var LastLogin = req.cookies['DrinkShop'];
-              if(LastLogin=== undefined)
-                   LastLogin= "";
-                else
-                    LastLogin=req.cookies['DrinkShop'].LastLoginDate;
-                 ans =
-                    {   Status: true,
-                        NewestProducts:LastMonthProducts,
-                        Top5Products:TopFiveProducts,
-                        LastLoginDate:"",
+              if(LastLogin=== undefined) {
+                  LastLogin = "";
+              }
+                else {
+                  LastLogin = req.cookies['DrinkShop'].LastLoginDate;
+              }
+                  ans = {
+                      Status: true,
+                      NewestProducts: LastMonthProducts,
+                      Top5Products: TopFiveProducts,
+                      LastLoginDate: "",
+                      CurrencyRate: 3.4}
+                console.log("robi");
+            }). catch(function (err) {
+
+                let ans1 =
+                    {   Status: false,
+                        NewestProducts:[],
+                        Top5Products:[],
+                        LastLoginDate: [],
                         CurrencyRate: 3.4
                     }
-                console.log(ans);
-
+                //console.log(ans);
+                reject(ans1)
             })
             resolve(ans);
-        }). catch()
-        {
-             ans =
+        }). catch(function (err) {
+
+             let ans2 =
                 {   Status: false,
                     NewestProducts:[],
                     Top5Products:[],
                     LastLoginDate: [],
                     CurrencyRate: 3.4
                 }
-            console.log(ans);
-            reject(ans)
-        }
+            //console.log(ans);
+            reject(ans2)
+    })
     });
 }
 
@@ -115,27 +125,28 @@ GetLogInData = function (req){
 
 //log in
 app.post('/LogIn',function (req,res,next) {
-    if (!req.userloggedIn){ // TODO to remove this later..
+    if (!req.userloggedIn) { // TODO to remove this later..
         let ans;
         let UserName = req.body.UserName;
         let Password = req.body.Password;
         //console.log(UserName+" "+Password);
-    logRequest(UserName, Password, res, req).then(function () {
-        GetLogInData(req).then(function (ans) {
-            console.log("check!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        logRequest(UserName, Password, res, req).then(function () {
+            GetLogInData(req).then(function (ans) {
+                console.log("check!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                res.send(ans)
+            })
+            // TODO to send products?
+        }).catch(function (ans) {
+            console.log("check  errror!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             res.send(ans)
         })
-        // TODO to send products?
-    }).catch(function (ans) {
-        console.log("check  errror!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        res.send(ans)
-    })
-}
-else {
-
+    }
+    else {
         GetLogInData(req).then(function (ans) {
             console.log("check 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            res.send(ans)
+            console.log(ans)
+            console.log("robi");
+            res.send("asda")
         })
     }
 });
