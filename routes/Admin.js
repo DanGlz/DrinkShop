@@ -21,75 +21,75 @@ function checkIfAdminConnected (req){
 //add a new product by the admin
 router.post('/AddProduct',function(req,res){
     if(! checkIfAdminConnected(req)){
-        res.send("only admins can add products");
+        res.send({Status:false ,Message:"only admins can add products"});
         return ;
     }
     let AddProductQuery =DbUtils.AddProductQuery(req);
     DbUtils.Insert(AddProductQuery). // insert
     then(function () {
-        res.send(true)
+        res.send({Status:true ,Message:"The product added successfully"})
 
     }).catch(function (err) {
         console.log(err.message);
-        res.send(false);
+        res.send({Status:false ,Message:err.message});
     })
 });
 // delete a prodact by an admin
 router.post('/DeleteProduct',function(req,res) {
     if (!checkIfAdminConnected(req)) {
-        res.send("only admins can delete products");
+        res.send({Status:false ,Message:"Only admins can delete products"});
         return;
     }
     let DeleteProductQuery = DbUtils.DeleteProductQuery(req.body.DrinkId);
     DbUtils.Insert(DeleteProductQuery).// insert
-    then(function (DrinkID) {
-        console.log("jg "+DrinkID)
-        if (Object.keys(DrinkID).length > 0){
-            res.send(true)
+    then(function (NumOfRaws) {
+        console.log("jg "+NumOfRaws)
+        if (NumOfRaws > 0){
+            res.send({Status:true ,Message:"The product was deleted successfully"})
         }else{
-            res.send(false)
+            res.send({Status:false ,Message:"The item is not exist"})
         }
     }).catch(function (err) {
-        console.log(err.message);
-        res.send(false)
+        //console.log(err.message);
+        res.send({Status:false ,Message:err.message})
     })
 
 });
 router.post('/DeleteClient',function(req,res) {
     if (!checkIfAdminConnected(req)) {
-        res.send("only admins can delete products");
+        res.send({Status:false ,Message:"Only admins can delete Clients"});
         return;
     }
     let DeleteClientQuery = DbUtils.DeleteClientQuery(req.body.ClientId);
     DbUtils.Insert(DeleteClientQuery).// insert
-    then(function (clientId) {
-        if (Object.keys(DrinkID).length > 0) {
-            res.send(true)
+    then(function (NumOfRaws) {
+        if (NumOfRaws > 0) {
+            res.send({Status:true ,Message:"The Client was deleted successfully"})
         } else {
-            res.send(false)
+            res.send({Status:false ,Message:"The Client is not exist"})
         }
     }).catch(function (err) {
         console.log(err.message);
-        res.send(false)
+        res.send({Status:false ,Message:err.message})
     })
 })
 // change the inventory of a product
 router.post('/changeProductInventory',function(req,res) {
     if (!checkIfAdminConnected(req)) {
-        res.send("only admins can delete products");
+        res.send({Status:false ,Message:"Only admins can change Product Inventory"});
         return;
     }
     let changeProductInventoryQuery=DbUtils.changeProductInventoryQuery(req.body.DrinkId, req.body.newInventory);
-    DbUtils.Insert(changeProductInventoryQuery).// insert
-    then(function (StockAmount) {
-        if (Object.keys(StockAmount).length > 0){
-            res.send(true)
+    DbUtils.Insert(changeProductInventoryQuery).
+    then(function (NumOfRaws) {
+        if (NumOfRaws > 0){
+            res.send({Status:true ,Message:"The Inventory was changed successfully"})
         }else{
-            res.send(false)
+            res.send({Status:false ,Message:"There was no change"})
         }
     }).catch(function (err) {
         console.log(err.message);
-        res.send(true)
+        res.send({Status:false ,Message:err.message})
     })
 });
 

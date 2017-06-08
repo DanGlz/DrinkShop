@@ -78,8 +78,8 @@ exports.Insert = function (query) {
             }
             dbReq.on('requestCompleted', function () {
                 connection.close();
-                console.log('request Completed: '+ dbReq.rowCount + ' row(s) returned');
-                resolve('Insert request Completed with ' + dbReq.rowCount + ' row(s)')
+                console.log('Insert request Completed: '+ dbReq.rowCount + ' row(s) returned');
+                resolve(dbReq.rowCount)
             });
         });
         connection.execSql(dbReq);
