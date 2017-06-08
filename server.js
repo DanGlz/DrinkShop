@@ -214,7 +214,7 @@ app.post('/Register', function (req,res,next) {
                         var body = req.body;
                         qeury = DbUtils.registerQuery(body);
                         // insert new client
-                        DbUtils.Insert(qeury).then(function (numOfRecords) {
+                        DbUtils.Insert(qeury).then(function () {
                             let categories = req.body.Categories;
                             let ClientIDQuery = DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
                             DbUtils.Select(ClientIDQuery).// get ClientID
