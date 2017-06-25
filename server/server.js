@@ -17,7 +17,7 @@ let Admin = require('./routes/Admin');
 
 let DbUtils = require("./DbUtils.js");
 let server = require("./server.js");
-app.use(express.static(__dirname+'/../public'));
+app.use(express.static(__dirname+'/../app'));
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

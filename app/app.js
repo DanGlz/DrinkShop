@@ -95,7 +95,12 @@ app.config( ['$routeProvider', function($routeProvider) {
             templateUrl : "views/StorageExample.html",
             controller: 'StorageExampleController'
         })
+        .when("/top5products", {
+            templateUrl : "views/top5products.html",
+            controller: 'top5productsController'
+        })
         .otherwise({redirect: '/',
         });
+
 }]);
 //-------------------------------------------------------------------------------------------------------------------
