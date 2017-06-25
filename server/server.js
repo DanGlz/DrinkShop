@@ -17,12 +17,12 @@ let Admin = require('./routes/Admin');
 
 let DbUtils = require("./DbUtils.js");
 let server = require("./server.js");
+app.use(express.static(__dirname+'/../public'));
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
-
 
 //<editor-fold desc="Server Connection">
 // server is open and listening on port 3100, to access: localhost:3100 in any browser.
