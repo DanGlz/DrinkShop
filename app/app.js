@@ -1,5 +1,5 @@
 
-let app = angular.module('myApp', ['ngRoute', 'LocalStorageModule']);
+let app = angular.module('myApp', ['ngRoute', 'LocalStorageModule' ]);
 //-------------------------------------------------------------------------------------------------------------------
 app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
@@ -79,6 +79,10 @@ app.config( ['$routeProvider', function($routeProvider) {
         .when("/top5products", {
             templateUrl : "views/top5products.html",
             controller: 'top5productsController'
+        })
+        .when("/getAllProducts", {
+            templateUrl : "views/getAllProducts.html",
+            controller: 'getAllProductsController'
         })
         .otherwise({redirect: '/',
         });
