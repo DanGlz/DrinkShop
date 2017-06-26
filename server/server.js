@@ -111,23 +111,23 @@ GetLogInData = function (req){
 //log in
 app.post('/LogIn',function (req,res,next) {
 
-    if (!req.userloggedIn) { // TODO to remove this later..
+    if (!req.userloggedIn) {
         let ans;
         let UserName = req.body.UserName;
         let Password = req.body.Password;
         //console.log(UserName+" "+Password);
         logRequest(UserName, Password, res, req).then(function () {
             GetLogInData(req).then(function (ans) {
-                res.send(ans)
+                res.send({Status:true ,Data : ans})
             })
-            // TODO to send products?
+
         }).catch(function (ans) {
-            res.send(ans)
+            res.send({Status: false ,Data : ans})
         })
     }
     else {
         GetLogInData(req).then(function (ans) {
-            res.send(ans);
+            res.send({Status:true ,Data : ans});
         })
     }
 });
