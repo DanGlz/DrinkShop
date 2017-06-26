@@ -1,6 +1,30 @@
+<script src="//code.angularjs.org/snapshot/angular.min.js"></script>
+
 <div ng-controller="getAllProductsController as getAllProducts">
-    <h2>nitzan massad</h2>
-    <div ng-repeat="p in getAllProducts.Products" >
-        <h2>{{ p.DrinkName }}</h2>
+        <pre> Sort by = {{propertyName}}; reverse = {{reverse}}</pre>
+        <hr/>
+        <button ng-click="propertyName = null; reverse = false">Set to unsorted</button>
+        <hr/>
+        <table >
+            <tr>
+                <th>
+                    <button ng-click="getAllProducts.sortBy('DrinkID')">Name</button>
+                    <span class="sortorder" ng-show="propertyName === 'DrinkID'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="getAllProducts.sortBy('DrinkName')">Phone Number</button>
+                    <span class="sortorder" ng-show="propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="getAllProducts.sortBy('Price')">Age</button>
+                    <span class="sortorder" ng-show="propertyName === 'Price'" ng-class="{reverse: reverse}"></span>
+                </th>
+            </tr>
+            <tr ng-repeat="p in getAllProducts.Products | orderBy:propertyName:getAllProducts.reverse">
+                <td>{{p.DrinkID}}</td>
+                <td>{{p.DrinkName}}</td>
+                <td>{{p.Price}}</td>
+            </tr>
+        </table>
     </div>
 </div>
