@@ -5,20 +5,20 @@ app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('mainController', ['UserService', function (UserService) {
+app.controller('mainController', ['UserLogInService', function (UserLogInService) {
     let vm = this;
     vm.greeting = 'Have a nice day';
-    vm.userService = UserService;
+    vm.userService = UserLogInService;
 }]);
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('loginController', ['UserService', '$location', '$window',
-    function(UserService, $location, $window) {
+app.controller('loginController', ['UserLogInService', '$location', '$window',
+    function(UserLogInService, $location, $window) {
         let self = this;
         self.user = {username: '', password: ''};
 
         self.login = function(valid) {
             if (valid) {
-                UserService.login(self.user).then(function (success) {
+                UserLogInService.login(self.user).then(function (success) {
                     $window.alert('You are logged in');
                     $location.path('/');
                 }, function (error) {
@@ -53,26 +53,7 @@ app.controller('citiesController', ['$http', 'CityModel', function($http, CityMo
         };
     }]);
 //-------------------------------------------------------------------------------------------------------------------
-app.factory('UserService', ['$http', function($http) {
-    let service = {};
-    service.isLoggedIn = false;
-    service.login = function(user) {
-        return $http.post('/login', user)
-            .then(function(response) {
-                let token = response.data;
-                $http.defaults.headers.common = {
-                    'my-Token': token,
-                    'user' : user.username
-                };
-                service.isLoggedIn = true;
-                return Promise.resolve(response);
-            })
-            .catch(function (e) {
-                return Promise.reject(e);
-            });
-    };
-    return service;
-}]);
+
 //-------------------------------------------------------------------------------------------------------------------
 app.config(['$locationProvider', function($locationProvider) {
     $locationProvider.hashPrefix('');
