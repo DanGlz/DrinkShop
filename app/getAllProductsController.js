@@ -3,7 +3,7 @@
  */
 
 angular.module("myApp")
-    .controller('getAllProductsController', ['getAllProductsService', function (getAllProductsService) {
+    .controller('getAllProductsController', ['getAllProductsService','$scope', function (getAllProductsService ,$scope) {
         let self = this;
         console.log( "check");
         //self.Products = {DrinkName : nitz , DrinkName: robi}
@@ -19,10 +19,12 @@ angular.module("myApp")
 
 
         self.propertyName = 'DrinkID';
-        self.reverse = true;
+        $scope.reverse = true;
 
-        self.sortBy = function(propertyName) {
-            self.reverse = (self.Products === propertyName) ? !self.reverse : false;
+        $scope.sortBy = function(propertyName) {
+            if (propertyName == self.propertyName ){
+                $scope.reverse =  !$scope.reverse
+            }
             self.propertyName = propertyName;
         };
     }]);

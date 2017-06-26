@@ -1,29 +1,66 @@
-<script src="//code.angularjs.org/snapshot/angular.min.js"></script>
 
 <div ng-controller="getAllProductsController as getAllProducts">
-        <pre> Sort by = {{propertyName}}; reverse = {{reverse}}</pre>
-        <hr/>
-        <button ng-click="propertyName = null; reverse = false">Set to unsorted</button>
-        <hr/>
-        <table >
+        <pre> Sort by = {{getAllProducts.propertyName}}; reverse = {{reverse}}</pre>
+        <table class = "table_design_getAllProducts">
             <tr>
                 <th>
-                    <button ng-click="getAllProducts.sortBy('DrinkID')">Name</button>
-                    <span class="sortorder" ng-show="propertyName === 'DrinkID'" ng-class="{reverse: reverse}"></span>
+                    <button ng-click="sortBy('DrinkID')">DrinkID</button>
+                    <span  ng-show="getAllProducts.propertyName === 'DrinkID'" ng-class="{reverse: reverse}"></span>
                 </th>
                 <th>
-                    <button ng-click="getAllProducts.sortBy('DrinkName')">Phone Number</button>
-                    <span class="sortorder" ng-show="propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
+                    <button ng-click="sortBy('DrinkName')">DrinkName</button>
+                    <span  ng-show="getAllProducts.propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
                 </th>
                 <th>
-                    <button ng-click="getAllProducts.sortBy('Price')">Age</button>
-                    <span class="sortorder" ng-show="propertyName === 'Price'" ng-class="{reverse: reverse}"></span>
+                    <button ng-click="sortBy('CategoryName')">CategoryName</button>
+                    <span  ng-show="getAllProducts.propertyName === 'CategoryName'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Type')">Type</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Type'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Year')">Year</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Year'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Country')">Country</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Country'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('ABV')">ABV</button>
+                    <span  ng-show="getAllProducts.propertyName === 'ABV'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Description')">Description</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Description'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Price')">Price</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Price'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('StockAmount')">StockAmount</button>
+                    <span  ng-show="getAllProducts.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
+                </th>
+                <th>
+                    <button ng-click="sortBy('Date')">Date</button>
+                    <span  ng-show="getAllProducts.propertyName === 'Date'" ng-class="{reverse: reverse}"></span>
                 </th>
             </tr>
-            <tr ng-repeat="p in getAllProducts.Products | orderBy:propertyName:getAllProducts.reverse">
+            <tr ng-repeat="p in getAllProducts.Products | orderBy: getAllProducts.propertyName : reverse">
                 <td>{{p.DrinkID}}</td>
                 <td>{{p.DrinkName}}</td>
+                <td>{{p.CategoryName}}</td>
+                <td>{{p.Type}}</td>
+                <td>{{p.Year}}</td>
+                <td>{{p.Country}}</td>
+                <td>{{p.ABV}}</td>
+                <td>{{p.Description}}</td>
                 <td>{{p.Price}}</td>
+                <td>{{p.StockAmount}}</td>
+                <td>{{p.Date}}</td>
+
             </tr>
         </table>
     </div>
