@@ -3,8 +3,25 @@
  */
 
 angular.module("myApp")
-    .controller('registerController', [ function ( ) {
+    .controller('registerController', ["registerService", "$location" , function (registerService ,$location ) {
         let self = this;
+        console.log(self. user)
+        self.user = {
+            "UserName": '',            "FirstName": '',            "LastName": '',            "Password": '',
+            "Address":'',            "City":'',            "Country":'' ,            "Phone": '',
+            "Cellular": '',            "Mail": '',            "CreditCardNumber": '',            "Categories" : [],
+            "AnswersQ1":'',            "AnswersQ2":'',            "isAdmin": 0            };
 
+        self.register = function(valid) {
+            if (valid) {
+                registerService.register(self.user).then(function (success) {
+                    $location.path('/login');
+                    console.log(success)
+                }, function (errorMsg) {
+                    self.errorMessage = errorMsg;
+                    console.log(errorMsg)
+                })
+            }
+        }
 
     }]);

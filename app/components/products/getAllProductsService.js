@@ -5,7 +5,7 @@ angular.module("myApp").factory('getAllProductsService', ['$http', function($htt
 
     let service = {};
     service.getAllProducts2 = function() {
-        return  $http.get("http://localhost:3100/Products/GetAllProducts")
+        return  $http.get("/Products/GetAllProducts")
             .then(function (response) {
             return Promise.resolve(response)
         }).catch(function (err) {
