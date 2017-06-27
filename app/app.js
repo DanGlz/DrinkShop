@@ -59,27 +59,21 @@ app.config( ['$routeProvider', function($routeProvider) {
         })
         .when("/cities", {
             templateUrl : "views/cities.html",
-            controller: 'citiesController'
         })
         .when("/StorageExample", {
             templateUrl : "views/StorageExample.html",
-            controller: 'StorageExampleController'
         })
         .when("/top5products", {
             templateUrl : "components/home/top5products.html",
-            controller: 'top5productsController'
         })
         .when("/getAllProducts", {
             templateUrl : "components/products/getAllProducts.html",
-            controller: 'getAllProductsController'
         })
         .when("/register", {
             templateUrl : "components/register/register.html",
-            controller: 'getAllProductsController'
         })
         .when("/passwordRetrieve", {
             templateUrl : "components/passwordRetrieve/passwordRetrieve.html",
-            controller: 'passwordRetrieveController'
         })
         .otherwise({redirect: '/',
         });
