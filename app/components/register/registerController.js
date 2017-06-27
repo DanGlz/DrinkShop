@@ -3,7 +3,7 @@
  */
 
 angular.module("myApp")
-    .controller('registerController', ["registerService", "$location" , function (registerService ,$location ) {
+    .controller('registerController', ["registerService", "$location" ,"passwordRetrieveService","$scope" , function (registerService ,$location ,passwordRetrieveService,$scope ) {
         let self = this;
         console.log(self. user)
         self.user = {
@@ -11,8 +11,8 @@ angular.module("myApp")
             "Address":'',            "City":'',            "Country":'' ,            "Phone": '',
             "Cellular": '',            "Mail": '',            "CreditCardNumber": '',            "Categories" : [],
             "AnswersQ1":'',            "AnswersQ2":'',            "isAdmin": 0            };
-
-        self.register = function(valid) {
+        $scope.Q="nitzan"
+        self.register = function(valid){
             if (valid) {
                 registerService.register(self.user).then(function (success) {
                     $location.path('/login');
