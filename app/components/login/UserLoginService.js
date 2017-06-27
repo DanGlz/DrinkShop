@@ -3,6 +3,7 @@
  */
 app.factory('UserLogInService', ['$http', function($http) {
     let service = {};
+
     service.isLoggedIn = false;
     service.login = function(user) {
         return $http.post('/Login', user)
