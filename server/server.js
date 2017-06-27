@@ -256,11 +256,14 @@ app.post('/PasswordRetrieve',function (req,res) {
         let AnswersQ2 = req.body.AnswersQ2;
         let PasswordRetQuery=DbUtils.PasswordRetrieveQuery(UserName,AnswersQ1,AnswersQ2);
         DbUtils.Select(PasswordRetQuery).then(function (password) {
-           if(Object.keys(password).length>0) {
-               res.send(password[0]);
+            let ans
+            if(Object.keys(password).length>0) {
+                ans={Status:true, Password:password[0].Password };
+               res.send(ans);
            }
            else
-               res.send("Wrong details for Password Retrieve")
+               ans={Status:false, Password:"" };
+               res.send(ans)
         }).catch(function (err) {
             console.log(err.message);
         })
