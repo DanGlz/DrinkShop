@@ -66,11 +66,11 @@ app.config( ['$routeProvider', function($routeProvider) {
             controller: 'StorageExampleController'
         })
         .when("/top5products", {
-            templateUrl : "views/top5products.html",
+            templateUrl : "components/home/top5products.html",
             controller: 'top5productsController'
         })
         .when("/getAllProducts", {
-            templateUrl : "views/getAllProducts.html",
+            templateUrl : "components/products/getAllProducts.html",
             controller: 'getAllProductsController'
         })
         .when("/register", {
