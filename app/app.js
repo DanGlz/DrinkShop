@@ -77,6 +77,10 @@ app.config( ['$routeProvider', function($routeProvider) {
             templateUrl : "components/register/register.html",
             controller: 'getAllProductsController'
         })
+        .when("/passwordRetrieve", {
+            templateUrl : "components/passwordRetrieve/passwordRetrieve.html",
+            controller: 'passwordRetrieveController'
+        })
         .otherwise({redirect: '/',
         });
 

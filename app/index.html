@@ -14,11 +14,12 @@
     <script type="text/javascript" src="components/products/getAllProductsController.js"></script>
     <script type="text/javascript" src="components/login/UserLoginController.js"></script>
     <script type="text/javascript" src="components/register/registerController.js"></script>
-    <script type="text/javascript" src="components\passwordRetrieve\passwordRetrieveController.js"></script>
+    <script type="text/javascript" src="components/passwordRetrieve/passwordRetrieveController.js"></script>
 
     <script type="text/javascript" src="CityModel.js"></script>
     <script type="text/javascript" src="components/login/UserLoginService.js"></script>
     <script type="text/javascript" src="components/products/getAllProductsService.js"></script>
+    <script type="text/javascript" src="components/passwordRetrieve/passwordRetrieveService.js"></script>
 
 </head>
 <body>
@@ -36,6 +37,11 @@
         <div>
             <span ng-hide="mainCtrl.userService.isLoggedIn">
                 <a ng-href="#/login">Login</a>
+            </span>
+        </div>
+        <div>
+            <span>
+                <a ng-href="#/passwordRetrieve">Password Retrieve</a>
             </span>
         </div>
         <div>
