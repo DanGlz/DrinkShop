@@ -1,14 +1,20 @@
 
-let app = angular.module('myApp', ['ngRoute', 'LocalStorageModule' ]);
+let app = angular.module('myApp', ['ngRoute', 'ngCookies' ,'LocalStorageModule']);
 //-------------------------------------------------------------------------------------------------------------------
 app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('mainController', ['UserLogInService', function (UserLogInService) {
+app.controller('mainController', ['UserLogInService','$cookies', function (UserLogInService,$cookies) {
     let vm = this;
     vm.greeting = 'Have a nice day';
     vm.userService = UserLogInService;
+    var isUserLoggedIn=$cookies.get("DrinkShop")
+    if(isUserLoggedIn!= undefined)
+        vm.userService.isLoggedIn=true;
+    else
+        vm.userService.isLoggedIn = false;
+
 }]);
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
