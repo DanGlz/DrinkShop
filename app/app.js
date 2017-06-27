@@ -50,11 +50,11 @@ app.config(['$locationProvider', function($locationProvider) {
 app.config( ['$routeProvider', function($routeProvider) {
     $routeProvider
         .when("/", {
-            templateUrl : "views/home.html",
+            templateUrl : "components/home/home.html",
             controller : "mainController"
         })
         .when("/login", {
-            templateUrl : "views/login.html",
+            templateUrl : "components/login/login.html",
             controller : "UserLoginController"
         })
         .when("/cities", {
@@ -74,7 +74,7 @@ app.config( ['$routeProvider', function($routeProvider) {
             controller: 'getAllProductsController'
         })
         .when("/register", {
-            templateUrl : "views/register.html",
+            templateUrl : "components/register/register.html",
             controller: 'getAllProductsController'
         })
         .otherwise({redirect: '/',
