@@ -11,23 +11,6 @@ app.controller('mainController', ['UserLogInService', function (UserLogInService
     vm.userService = UserLogInService;
 }]);
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('loginController', ['UserLogInService', '$location', '$window',
-    function(UserLogInService, $location, $window) {
-        let self = this;
-        self.user = {username: '', password: ''};
-
-        self.login = function(valid) {
-            if (valid) {
-                UserLogInService.login(self.user).then(function (success) {
-                    $window.alert('You are logged in');
-                    $location.path('/');
-                }, function (error) {
-                    self.errorMessage = error.data;
-                    $window.alert('log-in has failed');
-                })
-            }
-        };
-}]);
 //-------------------------------------------------------------------------------------------------------------------
 app.controller('citiesController', ['$http', 'CityModel', function($http, CityModel) {
         let self = this;
@@ -66,7 +49,7 @@ app.config( ['$routeProvider', function($routeProvider) {
         })
         .when("/login", {
             templateUrl : "views/login.html",
-            controller : "loginController"
+            controller : "UserLoginController"
         })
         .when("/cities", {
             templateUrl : "views/cities.html",
