@@ -261,9 +261,10 @@ app.post('/PasswordRetrieve',function (req,res) {
                 ans={Status:true, Password:password[0].Password };
                res.send(ans);
            }
-           else
-               ans={Status:false, Password:"" };
-               res.send(ans)
+           else {
+                ans = {Status: false, Password: ""};
+                res.send(ans)
+            }
         }).catch(function (err) {
             console.log(err.message);
         })
