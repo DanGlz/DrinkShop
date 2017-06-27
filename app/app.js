@@ -84,6 +84,10 @@ app.config( ['$routeProvider', function($routeProvider) {
             templateUrl : "views/getAllProducts.html",
             controller: 'getAllProductsController'
         })
+        .when("/register", {
+            templateUrl : "views/register.html",
+            controller: 'getAllProductsController'
+        })
         .otherwise({redirect: '/',
         });
 
