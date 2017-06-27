@@ -4,15 +4,14 @@
         <table class = "table_design_getAllProducts">
             <tr>
                 <th>
-                    <button ng-click="sortBy('DrinkID')">DrinkID</button>
-                    <span  ng-show="getAllProducts.propertyName === 'DrinkID'" ng-class="{reverse: reverse}"></span>
+
                 </th>
                 <th>
                     <button ng-click="sortBy('DrinkName')">DrinkName</button>
                     <span  ng-show="getAllProducts.propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
                 </th>
                 <th>
-                    <button ng-click="sortBy('CategoryName')">CategoryName</button>
+                    <button ng-click="sortBy('CategoryName')">Category</button>
                     <span  ng-show="getAllProducts.propertyName === 'CategoryName'" ng-class="{reverse: reverse}"></span>
                 </th>
                 <th>
@@ -43,13 +42,9 @@
                     <button ng-click="sortBy('StockAmount')">StockAmount</button>
                     <span  ng-show="getAllProducts.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
                 </th>
-                <th>
-                    <button ng-click="sortBy('Date')">Date</button>
-                    <span  ng-show="getAllProducts.propertyName === 'Date'" ng-class="{reverse: reverse}"></span>
-                </th>
             </tr>
             <tr ng-repeat="p in getAllProducts.Products | orderBy: getAllProducts.propertyName : reverse">
-                <td>{{p.DrinkID}}</td>
+                <td><img class="item_img_allProducts" ng-src="{{src}}"></td>
                 <td>{{p.DrinkName}}</td>
                 <td>{{p.CategoryName}}</td>
                 <td>{{p.Type}}</td>
@@ -59,7 +54,8 @@
                 <td>{{p.Description}}</td>
                 <td>{{p.Price}}</td>
                 <td>{{p.StockAmount}}</td>
-                <td>{{p.Date}}</td>
+                <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
+                <td><button class="add_to_cart">add to cart </button></td>
 
             </tr>
         </table>

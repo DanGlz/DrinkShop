@@ -12,5 +12,15 @@ a {
   font-size: 20px;
   font-weight: bold;
   align-content: flex-end;
-
+}
+.add_to_cart {
+  background-color: yellow;
+  border: 2px;
+  font-size: 10px;
+  font-weight: bold;
+  align-content: flex-end;
+}
+.item_img_allProducts{
+  height: 50px ;
+  width: 50px ;
 }
