@@ -23,8 +23,10 @@
         <div>
             <a ng-href="#/">Home</a>
         </div>
-        <div ng-show="mainCtrl.userService.isLoggedIn">
-            <a ng-href="#/cities">Cities List</a>
+        <div >
+            <span ng-hide="mainCtrl.userService.isLoggedIn">
+            <a ng-href="#/register">Register</a>
+            </span>
         </div>
         <div>
             <span ng-hide="mainCtrl.userService.isLoggedIn">
