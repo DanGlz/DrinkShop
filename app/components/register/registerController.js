@@ -14,19 +14,17 @@ angular.module("myApp")
         self.Q2=passwordRetrieveService.question_2
 
         //self.catgorys = registerService.getCatgory()
-        self.catgorys = ["beer", "wine" , "nitzan" , "massad", "king"];
-
-
-        self.selectedCatgoryList = [] ;
+        self.catgorys = ["beer", "wine" ,"Spirits"];
         self.selecteCatgory = function (Catgory) {
-            if (selectedCatgoryList.indexOf(Catgory)==-1){
-                selectedCatgoryList.push(Catgory);
+          var numInArray = self.user["Categories"].indexOf(Catgory) ;
+            if (numInArray===-1){
+                self.user["Categories"].push(Catgory);
             }
             else{
-                selectedCatgoryList.splice(selectedCatgoryList.indexOf(Catgory),selectedCatgoryList.indexOf(Catgory))
+                self.user["Categories"].splice(numInArray,1)
             }
-            console.log(selectedCatgoryList) ;
         }
+
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
              if (this.readyState == 4 && this.status == 200) {
@@ -52,13 +50,18 @@ angular.module("myApp")
 
         self.register = function(valid){
             if (valid) {
-                registerService.register(self.user).then(function (success) {
-                    $location.path('/login');
-                    console.log(success)
-                }, function (errorMsg) {
-                    self.errorMessage = errorMsg;
-                    console.log(errorMsg)
-                })
+                if(/\d/.test(self.user["UserName"])){
+                    window.alert("the userName should not include numbers")
+                }
+                else {
+                    registerService.register(self.user).then(function (success) {
+                        $location.path('/login');
+                        console.log(success)
+                    }, function (errorMsg) {
+                        self.errorMessage = errorMsg;
+                        console.log(errorMsg)
+                    })
+                }
             }
         }
 
