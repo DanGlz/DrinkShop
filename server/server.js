@@ -303,7 +303,19 @@ app.post('/GetInformationOnProductByName',function (req,res){
         console.log(err.message);
     })
 });
-
+// get all the catgorys from the db
+app.get("/getCatgoryTable",function (req,res){
+    let quary = DbUtils.GetCatgoryTable();
+    DbUtils.Select(quary).then(function (CatgoryTable){
+        if(Object.keys(CatgoryTable).length>0) {
+            res.send(CatgoryTable);
+        }
+        else
+            res.send("there is no Catgory in the DB ")
+    }).catch(function (err) {
+        console.log(err.message);
+    })
+});
 // get information on prodct by his id
 app.post('/GetInformationOnProductByID',function (req,res){
     let porductID = req.body.ID;

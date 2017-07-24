@@ -5,7 +5,6 @@
 angular.module("myApp")
     .controller('registerController', ["registerService", "$location" ,"passwordRetrieveService","$scope" , function (registerService ,$location ,passwordRetrieveService,$scope ) {
         let self = this;
-        console.log(self. user)
         self.user = {
             "UserName": '',            "FirstName": '',            "LastName": '',            "Password": '',
             "Address":'',            "City":'',            "Country":'' ,            "Phone": '',
@@ -14,15 +13,28 @@ angular.module("myApp")
         self.Q1=passwordRetrieveService.question_1
         self.Q2=passwordRetrieveService.question_2
 
+        //self.catgorys = registerService.getCatgory()
+        self.catgorys = ["beer", "wine" , "nitzan" , "massad", "king"];
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+
+        self.selectedCatgoryList = [] ;
+        self.selecteCatgory = function (Catgory) {
+            if (selectedCatgoryList.indexOf(Catgory)==-1){
+                selectedCatgoryList.push(Catgory);
+            }
+            else{
+                selectedCatgoryList.splice(selectedCatgoryList.indexOf(Catgory),selectedCatgoryList.indexOf(Catgory))
+            }
+            console.log(selectedCatgoryList) ;
+        }
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
                     myFunction(this);
-                }
-            };
-            xmlhttp.open("GET", "countries.xml", false );
-            xmlhttp.send();
+             }
+        };
+        xmlhttp.open("GET", "countries.xml", true );
+        xmlhttp.send();
 
         function myFunction(xml) {
             var i;

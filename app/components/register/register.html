@@ -82,10 +82,18 @@
                     <input id="CreditCardNumber" type="tel" name="CreditCardNumberInput" ng-model="RGC.user.CreditCardNumber" class="validate" >
                     <p ng-show="RGC.CreditCardNumberInput.$invalid && !RGC.CreditCardNumberInput.$pristine" class="help-block">Credit Card Number is required</p>
                 </div><!--the user CreditCardNumber-->
-                <div class="input-field col s6">
-                    <label for="Categories">Categories</label>
-                    <input id="Categories" type="text" name="CategoriesInput" ng-model="RGC.user.Categories" class="validate" >
-                    <p ng-show="RGC.CategoriesInput.$invalid && !RGC.CategoriesInput.$pristine" class="help-block">Categories is required</p>
+                <div class="input-field col s6"  border-style="solid" border-width="100px" border-color="white" >
+                    catgorys
+                    <label ng-repeat="catgory in RGC.catgorys">
+                        <input
+                                type="checkbox"
+                                value="{{catgory}}"
+                                ng-checked="selection.indexOf(catgory) > -1"
+                                ng-click="RGC.selecteCatgory(catgory)"
+                        > {{catgory}}
+                    </label>
+
+
                 </div><!--the user Categories-->
                 <div class="input-field col s6">
                     <label for="AnswersQ1">validation question : {{RGC.Q1}} :</label>

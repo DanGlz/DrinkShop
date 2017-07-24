@@ -9,7 +9,6 @@ angular.module("myApp")
         self.filterBy=""
 
         getRecommendedProductsService.getRecommendedProducts().then(function (results) {
-            //createRecommendedTable(results.data).then(function () {
                 self.recommendedProducts = results.data
                 getAllProductsService.getAllProducts2().then(function (results) {
                     self.Products = results.data
