@@ -55,11 +55,12 @@
                     <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
                 </div><!--the user City-->
                 <div class="input-field col s6">
-                    <label for="Country">Country</label>
-                   <select id = "Country">
-                       </option>
-                   </select>
-                    <p ng-show="RGC.CountryInput.$invalid && !RGC.CountryInput.$pristine" class="help-block">Country is required</p>
+
+                    <label>Country</label>
+                    <select ng-model="RGC.selectedCountry"
+                            ng-options="c.Name for c in RGC.Countries">
+                    </select>
+
                 </div><!--the user Country-->
                 <div class="input-field col s6">
                     <label for="Phone">Phone</label>

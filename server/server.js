@@ -303,6 +303,7 @@ app.post('/GetInformationOnProductByName',function (req,res){
         console.log(err.message);
     })
 });
+
 // get information on prodct by his id
 app.post('/GetInformationOnProductByID',function (req,res){
     let porductID = req.body.ID;
