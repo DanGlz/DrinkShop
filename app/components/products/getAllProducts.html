@@ -1,5 +1,79 @@
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+<!-- recommended products -->
 <div ng-controller="getAllProductsController as getAllProducts">
+    Search
+    <input type="text" ng-model="getAllProducts.filterBy">
+
+
+    <div>
+ Recommended:
+
+    <table class = "table_design_getAllProducts">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                <button ng-click="sortBy('DrinkName')">DrinkName</button>
+                <span  ng-show="getAllProducts.propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('CategoryName')">Category</button>
+                <span  ng-show="getAllProducts.propertyName === 'CategoryName'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('Type')">Type</button>
+                <span  ng-show="getAllProducts.propertyName === 'Type'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('Year')">Year</button>
+                <span  ng-show="getAllProducts.propertyName === 'Year'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('Country')">Country</button>
+                <span  ng-show="getAllProducts.propertyName === 'Country'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('ABV')">ABV</button>
+                <span  ng-show="getAllProducts.propertyName === 'ABV'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('Description')">Description</button>
+                <span  ng-show="getAllProducts.propertyName === 'Description'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('Price')">Price</button>
+                <span  ng-show="getAllProducts.propertyName === 'Price'" ng-class="{reverse: reverse}"></span>
+            </th>
+            <th>
+                <button ng-click="sortBy('StockAmount')">StockAmount</button>
+                <span  ng-show="getAllProducts.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
+            </th>
+        </tr>
+        <tr ng-repeat="p in getAllProducts.recommendedProducts | filter : getAllProducts.filterBy |orderBy: getAllProducts.propertyName : reverse">
+            <td><img class="item_img_allProducts" ng-src="{{src}}"></td>
+            <td>{{p.DrinkName}}</td>
+            <td>{{p.CategoryName}}</td>
+            <td>{{p.Type}}</td>
+            <td>{{p.Year}}</td>
+            <td>{{p.Country}}</td>
+            <td>{{p.ABV}}</td>
+            <td>{{p.Description}}</td>
+            <td>{{p.Price}}</td>
+            <td>{{p.StockAmount}}</td>
+            <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
+            <td><button class="add_to_cart">add to cart </button></td>
+
+        </tr>
+    </table>
+</div>
+
+
+
+<!-- All products -->
+AllProducts
+<div >
 
         <table class = "table_design_getAllProducts">
             <tr>
@@ -60,4 +134,5 @@
             </tr>
         </table>
     </div>
+
 </div>

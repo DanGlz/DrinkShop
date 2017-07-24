@@ -3,16 +3,22 @@
  */
 
 angular.module("myApp")
-    .controller('getAllProductsController', ['getAllProductsService','$scope', function (getAllProductsService ,$scope) {
+    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService',
+        function (getAllProductsService ,$scope,getRecommendedProductsService) {
         let self = this;
-        //self.Products = {DrinkName : nitz , DrinkName: robi}
+        self.filterBy=""
 
-        getAllProductsService.getAllProducts2().then(function (success) {
-            self.Products = success.data
-           // console.log(self.Products)
-        }, function (error) {
-            self.errorMessage = error.data;
-            console.log('get all products didnt succeed');
+        getRecommendedProductsService.getRecommendedProducts().then(function (results) {
+            //createRecommendedTable(results.data).then(function () {
+                self.recommendedProducts = results.data
+                getAllProductsService.getAllProducts2().then(function (results) {
+                    self.Products = results.data
+                    // console.log(self.Products)
+                }, function (error) {
+                    self.errorMessage = error.data;
+                    console.log('get all products didnt succeed');
+                })
+          // })
         })
 
 
