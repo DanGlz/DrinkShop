@@ -72,6 +72,9 @@ app.config( ['$routeProvider', function($routeProvider) {
         .when("/register", {
             templateUrl : "components/register/register.html",
         })
+        .when("/cart", {
+            templateUrl : "components/cart/cart.html",
+        })
         .when("/passwordRetrieve", {
             templateUrl : "components/passwordRetrieve/passwordRetrieve.html",
         })

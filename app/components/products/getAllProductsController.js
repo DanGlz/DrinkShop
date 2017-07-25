@@ -3,8 +3,8 @@
  */
 
 angular.module("myApp")
-    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService',
-        function (getAllProductsService ,$scope,getRecommendedProductsService) {
+    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','localStorageService','$window',
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,localStorageService ,window) {
         let self = this;
         self.filterBy=""
 
@@ -20,7 +20,18 @@ angular.module("myApp")
           // })
         })
 
-
+        self.addToCart = function (product){
+            let valueStored = localStorageService.get(product.DrinkID);
+            console.log(product.DrinkID);
+            if (!valueStored) {
+                if (localStorageService.set(product.DrinkID, product))
+                   console.log('data was added successfully');
+                else
+                    console.log('failed to add the data');
+            }
+            else
+                console.log('failed to add the data');
+       }
 
         self.propertyName = 'DrinkID';
         $scope.reverse = true;

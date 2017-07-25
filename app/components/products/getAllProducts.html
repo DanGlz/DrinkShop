@@ -63,7 +63,7 @@
             <td>{{p.Price}}</td>
             <td>{{p.StockAmount}}</td>
             <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
-            <td><button class="add_to_cart">add to cart </button></td>
+            <td><button class="add_to_cart" ng-click="getAllProducts.addToCart(p)">add to cart </button></td>
 
         </tr>
     </table>
@@ -129,7 +129,7 @@ AllProducts
                 <td>{{p.Price}}</td>
                 <td>{{p.StockAmount}}</td>
                 <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
-                <td><button class="add_to_cart">add to cart </button></td>
+                <td><button class="add_to_cart" ng-click="getAllProducts.addToCart(p)">add to cart </button></td>
 
             </tr>
         </table>
