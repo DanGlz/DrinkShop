@@ -4,7 +4,7 @@
 
 angular.module("myApp")
     .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','localStorageService','$window',
-        function (getAllProductsService ,$scope,getRecommendedProductsService ,localStorageService ,window) {
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,localStorageService ,$window) {
         let self = this;
         self.filterBy=""
 
@@ -20,17 +20,22 @@ angular.module("myApp")
           // })
         })
 
-        self.addToCart = function (product){
-            let valueStored = localStorageService.get(product.DrinkID);
-            console.log(product.DrinkID);
+        self.addToCart = function (product ){
+            let valueStored = localStorageService.get("cart "+product.DrinkID);
+            //console.log (product.amount)
             if (!valueStored) {
-                if (localStorageService.set(product.DrinkID, product))
-                   console.log('data was added successfully');
+                if (localStorageService.set("cart "+product.DrinkID, product.amount))
+                    $window.alert("the drink " +product.DrinkName + " added successfully to the your cart");
                 else
-                    console.log('failed to add the data');
+                    console.log('failed to add data to cart');
             }
-            else
-                console.log('failed to add the data');
+            else {
+                var tmp = parseInt(localStorageService.get("cart "+product.DrinkID)) ;
+                tmp = tmp +parseInt(product.amount)
+                localStorageService.remove("cart "+product.DrinkID);
+                localStorageService.set("cart "+product.DrinkID, tmp)
+                $window.alert("we added " + product.amount + " more of " + product.DrinkName + "to your cart ");
+            }
        }
 
         self.propertyName = 'DrinkID';
