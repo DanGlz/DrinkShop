@@ -24,7 +24,6 @@ angular.module("myApp")
                 self.user["Categories"].splice(numInArray,1)
             }
         }
-
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
              if (this.readyState == 4 && this.status == 200) {
@@ -40,12 +39,12 @@ angular.module("myApp")
             var temp = [];
             var x = xmlDoc.getElementsByTagName("Country");
             for (i = 0; i <x.length; i++) {
-                var json = { "ID" :x[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue.toString(),
-                    "Name" :x[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue.toString()}
-                temp.push(json);
+                var Country = String(x[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue.toString());
+                temp.push(Country);
             }
             self.Countries = temp;
-            self.selectedCountry = self.Countries[4];
+            self.user.Country = self.Countries[4];
+            document.getElementById('username').focus();
         }
 
         self.register = function(valid){
@@ -54,7 +53,7 @@ angular.module("myApp")
                     window.alert("the userName should not include numbers")
                 }
                 else {
-                    registerService.register(self.user).then(function (success) {
+                        registerService.register(self.user).then(function (success) {
                         $location.path('/login');
                         console.log(success)
                     }, function (errorMsg) {
