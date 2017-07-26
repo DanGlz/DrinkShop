@@ -215,6 +215,7 @@ function checkIfAdminConnected (req){
 //Register
 app.post('/Register', function (req,res,next) {
         let UserName= req.body.UserName;
+        console.log(UserName);
         if(UserName===undefined){
             let ans= {Status: false,Message : "Register failed, wrong parameters!" }
             res.send(ans)
@@ -232,22 +233,30 @@ app.post('/Register', function (req,res,next) {
                             let ClientIDQuery = DbUtils.ClientIdFromUserNameQuery(UserName); // get client id from user name
                             DbUtils.Select(ClientIDQuery).// get ClientID
                             then(function (ClientID) {
-                                let fields = [];
-                                categories.forEach(function (category) {  // add all categories to the fields
-                                    let item = {ClientID: ClientID[0].ClientID, CategoryName: category};
-                                    fields.push(item)
-                                })
-                                var InsertCategoryQeury = squel.insert() // create  insert query
-                                    .into("[dbo].[ClientCategory]")
-                                    .setFieldsRows(fields).toString();
-                                DbUtils.Insert(InsertCategoryQeury).// insert
-                                then(function () {
+                                if (categories.length > 0) {
+                                    let fields = [];
+                                    categories.forEach(function (category) {  // add all categories to the fields
+                                        let item = {ClientID: ClientID[0].ClientID, CategoryName: category};
+                                        fields.push(item)
+                                    })
+                                    var InsertCategoryQeury = squel.insert() // create  insert query
+                                        .into("[dbo].[ClientCategory]")
+                                        .setFieldsRows(fields).toString();
+                                    DbUtils.Insert(InsertCategoryQeury).// insert
+                                    then(function () {
+                                        let ans = {
+                                            Status: true,
+                                            Message: "New client was created with Client ID: " + ClientID[0].ClientID
+                                        };
+                                        res.send(ans);
+                                    })
+                                }else {
                                     let ans = {
                                         Status: true,
                                         Message: "New client was created with Client ID: " + ClientID[0].ClientID
                                     };
                                     res.send(ans);
-                                })
+                                }
                             })
                         })
                     } else {
@@ -258,6 +267,7 @@ app.post('/Register', function (req,res,next) {
                 let ans = {Status: false, Message: err.message}
                 res.send(ans)
             })
+
         }
 })
 //password retrieve
@@ -311,6 +321,19 @@ app.post('/GetInformationOnProductByName',function (req,res){
         }
         else
             res.send("there is no such product ")
+    }).catch(function (err) {
+        console.log(err.message);
+    })
+});
+// get all the catgorys from the db
+app.get("/getCatgoryTable",function (req,res){
+    let quary = DbUtils.GetCatgoryTable();
+    DbUtils.Select(quary).then(function (CatgoryTable){
+        if(Object.keys(CatgoryTable).length>0) {
+            res.send(CatgoryTable);
+        }
+        else
+            res.send("there is no Catgory in the DB ")
     }).catch(function (err) {
         console.log(err.message);
     })

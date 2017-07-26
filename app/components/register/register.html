@@ -11,6 +11,8 @@
                 <div class="input-field col s6">
                     <label for="username">Username</label>
                     <input id="username"
+                           ng-minlength="3"
+                           ng-maxlength="8"
                            name="usernameInput"
                            type="text"
                            class="validate"
@@ -40,8 +42,15 @@
                 </div><!--the last name -->
                 <div class="input-field col s6"><!--the user password -->
                     <label for="password">Password</label>
-                    <input id="password" type="password" name="passwordInput" ng-model="RGC.user.Password" ng-minlength='6' class="validate" >
-                    <p class="alert alert-danger"  ng-show="form-register.passwordInput.$error.minlength || form.passwordInput.$invalid">Your password must be at least 6 characters.</p>
+                    <input
+                            id="password"
+                            type="password"
+                            name="passwordInput"
+                            ng-model="RGC.user.Password"
+                            ng-minlength='5'
+                            ng-maxlength="10"
+                            class="validate" >
+                    <p class="alert alert-danger"  ng-show="form-register.passwordInput.$error.minlength || form.passwordInput.$invalid">Your password must be at least 5 characters.</p>
                     <p ng-show="RGC.passwordInput.$invalid && !RGC.passwordInput.$pristine" class="help-block">Password is required</p>
                 </div><!--the user password -->
                 <div class="input-field col s6">
@@ -55,11 +64,12 @@
                     <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
                 </div><!--the user City-->
                 <div class="input-field col s6">
-                    <label for="Country">Country</label>
-                   <select id = "Country">
-                       </option>
-                   </select>
-                    <p ng-show="RGC.CountryInput.$invalid && !RGC.CountryInput.$pristine" class="help-block">Country is required</p>
+
+                    <label>Country</label>
+                    <select ng-model="RGC.selectedCountry"
+                            ng-options="c.Name for c in RGC.Countries">
+                    </select>
+
                 </div><!--the user Country-->
                 <div class="input-field col s6">
                     <label for="Phone">Phone</label>
@@ -81,10 +91,19 @@
                     <input id="CreditCardNumber" type="tel" name="CreditCardNumberInput" ng-model="RGC.user.CreditCardNumber" class="validate" >
                     <p ng-show="RGC.CreditCardNumberInput.$invalid && !RGC.CreditCardNumberInput.$pristine" class="help-block">Credit Card Number is required</p>
                 </div><!--the user CreditCardNumber-->
-                <div class="input-field col s6">
-                    <label for="Categories">Categories</label>
-                    <input id="Categories" type="text" name="CategoriesInput" ng-model="RGC.user.Categories" class="validate" >
-                    <p ng-show="RGC.CategoriesInput.$invalid && !RGC.CategoriesInput.$pristine" class="help-block">Categories is required</p>
+                <div class="input-field col s6"   >
+                    choose categories:
+                    <label ng-repeat="catgory in RGC.catgorys">
+                        <br>
+                        <input
+                                type="checkbox"
+                                value="{{catgory}}"
+                                ng-checked="selection.indexOf(catgory) > -1"
+                                ng-click="RGC.selecteCatgory(catgory)"
+                        > {{catgory}}
+                    </label>
+
+
                 </div><!--the user Categories-->
                 <div class="input-field col s6">
                     <label for="AnswersQ1">validation question : {{RGC.Q1}} :</label>
@@ -118,4 +137,3 @@
         </div>
     </div>
 </div>
-</body>

@@ -179,6 +179,12 @@ exports.GetInformationOnProductByIDQuery=function (porductID) {
     return GetInformationOnProductByIDQuery;
 
 }
+exports.GetCatgoryTable=function () {
+    let GetCatgoryTableQuary = squel.select() // set Query for selecting user ID after validating UserName and Password
+        .from("[dbo].[Categories]")
+        .toString();
+    return GetCatgoryTableQuary;
+}
 exports.GetPastOrdersQuary =function (clientID) {
     let GetPastOrdersQuary = squel.select()
         .from("[dbo].[Orders]")

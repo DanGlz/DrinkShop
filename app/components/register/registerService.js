@@ -12,5 +12,13 @@ angular.module("myApp").factory('registerService', ['$http', function($http) {
                 return Promise.reject(e);
             });
     };
+    service.getCatgory = function() {
+        return  $http.get("/getCatgoryTable" )
+            .then(function (response) {
+                return Promise.resolve(response.data)
+            }).catch(function (err) {
+                return Promise.reject(e);
+            });
+    };
     return service;
 }]);
