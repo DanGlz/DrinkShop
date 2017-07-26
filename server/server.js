@@ -37,6 +37,7 @@ app.use("/",function (req,res,next) {
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
+        updateCookie(req,res);
         next();
     }
     else{
@@ -56,7 +57,7 @@ exports.GetDate =function () {
 exports.createCookie =function (ClientID,res,isAdmin, username){
 
     let cookieObj= {
-        cookieData:{ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin, UserName:username }
+        cookieData:{ClientID: ClientID, LastLoginDate: " ",CurrentLoginDate:server.GetDate(),Admin:isAdmin, UserName:username }
     }
     res.cookie("DrinkShop",cookieObj)
 
@@ -134,7 +135,6 @@ app.post('/LogIn',function (req,res,next) {
     }
     else {
         GetLogInData(req).then(function (ans) {
-            updateCookie(req,res);
             res.send({Status:true ,Data : ans});
         })
     }
@@ -197,11 +197,17 @@ function updateCookie(req,res){
     let ClientID= server.GetClientIdFromCookie(req);
     let isAdmin=checkIfAdminConnected(req);
     let username= server.GetUserNameFromCookie(req);
+    let lastLogin= getLastLoginDate (req);
     let cookieObj= {
-        cookieData:{ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin, UserName:username }
+        cookieData:{ClientID: ClientID, LastLoginDate: lastLogin,CurrentLoginDate:server.GetDate(),Admin:isAdmin, UserName:username }
     }
     res.cookie("DrinkShop",cookieObj)
 }
+
+function getLastLoginDate(req) {
+    return req.cookies['DrinkShop'].cookieData.CurrentLoginDate;
+}
+
 function checkIfAdminConnected (req){
     let cookie = req.cookies['DrinkShop'];
     if (cookie){
