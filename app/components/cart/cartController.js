@@ -2,32 +2,40 @@
  * Created by nitzan on 24/07/17.
  */
 angular.module("myApp")
-    .controller('cartController', ['$http','addDeleteCartItemService','localStorageService','$scope',
-        function ($http,addDeleteCartItemService ,localStorageService ,$scope ) {
+    .controller('cartController', ['$http','addDeleteCartItemService','localStorageService','$scope','addDeleteCartItemService',
+        function ($http,addDeleteCartItemService ,localStorageService ,$scope,addDeleteCartItemService ) {
         var self = this;
-        self.totalCost =0 ;
         self.filterBy="";
 
-         cartList() ;
-         function cartList (){
+
             var values = [],
                 keys = Object.keys(localStorage),
                 i = keys.length;
 
             while ( i-- ) {
-                values.push(JSON.parse(localStorage.getItem(keys[i])));
+                var TMPproduct = JSON.parse(localStorage.getItem(keys[i]))
+                values.push(TMPproduct);
                 //console.log(JSON.parse(localStorage.getItem(keys[i])).DrinkID)
+               // self.totalCost += (parseInt(TMPproduct.amount) * parseInt(TMPproduct.Price))
             }
 
             self.itemInCart =values
-             console.log( self.itemInCart);
-        }
+            totalAmount() ;
+
         self.deleteFromCart = function (product) {
-
-            console.log(product.DrinkID)
-
+            var index = self.itemInCart.indexOf(product);
+            console.log(index)
+            self.itemInCart.splice(index, 1);
+            addDeleteCartItemService.deleteFromCart(product);
+            totalAmount() ;
         }
-
+        function totalAmount(){
+            self.totalCost = 0 ;
+           for (var i =0 ; i< self.itemInCart.length ; i++) {
+               var TMPproduct = self.itemInCart[i]
+               self.totalCost += (parseInt(TMPproduct.amount) * parseInt(TMPproduct.Price))
+           }
+        }
 
 
         self.propertyName = 'DrinkName';

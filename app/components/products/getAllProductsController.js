@@ -20,7 +20,7 @@ angular.module("myApp")
           // })
         })
 
-        self.addToCart = addDeleteCartItemService.addToCart;
+        self.addToCart =  addDeleteCartItemService.addToCart;
 
         self.propertyName = 'DrinkID';
         $scope.reverse = true;
