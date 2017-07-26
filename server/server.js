@@ -37,7 +37,6 @@ app.use("/",function (req,res,next) {
     //ToDO to decide here about the logic
     if(loggedIn) {
         req.userloggedIn = true;
-        updateCookie(req,res);
         next();
     }
     else{
@@ -54,9 +53,12 @@ exports.GetDate =function () {
     let date = dateFormat(now, "d/m/yy");
     return date;
 }
-exports.createCookie =function (ClientID,res,isAdmin){
+exports.createCookie =function (ClientID,res,isAdmin, username){
 
-    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
+    let cookieObj= {
+        cookieData:{ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin, UserName:username }
+    }
+    res.cookie("DrinkShop",cookieObj)
 
 }
 exports.CheckCookie =function (req) {
@@ -70,8 +72,13 @@ exports.CheckCookie =function (req) {
 }
 //get the user id from the cookie
 exports.GetClientIdFromCookie =  function (req) {
-   return req.cookies['DrinkShop'].ClientID;
+   return req.cookies['DrinkShop'].cookieData.ClientID;
 }
+exports.GetUserNameFromCookie=function (req) {
+    return req.cookies['DrinkShop'].cookieData.UserName;
+}
+
+
 
 GetLogInData = function (req){
     return new Promise(function (resolve, reject) {
@@ -84,7 +91,7 @@ GetLogInData = function (req){
                   LastLogin = "";
               }
                 else {
-                  LastLogin = req.cookies['DrinkShop'].LastLoginDate;
+                  LastLogin = req.cookies['DrinkShop'].cookieData.LastLoginDate;
               }
                   ans = {
                       Status: true,
@@ -127,6 +134,7 @@ app.post('/LogIn',function (req,res,next) {
     }
     else {
         GetLogInData(req).then(function (ans) {
+            updateCookie(req,res);
             res.send({Status:true ,Data : ans});
         })
     }
@@ -138,10 +146,10 @@ function logRequest(username, pswd ,res, req) {
         DbUtils.Select(ClientIDQuery).then(function (ClientID) {
             if (Object.keys(ClientID).length > 0) {
                 if (ClientID[0].isADmin=='1') {
-                    server.createCookie(ClientID[0].ClientID, res, true);
+                    server.createCookie(ClientID[0].ClientID, res, true,username);
                     console.log("admin");
                 }else {
-                    server.createCookie(ClientID[0].ClientID, res, false);
+                    server.createCookie(ClientID[0].ClientID, res, false,username);
                     console.log("not admin");
                 }
                 resolve();
@@ -188,12 +196,16 @@ function updateCookie(req,res){
 
     let ClientID= server.GetClientIdFromCookie(req);
     let isAdmin=checkIfAdminConnected(req);
-    res.cookie("DrinkShop", {ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin })
+    let username= server.GetUserNameFromCookie(req);
+    let cookieObj= {
+        cookieData:{ClientID: ClientID, LastLoginDate: server.GetDate(),Admin:isAdmin, UserName:username }
+    }
+    res.cookie("DrinkShop",cookieObj)
 }
 function checkIfAdminConnected (req){
     let cookie = req.cookies['DrinkShop'];
     if (cookie){
-       if(req.cookies['DrinkShop'].Admin)
+       if(req.cookies['DrinkShop'].cookieData.Admin)
        {
            return true ;
        }

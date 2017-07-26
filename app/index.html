@@ -10,7 +10,7 @@
     <script type="text/javascript" src="angularScripts/angular-local-storage.min.js"></script>
 
     <script type="text/javascript" src="StorageExampleController.js"></script>
-    <script type="text/javascript" src="components/home/top5productsController.js"></script>
+    <script type="text/javascript" src="components/home/homePageProductsController.js"></script>
     <script type="text/javascript" src="components/products/getAllProductsController.js"></script>
     <script type="text/javascript" src="components/login/UserLoginController.js"></script>
     <script type="text/javascript" src="components/register/registerController.js"></script>
@@ -28,6 +28,10 @@
     <header><h1>Routing App Example</h1></header>
 
     <div ng-controller="mainController as mainCtrl">
+        <div>
+            <br>
+           Hello {{mainCtrl.UserName}} , Last login: {{mainCtrl.lastLoginDate}}
+        </div>
         <div>
             <a ng-href="#/">Home</a>
         </div>

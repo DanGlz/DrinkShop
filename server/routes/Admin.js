@@ -11,7 +11,7 @@ let squel = require("squel");
 function checkIfAdminConnected (req){
     let cookie = req.cookies['DrinkShop'];
     if (cookie){
-        if(req.cookies['DrinkShop'].Admin)
+        if(req.cookies['DrinkShop'].cookieData.Admin)
         {
             return true ;
         }

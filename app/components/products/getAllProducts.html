@@ -1,14 +1,9 @@
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 
 <!-- recommended products -->
-<div ng-controller="getAllProductsController as getAllProducts">
-    Search
-    <input type="text" ng-model="getAllProducts.filterBy">
-
-
+<div ng-controller="getAllProductsController as getAllProducts" >
     <div>
  Recommended:
-
     <table class = "table_design_getAllProducts">
         <tr>
             <th>
@@ -51,7 +46,7 @@
                 <span  ng-show="getAllProducts.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
             </th>
         </tr>
-        <tr ng-repeat="p in getAllProducts.recommendedProducts | filter : getAllProducts.filterBy |orderBy: getAllProducts.propertyName : reverse">
+        <tr ng-repeat="p in getAllProducts.recommendedProducts | orderBy: getAllProducts.propertyName : reverse">
             <td><img class="item_img_allProducts" ng-src="{{src}}"></td>
             <td>{{p.DrinkName}}</td>
             <td>{{p.CategoryName}}</td>
@@ -73,7 +68,14 @@
 
 <!-- All products -->
 AllProducts
+    <br>
 <div >
+    <label>Search: </label>
+    <input type="text" ng-model="getAllProducts.filterBy">
+    <label> Category: </label>
+    <select ng-model="getAllProducts.SelectedCategory"
+            ng-options="c.label for c in getAllProducts.categories">
+    </select>
 
         <table class = "table_design_getAllProducts">
             <tr>
@@ -117,7 +119,7 @@ AllProducts
                     <span  ng-show="getAllProducts.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
                 </th>
             </tr>
-            <tr ng-repeat="p in getAllProducts.Products | orderBy: getAllProducts.propertyName : reverse">
+            <tr ng-repeat="p in getAllProducts.Products | filter : {CategoryName:getAllProducts.SelectedCategory.category} | filter : getAllProducts.filterBy| orderBy: getAllProducts.propertyName : reverse">
                 <td><img class="item_img_allProducts" ng-src="{{src}}"></td>
                 <td>{{p.DrinkName}}</td>
                 <td>{{p.CategoryName}}</td>

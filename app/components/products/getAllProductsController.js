@@ -7,9 +7,15 @@ angular.module("myApp")
         function (getAllProductsService ,$scope,getRecommendedProductsService) {
         let self = this;
         self.filterBy=""
-
-        getRecommendedProductsService.getRecommendedProducts().then(function (results) {
-            //createRecommendedTable(results.data).then(function () {
+        self.categories= [
+            {label :"All", category:""},
+            {label  :"Beers",category:"Beers"},
+            {label  :"Spirits",category:"Spirits"},
+            {label  :"Wine",category:"Wine"}];
+         self.getAllProducts=""
+// to put into variable !!
+            getRecommendedProductsService.getRecommendedProducts().then(function (results) {
+                //createRecommendedTable(results.data).then(function () {
                 self.recommendedProducts = results.data
                 getAllProductsService.getAllProducts2().then(function (results) {
                     self.Products = results.data
@@ -18,8 +24,9 @@ angular.module("myApp")
                     self.errorMessage = error.data;
                     console.log('get all products didnt succeed');
                 })
-          // })
-        })
+            })
+
+
 
 
 

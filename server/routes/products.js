@@ -48,7 +48,7 @@ exports.GetTopFiveProducts = function() {
 //GET Recommended Products
 router.get('/GetRecommendedProducts', function(req, res) {
     if(req.userloggedIn) {
-        let userID = req.cookies['DrinkShop'].ClientID;
+        let userID = req.cookies['DrinkShop'].cookieData.ClientID;
         let query = DbUtils.RecommendedProductsQuery(userID);
         DbUtils.Select(query).then(function (TopFiveProductsID) {
             res.send(TopFiveProductsID);
@@ -64,8 +64,6 @@ router.get('/GetRecommendedProducts', function(req, res) {
 //GET last month products
 
 router.get('/LastMonthProducts', function(req, res) {
-
-
     let query = DbUtils.GetProductsFromLastMonth();
     DbUtils.Select(query).then(function (LastMonthProducts) {
         res.send(LastMonthProducts) ;

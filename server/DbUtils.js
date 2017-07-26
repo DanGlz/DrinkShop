@@ -243,7 +243,7 @@ exports.RecommendedProductsQuery= function (userID) {
 
 
     let RecommendedProductsQuery= "SELECT * FROM [dbo].[Drinks]" +
-        " Where DrinkId IN( SELECT TOP 10 DrinkId FROM [dbo].[Orders]" +
+        " Where DrinkId IN( SELECT TOP 5 DrinkId FROM [dbo].[Orders]" +
         " GROUP BY DrinkId " +
         "order by count (*)  desc)"+
         "AND CategoryName IN " +
@@ -265,6 +265,8 @@ exports.GetProductsFromLastMonth =function () {
         .toString();
     return GetProductsByDateQuery ;
 }
+
+
 exports.GetStockDetails = function (){
     let checkIfInStockQuary = squel.select().field("DrinkName" ).field("StockAmount")
         .from("[dbo].[Drinks]")

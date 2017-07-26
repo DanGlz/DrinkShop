@@ -1,7 +1,7 @@
 /**
  * Created by Dan gleyzer on 26-Jun-17.
  */
-app.factory('UserLogInService', ['$http', function($http) {
+app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
     let service = {};
 
     service.isLoggedIn = false;
@@ -20,5 +20,20 @@ app.factory('UserLogInService', ['$http', function($http) {
                 return Promise.reject(e.data);
             });
     };
+
+    service.checkCookie= function () {
+        var isUserLoggedIn = $cookies.get('DrinkShop')
+        if(isUserLoggedIn!= undefined) {
+            if(isUserLoggedIn[0]==='j')
+                isUserLoggedIn=isUserLoggedIn.substring(2)
+            isUserLoggedIn=JSON.parse(isUserLoggedIn)
+            service.isLoggedIn = true;
+            service.UserName = isUserLoggedIn.cookieData.UserName
+            service.lastLoginDate = isUserLoggedIn.cookieData.LastLoginDate
+            service.ClientID= isUserLoggedIn.cookieData.ClientID
+        }
+        else
+            service.isLoggedIn = false;
+    }
     return service;
 }]);

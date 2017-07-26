@@ -5,16 +5,12 @@ app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('mainController', ['UserLogInService','$cookies', function (UserLogInService,$cookies) {
+app.controller('mainController', ['UserLogInService','$cookies','$filter', function (UserLogInService) {
     let vm = this;
-    vm.greeting = 'Have a nice day';
+    UserLogInService.checkCookie();
     vm.userService = UserLogInService;
-    var isUserLoggedIn=$cookies.get("DrinkShop")
-    if(isUserLoggedIn!= undefined)
-        vm.userService.isLoggedIn=true;
-    else
-        vm.userService.isLoggedIn = false;
-
+    vm.UserName=UserLogInService.UserName
+    vm.lastLoginDate=UserLogInService.lastLoginDate
 }]);
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
