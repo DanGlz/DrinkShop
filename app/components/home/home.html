@@ -57,8 +57,8 @@
             <td>{{p.Description}}</td>
             <td>{{p.Price}}</td>
             <td>{{p.StockAmount}}</td>
-            <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
-            <td><button class="add_to_cart">add to cart </button></td>
+            <td><input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="3"   ng-init="p.amount='1'"></input></td>
+            <td><button class="add_to_cart" ng-click="ProductsCtrl.addToCart(p)">add to cart </button></td>
         </tr>
     </table>
 </div>
@@ -119,8 +119,8 @@
             <td>{{p.Description}}</td>
             <td>{{p.Price}}</td>
             <td>{{p.StockAmount}}</td>
-            <td><input type="text" name="getInvitAmount" value="0" size="3"></input></td>
-            <td><button class="add_to_cart">add to cart </button></td>
+            <td><input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="3"   ng-init="p.amount='1'"></input></td>
+            <td><button class="add_to_cart" ng-click="ProductsCtrl.addToCart(p)">add to cart </button></td>
         </tr>
     </table>
 

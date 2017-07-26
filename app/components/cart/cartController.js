@@ -2,26 +2,29 @@
  * Created by nitzan on 24/07/17.
  */
 angular.module("myApp")
-    .controller('cartController', ['$http','addDeleteCartItemService','localStorageService','$scope','addDeleteCartItemService',
-        function ($http,addDeleteCartItemService ,localStorageService ,$scope,addDeleteCartItemService ) {
+    .controller('cartController', ['$http','addDeleteCartItemService','localStorageService','$scope','addDeleteCartItemService','UserLogInService',
+        function ($http,addDeleteCartItemService ,localStorageService ,$scope,addDeleteCartItemService,UserLogInService ) {
         var self = this;
         self.filterBy="";
-
-
+        cartList()
+        function cartList() {
+            UserLogInService.checkCookie() ;
+            let userId = UserLogInService.ClientID;
             var values = [],
                 keys = Object.keys(localStorage),
                 i = keys.length;
 
             while ( i-- ) {
-                var TMPproduct = JSON.parse(localStorage.getItem(keys[i]))
-                values.push(TMPproduct);
-                //console.log(JSON.parse(localStorage.getItem(keys[i])).DrinkID)
-               // self.totalCost += (parseInt(TMPproduct.amount) * parseInt(TMPproduct.Price))
-            }
 
+                var Identification = keys[i].split(".")[1].split(" ")
+                if (Identification[0] == "cart" && Identification[1] == userId) {
+                    var TMPproduct = JSON.parse(localStorage.getItem(keys[i]));
+                    values.push(TMPproduct);
+                }
+            }
             self.itemInCart =values
             totalAmount() ;
-
+        }
         self.deleteFromCart = function (product) {
             var index = self.itemInCart.indexOf(product);
             console.log(index)
