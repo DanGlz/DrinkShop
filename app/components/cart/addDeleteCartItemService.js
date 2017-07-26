@@ -3,7 +3,8 @@
  */
 
 
-angular.module("myApp").factory('addDeleteCartItemService', ['localStorageService','$window', function(localStorageService,$window) {
+angular.module("myApp").factory('addDeleteCartItemService', ['localStorageService','$window','UserLogInService',
+    function(localStorageService,$window ,UserLogInService) {
 
     let service = {};
     service.addToCart = function (product ){
@@ -11,29 +12,33 @@ angular.module("myApp").factory('addDeleteCartItemService', ['localStorageServic
            $window.alert(" the stock for this item is only "+product.StockAmount+", you cant order "+product.amount)
            return
        }
-        let valueStored = localStorageService.get("cart "+product.DrinkID);
+        UserLogInService.checkCookie() ;
+       let key = "cart " + UserLogInService.ClientID+ " " +product.DrinkID
+        let valueStored = localStorageService.get(key);
         //console.log (product.amount)
         if (!valueStored) {
-            if (localStorageService.set("cart "+product.DrinkID, product))
+            if (localStorageService.set(key, product))
                 $window.alert("the drink " +product.DrinkName + " added successfully to the your cart");
             else
                 console.log('failed to add data to cart');
         }
         else {
-            var tmp = localStorageService.get("cart "+product.DrinkID);
+            var tmp = localStorageService.get(key);
             tmp.amount = parseInt(tmp.amount)+ parseInt(product.amount)
             if (tmp.StockAmount < tmp.amount) {
                 $window.alert(" the stock for this item is only "+product.StockAmount + " you have in youre cart "+ localStorageService.get("cart "+product.DrinkID).amount+" alredy")
                 return
             }
-            localStorageService.remove("cart "+product.DrinkID);
-            localStorageService.set("cart "+product.DrinkID, tmp)
+            localStorageService.remove(key);
+            localStorageService.set(key, tmp)
             $window.alert("we added " + product.amount + " more of " + product.DrinkName + " to your cart ");
         }
     }
+
+
     service.deleteFromCart = function (product){
-        var key = "cart "+product.DrinkID;
-        console.log(key)
+        UserLogInService.checkCookie() ;
+        let key = "cart " + UserLogInService.ClientID+ " " +product.DrinkID
         let valueStored = localStorageService.get(key);
         if (valueStored) {
             localStorageService.remove(key);

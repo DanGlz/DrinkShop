@@ -2,11 +2,13 @@
  * Created by Dan gleyzer on 25-Jun-17.
  */
 angular.module("myApp")
-    .controller('homePageProductsController', ['$http','UserLogInService', function ($http,UserLogInService) {
+    .controller('homePageProductsController', ['$http','UserLogInService','addDeleteCartItemService',
+        function ($http,UserLogInService,addDeleteCartItemService) {
         let self = this;
         self.isLoggedIn = UserLogInService.isLoggedIn
         self.newestProducts= [];
-        self.reqTopFiveUrl ="http://localhost:3100/Products/GetTopFiveProducts"
+        self.reqTopFiveUrl ="http://localhost:3100/Products/GetTopFiveProducts";
+        self.addToCart = addDeleteCartItemService.addToCart ;
 
         $http.get(self.reqTopFiveUrl).then(function (response) {
             self.topFiveProducts=response.data
