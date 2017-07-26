@@ -5,12 +5,10 @@ app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.controller('mainController', ['UserLogInService','$cookies','$filter', function (UserLogInService) {
+app.controller('mainController', ['UserLogInService', function (UserLogInService) {
     let vm = this;
     UserLogInService.checkCookie();
     vm.userService = UserLogInService;
-    vm.UserName=UserLogInService.UserName
-    vm.lastLoginDate=UserLogInService.lastLoginDate
 }]);
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------

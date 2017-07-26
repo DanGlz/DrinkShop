@@ -11,6 +11,7 @@ app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
                 let data = response.data;
                 if(data.Status==true) {
                     service.isLoggedIn = true;
+
                     return Promise.resolve(response);
                 }
                 else
@@ -32,8 +33,10 @@ app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
             service.lastLoginDate = isUserLoggedIn.cookieData.LastLoginDate
             service.ClientID= isUserLoggedIn.cookieData.ClientID
         }
-        else
+        else {
             service.isLoggedIn = false;
+            service.UserName = "Guest"
+        }
     }
     return service;
 }]);

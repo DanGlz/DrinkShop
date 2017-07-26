@@ -9,6 +9,7 @@ app.controller('UserLoginController', ['UserLogInService', '$location', '$window
         self.login = function(valid) {
             if (valid) {
                 UserLogInService.login(self.user).then(function (success) {
+                    UserLogInService.checkCookie()
                     $window.alert('You are logged in');
                     $location.path('/');
                 }, function (errorMsg) {

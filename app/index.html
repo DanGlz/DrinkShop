@@ -31,10 +31,7 @@
     <header><h1>Routing App Example</h1></header>
 
     <div ng-controller="mainController as mainCtrl">
-        <div>
-            <br>
-           Hello {{mainCtrl.UserName}} , Last login: {{mainCtrl.lastLoginDate}}
-        </div>
+           Hello {{mainCtrl.userService.UserName}} ,Your Last login:{{mainCtrl.userService.lastLoginDate}}
         <div>
             <a ng-href="#/">Home</a>
         </div>
