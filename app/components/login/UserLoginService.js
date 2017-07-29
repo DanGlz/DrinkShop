@@ -9,22 +9,21 @@ app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
         return $http.post('/Login', user)
             .then(function(response) {
                 let data = response.data;
-                if(data.Status==true) {
+                if(data.Status===true) {
                     service.isLoggedIn = true;
-
                     return Promise.resolve(response);
                 }
                 else
                     return Promise.reject();
             })
-            .catch(function (e) {
-                return Promise.reject(e.data);
+            .catch(function () {
+                return Promise.reject();
             });
     };
 
     service.checkCookie= function () {
         var isUserLoggedIn = $cookies.get('DrinkShop')
-        if(isUserLoggedIn!= undefined) {
+        if(isUserLoggedIn!== undefined) {
             if(isUserLoggedIn[0]==='j')
                 isUserLoggedIn=isUserLoggedIn.substring(2)
             isUserLoggedIn=JSON.parse(isUserLoggedIn)

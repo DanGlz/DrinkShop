@@ -10,11 +10,11 @@ app.controller('UserLoginController', ['UserLogInService', '$location', '$window
             if (valid) {
                 UserLogInService.login(self.user).then(function (success) {
                     UserLogInService.checkCookie()
-                    $window.alert('You are logged in');
+                    $window.alert('You are logged in !');
                     $location.path('/');
-                }, function (errorMsg) {
-                    self.errorMessage = errorMsg;
-                    $window.alert('log-in has failed:' + errorMsg);
+                }, function () {
+                    self.errorMessage = "Wrong log in details!";
+                    $window.alert('Log-in has failed: ' + self.errorMessage);
                 })
             }
         };

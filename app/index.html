@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>My Page</title>
+
     <script src="angularScripts/angular.js"></script>
     <script src="angularScripts/angular-cookies/angular-cookies.js"></script>
     <script src="app.js"></script>
@@ -28,7 +29,19 @@
 
 </head>
 <body>
-    <header><h1>Routing App Example</h1></header>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div ng-controller="mainController as mainCtrl">
            Hello {{mainCtrl.userService.UserName}} ,Your Last login: {{mainCtrl.userService.lastLoginDate}}
@@ -74,6 +87,5 @@
     <br>
     <br>
     <ng-view></ng-view>
-
 </body>
 </html>

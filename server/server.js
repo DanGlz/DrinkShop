@@ -120,7 +120,6 @@ GetLogInData = function (req){
 app.post('/LogIn',function (req,res,next) {
 
     if (!req.userloggedIn) {
-        let ans;
         let UserName = req.body.UserName;
         let Password = req.body.Password;
         //console.log(UserName+" "+Password);
@@ -130,6 +129,7 @@ app.post('/LogIn',function (req,res,next) {
             })
 
         }).catch(function (ans) {
+            ans={}
             res.send({Status: false ,Data : ans})
         })
     }
