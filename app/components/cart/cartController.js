@@ -2,8 +2,8 @@
  * Created by nitzan on 24/07/17.
  */
 angular.module("myApp")
-    .controller('cartController', ['$http','addDeleteCartItemService','localStorageService','$scope','addDeleteCartItemService','UserLogInService',
-        function ($http,addDeleteCartItemService ,localStorageService ,$scope,addDeleteCartItemService,UserLogInService ) {
+    .controller('cartController', ['$http','CartService','localStorageService','$scope','UserLogInService',
+        function ($http,CartService ,localStorageService ,$scope,UserLogInService ) {
         var self = this;
         self.filterBy="";
         cartList()
@@ -29,7 +29,7 @@ angular.module("myApp")
             var index = self.itemInCart.indexOf(product);
             console.log(index)
             self.itemInCart.splice(index, 1);
-            addDeleteCartItemService.deleteFromCart(product);
+            CartService.deleteFromCart(product);
             totalAmount() ;
         }
         function totalAmount(){

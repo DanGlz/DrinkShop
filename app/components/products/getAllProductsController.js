@@ -3,8 +3,8 @@
  */
 
 angular.module("myApp")
-    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','addDeleteCartItemService',
-        function (getAllProductsService ,$scope,getRecommendedProductsService ,addDeleteCartItemService) {
+    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService',
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService) {
         let self = this;
         self.filterBy=""
         self.categories= [
@@ -28,7 +28,7 @@ angular.module("myApp")
 
 
 
-        self.addToCart =  addDeleteCartItemService.addToCart;
+        self.addToCart =  CartService.addToCart;
 
         self.propertyName = 'DrinkID';
         $scope.reverse = true;
