@@ -2,8 +2,8 @@
  * Created by Dan gleyzer on 25-Jun-17.
  */
 angular.module("myApp")
-    .controller('homePageProductsController', ['$http','UserLogInService','CartService',
-        function ($http,UserLogInService,CartService) {
+    .controller('homePageProductsController', ['$scope','$http','UserLogInService','CartService',
+        function ($scope,$http,UserLogInService,CartService) {
         let self = this;
         self.isLoggedIn = UserLogInService.isLoggedIn
         self.newestProducts= [];
@@ -19,8 +19,22 @@ angular.module("myApp")
                 })
             }
 
+            self.propertyName = 'DrinkID';
+            $scope.reverse = true;
+            $scope.src = "https://www.foodis.co.il/images/features/pics4/Goldstar.jpg"
+
+            $scope.sortBy = function(propertyName) {
+                console.log (propertyName)
+                if (propertyName == self.propertyName ){
+                    $scope.reverse =  !$scope.reverse
+                }
+                self.propertyName = propertyName;
+            };
+
         }),function (err) {
             console.log(err.message)
         }
+
+
 
     }]);

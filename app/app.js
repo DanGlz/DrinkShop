@@ -44,7 +44,8 @@ app.config(['$locationProvider', function($locationProvider) {
 app.config( ['$routeProvider', function($routeProvider) {
     $routeProvider
         .when("/", {
-            templateUrl : "components/home/home.html",
+           // templateUrl : "views/shop.html",
+           templateUrl : "components/home/home.html",
             controller : "mainController"
         })
         .when("/login", {
