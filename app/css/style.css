@@ -1,6 +1,13 @@
 .clear {
     clear: both;
 }
+.helloMsg {
+    clear: both;
+    color: gainsboro;
+    font-size: x-small;
+    margin-bottom: 3px;
+    margin-top: -5px;
+}
 
 h4, h5, h6,
 h1, h2, h3 {
@@ -17,7 +24,7 @@ p {
 
 html, body {
     font-family: 'Open Sans', sans-serif;
-    background: #fff;
+    background: lightgrey;
     font-size: 100%;
 }
 
@@ -35,7 +42,7 @@ body a {
 
 .header-left {
     float: left;
-    width: 59%;
+    width: 80%;
 }
 
 .logo {
@@ -58,7 +65,7 @@ body a {
 
 .menu li a {
     display: block;
-    font-size: 0.8125em;
+    font-size: 1.1em;
     text-transform: uppercase;
     padding: 5px 20px;
     color: #FFF;
@@ -478,6 +485,10 @@ li.list_desc h4 a:hover {
 
 .product_control_buttons a:hover {
     opacity: 0.5;
+}
+
+.quantity-box{
+    background: grey;
 }
 
 .button {
@@ -909,7 +920,9 @@ p.m_5 {
 /*--footer--*/
 .footer {
     background: #000;
-    padding: 5% 0;
+    text-align: center;
+    horiz-align: center;
+    padding-bottom: 3%;
 }
 
 ul.footer_box {
@@ -973,61 +986,6 @@ ul.footer_box li a:hover {
 .footer_search input[type="submit"]:hover {
     background: #222;
     color: #fff;
-}
-
-ul.social {
-    list-style: none;
-    padding: 0;
-    margin-top: 17%;
-}
-
-ul.social li:first-child, ol li:first-child {
-    margin-top: 0px;
-    margin-left: 0;
-}
-
-ul.social li {
-    display: inline-block;
-    margin-right: 8px;
-}
-
-ul.social li a span:hover {
-    opacity: 0.5;
-}
-
-li.facebook a span {
-    height: 25px;
-    width: 25px;
-    display: block;
-    background: url(../images/img-sprite.png) no-repeat -256px -276px;
-}
-
-li.twitter a span {
-    height: 25px;
-    width: 25px;
-    display: block;
-    background: url(../images/img-sprite.png) no-repeat -298px -276px;
-}
-
-li.instagram a span {
-    height: 25px;
-    width: 25px;
-    display: block;
-    background: url(../images/img-sprite.png) no-repeat -346px -276px;
-}
-
-li.pinterest a span {
-    height: 25px;
-    width: 25px;
-    display: block;
-    background: url(../images/img-sprite.png) no-repeat -391px -276px;
-}
-
-li.youtube a span {
-    height: 25px;
-    width: 47px;
-    display: block;
-    background: url(../images/img-sprite.png) no-repeat -437px -276px;
 }
 
 .dropdown dd, .dropdown dt, .dropdown ul {
@@ -1227,8 +1185,8 @@ li.youtube a span {
     position: absolute;
     top: 16px;
     overflow: hidden;
-    height: 38px;
     min-width: 70px;
+    min-height:38px ;
     text-align: left;
     z-index: 0;
     display: inline-block;
@@ -1240,7 +1198,7 @@ li.youtube a span {
 .new-label {
     font-size: 0.85em;
     color: #FFF;
-    background: #FFAF02;
+    background: deepskyblue;
     text-transform: uppercase;
     padding: 9px;
     text-align: center;
@@ -1254,6 +1212,8 @@ li.youtube a span {
 
 .sale-box {
     left: 10px;
+
+
 }
 
 .sale-label {
@@ -1264,6 +1224,21 @@ li.youtube a span {
     padding: 9px;
     text-align: center;
     display: block;
+    min-width: 70px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.recommend-label {
+    font-size: 0.47em;
+    color: black;
+    background: greenyellow;
+    text-transform: uppercase;
+    padding: 9px;
+    text-align: center;
+    display: block;
+    height: auto;
     min-width: 70px;
     position: absolute;
     left: 0px;

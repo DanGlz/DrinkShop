@@ -2,7 +2,7 @@
 <html lang="en" ng-app="myApp">
 <head>
     <meta charset="UTF-8">
-    <title>Drink Shop</title>
+    <title>Drink Store</title>
     <!--start of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -81,6 +81,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="header-left">
+                    <div class="helloMsg">   Hello {{mainCtrl.userService.UserName}}
+                        <span ng-show="mainCtrl.userService.isLoggedIn">
+                                    ,Your Last login: {{mainCtrl.userService.lastLoginDate}}
+                                </span>
+                    </div>
                     <div class="logo">
                         <a href="index.html"><img src="images/logo.png" alt=""/></a>
                     </div>
@@ -92,7 +97,7 @@
                             <li><a ng-hide="mainCtrl.userService.isLoggedIn" ng-href="#/register">Register</a></li>
                             <li ng-hide="mainCtrl.userService.isLoggedIn" >  <a ng-href="#/login">Login</a></li>
                             <li><a>About</a></li>
-                            <div class="clear"></div>
+                            <div class="clear"><br></div>
                         </ul>
                         <script type="text/javascript" src="js/responsive-nav.js"></script>
                     </div>
@@ -129,76 +134,17 @@
 
 
 
-<!--end of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
-<!--
-    <div ng-controller="mainController as mainCtrl">
-        <div>
-           Hello {{mainCtrl.userService.UserName}}
-        <span ng-show="mainCtrl.userService.isLoggedIn"> ,Your Last login: {{mainCtrl.userService.lastLoginDate}} </span>
-        </div>
-        <div>
-            <a ng-href="#/">Home</a>
-        </div>
-        <div >
-            <span ng-hide="mainCtrl.userService.isLoggedIn">
-            <a ng-href="#/register">Register</a>
-            </span>
-        </div>
-        <div>
-            <span ng-hide="mainCtrl.userService.isLoggedIn">
-                <a ng-href="#/login">Login</a>
-            </span>
-        </div>
-        <div>
-            <span>
-                <a ng-href="#/getAllProducts">Products</a>
-            </span>
-        </div>
-        <div>
-            <span ng-hide=" ! mainCtrl.userService.isLoggedIn">
-                <a ng-href="#/cart"><img src="components/cart/cart.png" height="30" width="30"></img></a>
-            </span>
-        </div>
-    </div>
-    <br>
-    <br>
-
-    -->
     <ng-view></ng-view>
 
 
 <div class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <ul class="footer_box">
-                    <h4>Products</h4>
-                    <li><a href="#">Mens</a></li>
-                    <li><a href="#">Womens</a></li>
-                    <li><a href="#">Youth</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <ul class="footer_box">
-                    <h4>About</h4>
-                    <li><a href="#">Careers and internships</a></li>
-                    <li><a href="#">Sponserships</a></li>
-                    <li><a href="#">team</a></li>
-                    <li><a href="#">Catalog Request/Download</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <ul class="footer_box">
-                    <h4>Customer Support</h4>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </div>
-
         </div>
         <div class="row footer_bottom">
             <div class="copy">
-                <p>© 2014 Template by <a href="http://w3layouts.com" target="_blank">w3layouts</a></p>
+                <p>© Dan Gleyzer & Nitzan Massad </p>
             </div>
         </div>
     </div>

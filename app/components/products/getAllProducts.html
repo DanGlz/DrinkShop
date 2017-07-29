@@ -14,7 +14,7 @@
                     <a href="">
                         <img ng-src="{{src}}" class="img-responsive" alt=""/>
                         <span class="sale-box">
-						<span class="sale-label">Recommended</span>
+						<span class="recommend-label {">Recommended</span>
 					</span>
                         <div class="shop_desc">
                             <h3><a href="#">{{p.DrinkName}}</a></h3>
@@ -23,7 +23,8 @@
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span class="actual">Quantity:
-                            <input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="2"   ng-init="p.amount='1'">
+                            <input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="2"
+                                   class="quantity-box" ng-init="p.amount='1'">
                         </span><br>
                             <ul class="buttons">
                                 <li class="cart" ng-click="ProductsCtrl.addToCart(p)"><a href="">Add To Cart</a></li>
@@ -55,7 +56,8 @@
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span class="actual">Quantity:
-                            <input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="2"   ng-init="p.amount='1'">
+                            <input type="text" name="getInvitAmount" ng-model="p.amount" value="1" size="2"
+                                   ng-init="p.amount='1'" class="quantity-box">
                         </span><br>
                             <ul class="buttons">
                                 <li class="cart" ng-click="ProductsCtrl.addToCart(p)"><a href="">Add To Cart</a></li>
