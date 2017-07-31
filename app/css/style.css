@@ -2010,6 +2010,47 @@ fieldset.input input[type="submit"]:hover {
     padding: 0.5em;
     font-family: 'Open Sans', sans-serif;
 }
+.register-top-grid input[type="tel"], .register-bottom-grid input[type="text"] {
+    border: 1px solid #EEE;
+    outline-color: #00BFF0;
+    width: 96%;
+    font-size: 1em;
+    padding: 0.5em;
+    font-family: 'Open Sans', sans-serif;
+}
+.register-top-grid input[type="email"], .register-bottom-grid input[type="text"] {
+    border: 1px solid #EEE;
+    outline-color: #00BFF0;
+    width: 96%;
+    font-size: 1em;
+    padding: 0.5em;
+    font-family: 'Open Sans', sans-serif;
+}
+.register-top-grid input[type="checkbox"], .register-bottom-grid input[type="checkbox"] {
+    border: 1px solid #EEE;
+    outline-color: #00BFF0;
+    width: 100%;
+    font-size: 1em;
+    padding: 300em;
+    font-family: 'Open Sans', sans-serif;
+}
+.register-top-grid input[type="password"], .register-bottom-grid input[type="text"] {
+    border: 1px solid #EEE;
+    outline-color: #00BFF0;
+    width: 96%;
+    font-size: 1em;
+    padding: 0.5em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.register-top-grid select {
+    border: 1px solid #EEE;
+    outline-color: #00BFF0;
+    width: 96%;
+    font-size: 1em;
+    padding: 0.5em;
+    font-family: 'Open Sans', sans-serif;
+}
 
 .checkbox {
     margin-bottom: 4px;

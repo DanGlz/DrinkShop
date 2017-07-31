@@ -1,132 +1,133 @@
-<link rel="stylesheet" type="text/css" href="css/styleRegister.css">
 
-<div class="container" ng-controller="registerController as RGC">
-    <div >
-        <div class="signup-screen">
-            <div class="space-bot text-center">
-                <h1>Register</h1>
-                <div class="divider"></div>
-            </div>
-            <form class="form-register"  name="register" ng-submit="RGC.register(form-register.$valid)" novalidate>
-                <div class="input-field col s6">
-                    <label for="username">Username</label>
-                    <input id="username"
-                           ng-minlength="3"
-                           ng-maxlength="8"
-                           name="usernameInput"
-                           type="text"
-                           class="validate"
-                           ng-model="RGC.user.UserName"
-                           ng-required="true">
-                    <p ng-show="RGC.usernameInput.$invalid && !RGC.usernameInput.$pristine" class="help-block">username is required</p>
-                </div><!--the user name -->
-                <div class="input-field col s6">
-                    <label for="first_name">First name</label>
-                    <input id="first_name"
-                           name="firstNameInput"
-                           type="text"
-                           class="validate"
-                           ng-model="RGC.user.FirstName"
-                           ng-required="false">
-                    <p ng-show="RGC.firstNameInput.$invalid && !RGC.firstNameInput.$pristine" class="help-block">First name is required</p>
-                </div><!--the first name -->
-                <div class="input-field col s6">
-                    <label for="first_name">Last name</label>
-                    <input id="last_name"
-                           name="lastNameInput"
-                           type="text"
-                           class="validate"
-                           ng-model="RGC.user.LastName"
-                           ng-required="false">
-                    <p ng-show="RGC.lastNameInput.$invalid && !RGC.lastNameInput.$pristine" class="help-block">Last name is required</p>
-                </div><!--the last name -->
-                <div class="input-field col s6"><!--the user password -->
-                    <label for="password">Password</label>
-                    <input
-                            id="password"
-                            type="password"
-                            name="passwordInput"
-                            ng-model="RGC.user.Password"
-                            ng-minlength='5'
-                            ng-maxlength="10"
-                            class="validate" >
-                    <p class="alert alert-danger"  ng-show="form-register.passwordInput.$error.minlength || form.passwordInput.$invalid">Your password must be at least 5 characters.</p>
-                    <p ng-show="RGC.passwordInput.$invalid && !RGC.passwordInput.$pristine" class="help-block">Password is required</p>
-                </div><!--the user password -->
-                <div class="input-field col s6">
-                    <label for="Address">Address</label>
-                    <input id="Address" type="text" name="AddressInput" ng-model="RGC.user.Address" class="validate" >
-                    <p ng-show="RGC.AddressInput.$invalid && !RGC.AddressInput.$pristine" class="help-block">Address is required</p>
-                </div><!--the user Address-->
-                <div class="input-field col s6">
-                    <label for="City">City</label>
-                    <input id="City" type="text" name="CityInput" ng-model="RGC.user.City" class="validate" >
-                    <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
-                </div><!--the user City-->
-                <div class="input-field col s6">
+<body>
+<div class="main" ng-controller="registerController as RGC">
+    <div class="shop_top">
+        <div class="container">
+            <form  name="register" ng-submit="RGC.register(form-register.$valid)" novalidate>
+                <div class="register-top-grid">
+                    <div>
+                        <label for="username">Username</label>
+                        <input id="username"
+                               ng-minlength="3"
+                               ng-maxlength="8"
+                               name="usernameInput"
+                               type="text"
+                               class="validate"
+                               ng-model="RGC.user.UserName"
+                               ng-required="true">
+                        <p ng-show="RGC.usernameInput.$invalid && !RGC.usernameInput.$pristine" class="help-block">username is required</p>
+                    </div><!--the user name -->
+                    <div >
+                        <label for="first_name">First name</label>
+                        <input id="first_name"
+                               name="firstNameInput"
+                               type="text"
+                               class="validate"
+                               ng-model="RGC.user.FirstName"
+                               ng-required="false">
+                        <p ng-show="RGC.firstNameInput.$invalid && !RGC.firstNameInput.$pristine" class="help-block">First name is required</p>
+                    </div><!--the first name -->
+                    <div >
+                        <label for="first_name">Last name</label>
+                        <input id="last_name"
+                               name="lastNameInput"
+                               type="text"
+                               class="validate"
+                               ng-model="RGC.user.LastName"
+                               ng-required="false">
+                        <p ng-show="RGC.lastNameInput.$invalid && !RGC.lastNameInput.$pristine" class="help-block">Last name is required</p>
+                    </div><!--the last name -->
+                    <div>
+                        <label for="Address">Address</label>
+                        <input id="Address" type="text" name="AddressInput" ng-model="RGC.user.Address" class="validate" >
+                        <p ng-show="RGC.AddressInput.$invalid && !RGC.AddressInput.$pristine" class="help-block">Address is required</p>
+                    </div><!--the user Address-->
+                    <div >
+                        <label for="City">City</label>
+                        <input id="City" type="text" name="CityInput" ng-model="RGC.user.City" class="validate" >
+                        <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
+                    </div><!--the user City-->
+                    <div >
+                        <label for="AnswersQ1">validation question : {{RGC.Q1}} :</label>
+                        <input id="AnswersQ1"
+                               name="AnswersQ1Input"
+                               type="text"
+                               class="validate"
+                               ng-model="RGC.user.AnswersQ1"
+                               ng-required="true">
+                        <p ng-show="RGC.AnswersQ1Input.$invalid && !RGC.AnswersQ1Input.$pristine" class="help-block">validation answer is required</p>
+                    </div><!--the last AnswersQ1 -->
+                    <div >
+                        <label for="AnswersQ2">validation question : {{RGC.Q2}} :</label>
+                        <input id="AnswersQ2"
+                               name="AnswersQ2Input"
+                               type="text"
+                               class="validate"
+                               ng-model="RGC.user.AnswersQ2"
+                               ng-required="true">
+                        <p ng-show="RGC.AnswersQ2Input.$invalid && !RGC.AnswersQ2Input.$pristine" class="help-block">validation answer is required</p>
+                    </div><!--the last AnswersQ2 -->
 
-                    <label>Country</label>
-                    <select ng-model="RGC.user.Country"
-                            ng-options="c for c in RGC.Countries">
-                    </select>
+                    <div >
+                        <label for="Phone">Phone</label>
+                        <input id="Phone" type="tel" name="PhoneInput" ng-model="RGC.user.Phone" class="validate" >
+                        <p ng-show="RGC.PhoneInput.$invalid && !RGC.PhoneInput.$pristine" class="help-block">Phone is required</p>
+                    </div><!--the user Phone-->
+                    <div >
+                        <label for="Cellular">Cellular</label>
+                        <input id="Cellular" type="tel" name="CellularInput" ng-model="RGC.user.Cellular" class="validate" >
+                        <p ng-show="RGC.CellularInput.$invalid && !RGC.CellularInput.$pristine" class="help-block">Cellular is required</p>
+                    </div><!--the user Cellular-->
+                    <div >
+                        <label for="email">Email</label>
+                        <input id="email" type="email" name="email" ng-model="RGC.user.Mail" class="validate" >
+                        <p class="alert alert-danger" ng-show="form-register.email.$error.email">Your email is invalid.</p>
+                    </div><!--the user email-->
+                    <div >
+                        <label for="CreditCardNumber">CreditCardNumber</label>
+                        <input id="CreditCardNumber" type="tel" name="CreditCardNumberInput" ng-model="RGC.user.CreditCardNumber" class="validate" >
+                        <p ng-show="RGC.CreditCardNumberInput.$invalid && !RGC.CreditCardNumberInput.$pristine" class="help-block">Credit Card Number is required</p>
+                    </div><!--the user CreditCardNumber-->
 
-                </div><!--the user Country-->
-                <div class="input-field col s6">
-                    <label for="Phone">Phone</label>
-                    <input id="Phone" type="tel" name="PhoneInput" ng-model="RGC.user.Phone" class="validate" >
-                    <p ng-show="RGC.PhoneInput.$invalid && !RGC.PhoneInput.$pristine" class="help-block">Phone is required</p>
-                </div><!--the user Phone-->
-                <div class="input-field col s6">
-                    <label for="Cellular">Cellular</label>
-                    <input id="Cellular" type="tel" name="CellularInput" ng-model="RGC.user.Cellular" class="validate" >
-                    <p ng-show="RGC.CellularInput.$invalid && !RGC.CellularInput.$pristine" class="help-block">Cellular is required</p>
-                </div><!--the user Cellular-->
-                <div class="input-field col s6">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" name="email" ng-model="RGC.user.Mail" class="validate" >
-                    <p class="alert alert-danger" ng-show="form-register.email.$error.email">Your email is invalid.</p>
-                </div><!--the user email-->
-                <div class="input-field col s6">
-                    <label for="CreditCardNumber">CreditCardNumber</label>
-                    <input id="CreditCardNumber" type="tel" name="CreditCardNumberInput" ng-model="RGC.user.CreditCardNumber" class="validate" >
-                    <p ng-show="RGC.CreditCardNumberInput.$invalid && !RGC.CreditCardNumberInput.$pristine" class="help-block">Credit Card Number is required</p>
-                </div><!--the user CreditCardNumber-->
-                <div class="input-field col s6"   >
-                    choose categories:
-                    <label ng-repeat="catgory in RGC.catgorys">
-                        <br>
+
+                    <div><!--the user password -->
+                        <label for="password">Password</label>
                         <input
-                                type="checkbox"
-                                value="{{catgory}}"
-                                ng-checked="selection.indexOf(catgory) > -1"
-                                ng-click="RGC.selecteCatgory(catgory)"
-                        > {{catgory}}
-                    </label>
+                                id="password"
+                                type="password"
+                                name="passwordInput"
+                                ng-model="RGC.user.Password"
+                                ng-minlength='5'
+                                ng-maxlength="10"
+                                class="validate" >
+                        <p class="alert alert-danger"  ng-show="form-register.passwordInput.$error.minlength || form.passwordInput.$invalid">Your password must be at least 5 characters.</p>
+                        <p ng-show="RGC.passwordInput.$invalid && !RGC.passwordInput.$pristine" class="help-block">Password is required</p>
+                    </div><!--the user password -->
+                    <div >
+
+                        <label>Country</label>
+                        <select ng-model="RGC.user.Country"
+                                ng-options="c for c in RGC.Countries">
+                        </select>
+
+                    </div><!--the user Country-->
+                    <div    >
+                        <h2>choose categories:</h2>
+                        <label ng-repeat="catgory in RGC.catgorys">
+                            <br>
+                            <input  class="squaredThree"
+                                    type="checkbox"
+                                    value="{{catgory}}"
+                                    ng-checked="selection.indexOf(catgory) > -1"
+                                    ng-click="RGC.selecteCatgory(catgory)"
+                            > {{catgory}}
+                        </label>
 
 
-                </div><!--the user Categories-->
-                <div class="input-field col s6">
-                    <label for="AnswersQ1">validation question : {{RGC.Q1}} :</label>
-                    <input id="AnswersQ1"
-                           name="AnswersQ1Input"
-                           type="text"
-                           class="validate"
-                           ng-model="RGC.user.AnswersQ1"
-                           ng-required="true">
-                    <p ng-show="RGC.AnswersQ1Input.$invalid && !RGC.AnswersQ1Input.$pristine" class="help-block">validation answer is required</p>
-                </div><!--the last AnswersQ1 -->
-                <div class="input-field col s6">
-                    <label for="AnswersQ2">validation question : {{RGC.Q2}} :</label>
-                    <input id="AnswersQ2"
-                           name="AnswersQ2Input"
-                           type="text"
-                           class="validate"
-                           ng-model="RGC.user.AnswersQ2"
-                           ng-required="true">
-                    <p ng-show="RGC.AnswersQ2Input.$invalid && !RGC.AnswersQ2Input.$pristine" class="help-block">validation answer is required</p>
-                </div><!--the last AnswersQ2 -->
+                    </div><!--the user Categories-->
+                </div>
 
-
+                <div class="clear"> </div>
                 <div class="space-top text-center">
                     <button ng-disabled="form-register.$invalid" class="waves-effect waves-light btn done">
                         <i class="material-icons left">Done</i>
@@ -137,3 +138,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>
