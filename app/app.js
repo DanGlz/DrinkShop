@@ -49,7 +49,7 @@ app.config( ['$routeProvider', function($routeProvider) {
             controller : "mainController"
         })
         .when("/login", {
-            templateUrl : "components/login/login.html",
+            templateUrl : "components/login/login2.html",
             controller : "UserLoginController"
         })
         .when("/cities", {

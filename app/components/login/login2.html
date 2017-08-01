@@ -1,0 +1,55 @@
+<div class="main" ng-controller="UserLoginController as loginCtrl">
+    <div class="shop_top">
+        <div class="container">
+            <div class="col-md-6">
+                <div class="login-page">
+                    <h4 class="title">New Customers</h4>
+                    <p>Come and register to our site</p>
+                    <div class="button1">
+                        <a href="#/register"><input type="submit" name="Submit" value="Create an Account"></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="login-title">
+                    <h4 class="title">Registered Customers</h4>
+                    <div id="loginbox" class="loginbox">
+                        <form  method="post" name="loginForm"  ng-submit="loginCtrl.login(loginForm.$valid)" novalidate>
+                            <fieldset class="input">
+                                <p>
+                                    <label for="modlgn_username">Username</label>
+                                    <input type="text"
+                                           ng-model="loginCtrl.user.UserName"
+                                           ng-required="true"
+                                           class="form-control"
+                                           name="usernameInput"
+                                           placeholder="Enter Username">
+                                <p ng-show="loginForm.usernameInput.$invalid && !loginForm.usernameInput.$pristine" class="help-block">username is required</p>                                </p>
+                                <p >
+                                    <label for="modlgn_passwd">Password</label>
+                                    <input type="password"
+                                           ng-model="loginCtrl.user.Password"
+                                           ng-required="true"
+                                           class="form-control"
+                                           name="passwordInput"
+                                           placeholder="Enter Password">
+                                <p ng-show="loginForm.passwordInput.$error.minlength && !loginForm.passwordInput.$pristine" class="help-block">Password is too short</p>                                </p>
+                                <div class="remember">
+                                    <p >
+                                        <label for="modlgn_remember"><a ng-href="#/passwordRetrieve">Forget Your Password ? </a></label>
+                                    </p>
+                                    <input type="submit"
+                                           class="btn btn-success btn-lg"
+                                           value="Login"
+                                           ng-disabled="loginForm.$invalid">
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>

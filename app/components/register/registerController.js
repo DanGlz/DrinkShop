@@ -55,7 +55,8 @@ angular.module("myApp")
                 else {
                         registerService.register(self.user).then(function (success) {
                         $location.path('/login');
-                        console.log(success)
+                        console.log(success);
+                        window.alert("You have been registered successfully now just login")
                     }, function (errorMsg) {
                         self.errorMessage = errorMsg;
                         console.log(errorMsg)

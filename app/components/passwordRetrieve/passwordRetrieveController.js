@@ -12,6 +12,7 @@ app.controller('passwordRetrieveController', ['passwordRetrieveService',
         self.wrongDetails =false;
         self.passwordRetDetails = {UserName: '', AnswersQ1: '', AnswersQ2:''};
         self.submit = function() {
+            console.log("dfdsfdsfdsf")
             self.correctDetails =false;
             self.wrongDetails =false;
                 passwordRetrieveService.retrieve(self.passwordRetDetails).then(function (password) {
