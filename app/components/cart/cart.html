@@ -1,6 +1,9 @@
 
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
 <link href="../css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="lib/ng-dialog/css/ngDialog.min.css">
+<link rel="stylesheet" href="lib/ng-dialog/css/ngDialog-theme-default.min.css">
+<script src="lib/ng-dialog/js/ngDialog.min.js"></script>
 
 <div class="main" ng-controller="cartController as CRTC" ng-model="CRTC.cartList">
     <h3 align="left">Total cost : {{CRTC.totalCost}}</h3>
@@ -36,7 +39,7 @@
                             </span><br>
                             <ul class="buttons">
                                 <li class="cart" ng-click="CRTC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
-                                <li class="shop_btn"><a href="">Read More</a></li>
+                                    <li class="shop_btn" ng-click="CRTC.showAdvanced(p)"><a href="">Read More</a> </li>
                                 <div class="clear"> </div>
                             </ul>
                         </div>
@@ -46,7 +49,7 @@
         </div>
     </div>
     <footer>
-        <h1 align="center">Total cost : {{CRTC.totalCost}}</h2>
+        < h1 align="center">Total cost : {{CRTC.totalCost}}</h2>
 
     </footer>
 </div>
