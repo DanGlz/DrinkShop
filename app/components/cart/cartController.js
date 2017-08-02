@@ -6,6 +6,20 @@ angular.module("myApp")
         function ($http,CartService ,localStorageService ,$scope,UserLogInService ) {
         var self = this;
         self.filterBy="";
+        self.categories= [
+                {label :"All", category:""},
+                {label  :"Beers",category:"Beers"},
+                {label  :"Spirits",category:"Spirits"},
+                {label  :"Wine",category:"Wine"}];
+        self.propertyName = 'DrinkID';
+        self.country= [
+                {label :"All", category:""},
+                {label  :"Israel",category:"Israel"},
+                {label  :"Irleand",category:"Irleand"},
+                {label  :"Belgian",category:"Belgian"},
+                {label  :"Irleand",category:"Irleand"},
+                {label  :"Russia",category:"Russia"}];
+            self.propertyName = 'DrinkID';
         cartList()
         function cartList() {
             UserLogInService.checkCookie() ;

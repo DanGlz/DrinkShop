@@ -1,43 +1,58 @@
 
-<div  ng-controller="cartController as CRTC" ng-model="CRTC.cartList">
-    <div >
-        <table>
-            <tr>
-                <th>
+<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="../css/style.css" rel='stylesheet' type='text/css' />
 
-                </th>
-                <th>
-                    <button ng-click="sortBy('DrinkName')">DrinkName</button>
-                    <span  ng-show="CRTC.propertyName === 'DrinkName'" ng-class="{reverse: reverse}"></span>
-                </th>
-                <th>
-                    <button ng-click="sortBy('CategoryName')">Category</button>
-                    <span  ng-show="CRTC.propertyName === 'CategoryName'" ng-class="{reverse: reverse}"></span>
-                </th>
+<div class="main" ng-controller="cartController as CRTC" ng-model="CRTC.cartList">
+    <h3 align="left">Total cost : {{CRTC.totalCost}}</h3>
+    <div class="shop_top">
+        <div class="container">
 
-                <th>
-                    <button ng-click="sortBy('Price')">Price</button>
-                    <span  ng-show="CRTC.propertyName === 'Price'" ng-class="{reverse: reverse}"></span>
-                </th>
-                <th>
-                    <button ng-click="sortBy('StockAmount')">StockAmount</button>
-                    <span  ng-show="CRTC.propertyName === 'StockAmount'" ng-class="{reverse: reverse}"></span>
-                </th>
-            </tr>
-            <tr ng-repeat="p in CRTC.itemInCart | filter : CRTC.filterBy |orderBy: CRTC.propertyName : reverse">
-                <td><img class="item_img_allProducts" ng-src="{{src}}" height="42" width="42"></td>
-                <td>{{p.DrinkName}}</td>
-                <td>{{p.CategoryName}}</td>
-                <td>{{p.Price}}</td>
-                <td>{{p.amount}}</td>
-                <td><button  ng-click="CRTC.deleteFromCart(p)"> X </button></td>
 
-            </tr>
-        </table>
+            <label>Search: </label>
+            <input type="text" ng-model="CRTC.filterBy">
+            <label> Category: </label>
+            <select ng-model="CRTC.SelectedCategory"
+                    ng-options="c.label for c in CRTC.categories">
+            </select>
+            <label> Country: </label>
+            <select ng-model="CRTC.SelectedCountry"
+                    ng-options="c.label for c in CRTC.country">
+            </select>
 
+            <div class="row shop_box-top">
+                <!-- All products-->
+                <div class="col-md-3 shop_box" ng-repeat="p in CRTC.itemInCart | filter : {CategoryName:CRTC.SelectedCategory.category ,Country:CRTC.SelectedCountry.category } |
+                filter : CRTC.filterBy| orderBy: CRTC.propertyName : reverse" >
+                    <a href="">
+                        <img ng-src="{{src}}" class="img-responsive" alt=""/>
+                        <div class="shop_desc">
+                            <h3><a href="#">{{p.DrinkName}}</a></h3>
+                            <p>{{p.Description}} </p>
+                            <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                            <span class="actual" >Country: {{p.Country}} </span><br>
+                            <span class="actual">Price: {{p.Price}}</span><br>
+                            <span class="actual">Quantity:
+                                <label>{{p.amount}}</label>
+                            </span><br>
+                            <ul class="buttons">
+                                <li class="cart" ng-click="CRTC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
+                                <li class="shop_btn"><a href="">Read More</a></li>
+                                <div class="clear"> </div>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     <footer>
-        <h3>Total cost : {{CRTC.totalCost}}</h3>
+        <h1 align="center">Total cost : {{CRTC.totalCost}}</h2>
 
     </footer>
 </div>
+
+
+
+
+
+
