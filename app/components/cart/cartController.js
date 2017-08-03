@@ -2,8 +2,8 @@
  * Created by nitzan on 24/07/17.
  */
 angular.module("myApp")
-    .controller('cartController', ['$http','CartService','localStorageService','$scope','UserLogInService',
-        function ($http,CartService ,localStorageService ,$scope,UserLogInService ) {
+    .controller('cartController', ['$http','CartService','localStorageService','$scope','UserLogInService','ngDialog',
+        function ($http,CartService ,localStorageService ,$scope,UserLogInService,ngDialog ) {
         var self = this;
         self.filterBy="";
         self.categories= [
@@ -64,10 +64,12 @@ angular.module("myApp")
         };
 
         self.showAdvanced = function (product) {
-            console.log("nfgfd")
 
-        }
-
+            ngDialog.open({
+                template:"components/productDetails/productDetails.html",
+                controller: 'UserLoginController'
+            });
+        };
 
 
     }]);
