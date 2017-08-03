@@ -46,6 +46,7 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
 
     service.deleteFromCart = function (product){
         UserLogInService.checkCookie() ;
+        console.log(product)
         let key = "cart " + UserLogInService.ClientID+ " " +product.DrinkID
         let valueStored = localStorageService.get(key);
         if (valueStored) {

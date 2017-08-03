@@ -3,8 +3,8 @@
  */
 
 angular.module("myApp")
-    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService',
-        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService) {
+    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService','productDetailsService','ngDialog',
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService ,productDetailsService,ngDialog) {
         let self = this;
         self.filterBy=""
         self.categories= [
@@ -27,7 +27,13 @@ angular.module("myApp")
             })
 
 
-
+        self.ReadMore =  function (product) {
+            productDetailsService.setProduct(product)
+            ngDialog.open({
+                template: "components/productDetails/productDetails.html",
+                controller: 'productDetailsController'
+            });
+        }
         self.addToCart =  CartService.addToCart;
 
         self.propertyName = 'DrinkID';
@@ -35,7 +41,6 @@ angular.module("myApp")
         $scope.src = "http://www.thebeerstore.ca/sites/default/files/styles/brand_hero/public/brand/hero/Paulaner_TBS%20product%20images%202013.jpg?itok=c07a9fzP"
 
         $scope.sortBy = function(propertyName) {
-            console.log (propertyName)
             if (propertyName == self.propertyName ){
                 $scope.reverse =  !$scope.reverse
             }
