@@ -50,6 +50,7 @@
 
     <!--end of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
+
     <script src="angularScripts/angular.js"></script>
     <script src="angularScripts/angular-cookies/angular-cookies.js"></script>
     <script src="app.js"></script>
@@ -91,7 +92,6 @@
                         <a href="index.html"><img src="images/logo.png" alt=""/></a>
                     </div>
                     <div class="menu">
-                        <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                        <!-- <ul class="nav" id="nav">-->
                             <li><a ng-href="#/">Home</a></li>
                             <li><a ng-show="mainCtrl.userService.isLoggedIn" ng-href="#/getAllProducts">Products</a></li>
@@ -105,7 +105,6 @@
                     <div class="clear"></div>
                 </div>
                 <div class="header_right">
-
                     <ul class="icon1 sub-icon1 profile_img">
                         <li><a class="active-icon c1" href="#/cart"> </a>
                             <ul class="sub-icon1 list">
@@ -134,9 +133,9 @@
 </div>
 
 
+    <ng-view>
+    </ng-view>
 
-
-    <ng-view></ng-view>
 
 
 <div class="footer">

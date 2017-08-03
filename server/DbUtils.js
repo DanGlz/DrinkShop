@@ -236,7 +236,7 @@ exports.updateStockAmount = function (arrayOfProdacts ,arrayOfQuantityToUpdate) 
 exports.TopFiveProductsQuery= function () {
 
     let TopFiveQuery= "SELECT * FROM [dbo].[Drinks]" +
-        " Where DrinkId IN( SELECT TOP 6 DrinkId FROM [dbo].[Orders]" +
+        " Where DrinkId IN( SELECT TOP 5 DrinkId FROM [dbo].[Orders]" +
         " GROUP BY DrinkId " +
         "order by count (*)  desc)"
   // console.log(TopFiveQuery);

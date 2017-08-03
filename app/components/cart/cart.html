@@ -24,10 +24,9 @@
                 <!-- All products-->
                 <div class="col-md-3 shop_box" ng-repeat="p in CRTC.itemInCart | filter : {CategoryName:CRTC.SelectedCategory.category ,Country:CRTC.SelectedCountry.category } |
                 filter : CRTC.filterBy| orderBy: CRTC.propertyName : reverse" >
-                    <a href="">
                         <img ng-src="{{src}}" class="img-responsive" alt=""/>
                         <div class="shop_desc">
-                            <h3><a href="#">{{p.DrinkName}}</a></h3>
+                            <h4>{{p.DrinkName}}</h4>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
                             <span class="actual" >Country: {{p.Country}} </span><br>
@@ -41,7 +40,6 @@
                                 <div class="clear"> </div>
                             </ul>
                         </div>
-                    </a>
                 </div>
             </div>
         </div>
