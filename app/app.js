@@ -1,5 +1,5 @@
 
-let app = angular.module('myApp', ['ngRoute', 'ngCookies' ,'LocalStorageModule']);
+let app = angular.module('myApp', ['ngRoute', 'ngCookies' ,'LocalStorageModule', 'ngDialog']);
 //-------------------------------------------------------------------------------------------------------------------
 app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('node_angular_App');
