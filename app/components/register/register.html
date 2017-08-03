@@ -1,5 +1,4 @@
-
-<body>
+<body xmlns="http://www.w3.org/1999/html">
 <div class="main" ng-controller="registerController as RGC">
     <div class="shop_top">
         <div class="container">
@@ -48,7 +47,7 @@
                         <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
                     </div><!--the user City-->
                     <div >
-                        <label for="AnswersQ1">validation question : {{RGC.Q1}} :</label>
+                        <label for="AnswersQ1">* {{RGC.Q1}}</label>
                         <input id="AnswersQ1"
                                name="AnswersQ1Input"
                                type="text"
@@ -58,7 +57,7 @@
                         <p ng-show="RGC.AnswersQ1Input.$invalid && !RGC.AnswersQ1Input.$pristine" class="help-block">validation answer is required</p>
                     </div><!--the last AnswersQ1 -->
                     <div >
-                        <label for="AnswersQ2">validation question : {{RGC.Q2}} :</label>
+                        <label for="AnswersQ2">* {{RGC.Q2}}</label>
                         <input id="AnswersQ2"
                                name="AnswersQ2Input"
                                type="text"
@@ -84,7 +83,7 @@
                         <p class="alert alert-danger" ng-show="form-register.email.$error.email">Your email is invalid.</p>
                     </div><!--the user email-->
                     <div >
-                        <label for="CreditCardNumber">CreditCardNumber</label>
+                        <label for="CreditCardNumber">Credit Card Number</label>
                         <input id="CreditCardNumber" type="tel" name="CreditCardNumberInput" ng-model="RGC.user.CreditCardNumber" class="validate" >
                         <p ng-show="RGC.CreditCardNumberInput.$invalid && !RGC.CreditCardNumberInput.$pristine" class="help-block">Credit Card Number is required</p>
                     </div><!--the user CreditCardNumber-->
@@ -111,16 +110,17 @@
                         </select>
 
                     </div><!--the user Country-->
-                    <div    >
-                        <h2>choose categories:</h2>
+                    <div>
+                        <label>Favorite Categories:</label>
+                        <br>
                         <label ng-repeat="catgory in RGC.catgorys">
-                            <br>
                             <input  class="squaredThree"
                                     type="checkbox"
                                     value="{{catgory}}"
                                     ng-checked="selection.indexOf(catgory) > -1"
                                     ng-click="RGC.selecteCatgory(catgory)"
                             > {{catgory}}
+                            <br>
                         </label>
 
 

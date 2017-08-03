@@ -44,6 +44,11 @@
                                            value="Login"
                                            ng-disabled="loginForm.$invalid">
                                 </div>
+                                <div ng-show="loginCtrl.wrongDetails" style="color: red">
+                                    <br>
+                                    Sorry, Wrong details.. <br/>
+                                    Please try again!
+                                </div>
                             </fieldset>
                         </form>
                     </div>

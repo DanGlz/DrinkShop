@@ -14,7 +14,7 @@ angular.module("myApp")
         self.Q2=passwordRetrieveService.question_2
 
         //self.catgorys = registerService.getCatgory()
-        self.catgorys = ["beer", "wine" ,"Spirits"];
+        self.catgorys = ["Beers", "Wine" ,"Spirits"];
         self.selecteCatgory = function (Catgory) {
           var numInArray = self.user["Categories"].indexOf(Catgory) ;
             if (numInArray===-1){
