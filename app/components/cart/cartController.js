@@ -64,7 +64,7 @@ angular.module("myApp")
         };
 
         self.showAdvanced = function (product) {
-            console.log("nitzanmassad@gamil.com")
+            console.log("nfgfd")
 
         }
 
