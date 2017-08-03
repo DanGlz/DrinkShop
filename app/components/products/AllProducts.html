@@ -11,14 +11,14 @@
             <button ng-click="sortBy('Description')">Description</button>
             -->
             <div class="row shop_box-top">
-                <div class="col-md-3 shop_box" ng-repeat="p in  getAllProducts.recommendedProducts |orderBy: ProductsCtrl.propertyName : reverse"  >
+                <div class="col-md-3 shop_box" ng-repeat="p in  getAllProducts.recommendedProducts |orderBy: ProductsCtrl.propertyName : reverse track by $index"  >
 
                         <img ng-src="{{src}}" class="img-responsive" alt=""/>
                         <span class="sale-box">
-						<span class="recommend-label {">Recommended</span>
+						<span class="recommend-label">Recommended</span>
 					</span>
                         <div class="shop_desc">
-                            <h4>{{p.DrinkName}}</h4>
+                            <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>
@@ -51,7 +51,7 @@
                 filter : getAllProducts.filterBy| orderBy: getAllProducts.propertyName : reverse" >
                         <img ng-src="{{src}}" class="img-responsive" alt=""/>
                         <div class="shop_desc">
-                            <h4>{{p.DrinkName}}</h4>
+                            <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>

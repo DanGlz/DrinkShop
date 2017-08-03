@@ -3,21 +3,32 @@
  */
 angular.module("myApp")
     .controller('homePageProductsController', ['$scope','$http','UserLogInService','CartService',
-        function ($scope,$http,UserLogInService,CartService) {
+        'homePageProductsService',
+        function ($scope,$http,UserLogInService,CartService,homePageProductsService) {
         let self = this;
         self.isLoggedIn = UserLogInService.isLoggedIn
-        self.newestProducts= [];
+        self.newestProducts= homePageProductsService.newestProducts;
+        self.topFiveProducts=homePageProductsService.topFiveProducts;
         self.reqTopFiveUrl ="http://localhost:3100/Products/GetTopFiveProducts";
         self.addToCart = CartService.addToCart ;
 
-        $http.get(self.reqTopFiveUrl).then(function (response) {
-            self.topFiveProducts=response.data
-            if(self.isLoggedIn) {
-                self.reqNewestUrl = "http://localhost:3100/Products/LastMonthProducts"
-                $http.get(self.reqNewestUrl).then(function (newestResponse) {
-                    self.newestProducts = newestResponse.data
-                })
+        if(self.newestProducts.length=== 0 || self.topFiveProducts.length === 0 ) {
+            $http.get(self.reqTopFiveUrl).then(function (response) {
+                self.topFiveProducts = response.data
+                homePageProductsService.topFiveProducts = response.data
+                if (self.isLoggedIn) {
+                    self.reqNewestUrl = "http://localhost:3100/Products/LastMonthProducts"
+                    $http.get(self.reqNewestUrl).then(function (newestResponse) {
+                        self.newestProducts = newestResponse.data
+                        homePageProductsService.newestProducts = newestResponse.data;
+                    })
+                }
+
+
+            }), function (err) {
+                console.log(err.message)
             }
+        }
 
             self.propertyName = 'DrinkID';
             $scope.reverse = true;
@@ -31,9 +42,6 @@ angular.module("myApp")
                 self.propertyName = propertyName;
             };
 
-        }),function (err) {
-            console.log(err.message)
-        }
 
 
 
