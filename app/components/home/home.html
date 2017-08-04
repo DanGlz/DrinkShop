@@ -10,8 +10,8 @@
             -->
             <div class="row shop_box-top">
                 <div class="col-md-3 shop_box" ng-repeat="p in ProductsCtrl.topFiveProducts |orderBy: ProductsCtrl.propertyName : reverse"  >
+                        <img ng-src={{p.Image}} class="img-responsive" alt=""/>
 
-                        <img ng-src="{{src}}" class="img-responsive" alt=""/>
                         <span class="sale-box">
 						<span class="sale-label">HOT</span>
 					</span>
@@ -19,6 +19,7 @@
                             <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                            <span class="actual" >ABV: {{p.ABV}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span ng-show="ProductsCtrl.isLoggedIn" class="actual">Quantity:
@@ -34,7 +35,7 @@
                 <!-- New products-->
                 <div class="col-md-3 shop_box" ng-show="ProductsCtrl.isLoggedIn" ng-repeat="p in ProductsCtrl.newestProducts |orderBy: ProductsCtrl.propertyName : reverse"  >
 
-                        <img ng-src="{{src}}" class="img-responsive" alt=""/>
+                        <img ng-src="{{p.Image}}" class="img-responsive" alt=""/>
                         <span class="new-box">
 						<span class="new-label">New</span>
 					</span>
@@ -42,6 +43,7 @@
                             <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                            <span class="actual" >ABV: {{p.ABV}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span class="actual">Quantity:

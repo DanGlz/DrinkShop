@@ -31,7 +31,7 @@ angular.module("myApp")
 
             self.propertyName = 'DrinkID';
             $scope.reverse = true;
-            $scope.src = "https://www.foodis.co.il/images/features/pics4/Goldstar.jpg"
+
 
             $scope.sortBy = function(propertyName) {
                 console.log (propertyName)

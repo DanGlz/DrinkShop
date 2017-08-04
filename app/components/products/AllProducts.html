@@ -13,7 +13,7 @@
             <div class="row shop_box-top">
                 <div class="col-md-3 shop_box" ng-repeat="p in  getAllProducts.recommendedProducts |orderBy: ProductsCtrl.propertyName : reverse track by $index"  >
 
-                        <img ng-src="{{src}}" class="img-responsive" alt=""/>
+                    <img ng-src="{{p.Image}}" class="img-responsive" alt=""/>
                         <span class="sale-box">
 						<span class="recommend-label">Recommended</span>
 					</span>
@@ -21,6 +21,7 @@
                             <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                            <span class="actual" >ABV: {{p.ABV}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span class="actual">Quantity:
@@ -35,25 +36,26 @@
                             </ul>
                         </div>
                     </div>
-
             </div>
-            <br>
-            <label>Search: </label>
+            <div>
+            <label>Search Drink: </label>
             <input type="text" ng-model="getAllProducts.filterBy">
-            <label> Category: </label>
+            <label> Filter by Category: </label>
             <select ng-model="getAllProducts.SelectedCategory"
                     ng-options="c.label for c in getAllProducts.categories">
             </select>
-
+            </div>
+            <br>
             <div class="row shop_box-top">
                 <!-- All products-->
                 <div class="col-md-3 shop_box" ng-repeat="p in getAllProducts.Products | filter : {CategoryName:getAllProducts.SelectedCategory.category} |
                 filter : getAllProducts.filterBy| orderBy: getAllProducts.propertyName : reverse" >
-                        <img ng-src="{{src}}" class="img-responsive" alt=""/>
+                    <img ng-src="{{p.Image}}" class="img-responsive" alt=""/>
                         <div class="shop_desc">
                             <label>{{p.DrinkName}}</label>
                             <p>{{p.Description}} </p>
                             <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                            <span class="actual" >ABV: {{p.ABV}} </span><br>
                             <span class="actual">Price: {{p.Price}}</span><br>
                             <span class="actual">Available Stock: {{p.StockAmount}}</span><br>
                             <span class="actual">Quantity:

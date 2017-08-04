@@ -298,24 +298,7 @@ app.post('/PasswordRetrieve',function (req,res) {
         })
 
 });
-/*
-//bring the client the prodact that he looked up
- app.post('/SearchProduct',function (req,res) {
 
-    let porductName = req.body.porductName;
-    let SearchProductQuery = DbUtils.SearchProductQuery(porductName);
-    DbUtils.Select(SearchProductQuery).then(function (prodact){
-
-        if(Object.keys(prodact).length>0) {
-            res.send(prodact[0]);
-        }
-        else
-            res.send("there is no such product ")
-    }).catch(function (err) {
-        console.log(err.message);
-    })
-});
-*/
 //get the client information on the prodact he looked up by the name
 app.post('/GetInformationOnProductByName',function (req,res){
     let porductName = req.body.porductName;
@@ -331,7 +314,7 @@ app.post('/GetInformationOnProductByName',function (req,res){
         console.log(err.message);
     })
 });
-// get all the catgorys from the db
+// get all the categories from the db
 app.get("/getCatgoryTable",function (req,res){
     let quary = DbUtils.GetCatgoryTable();
     DbUtils.Select(quary).then(function (CatgoryTable){

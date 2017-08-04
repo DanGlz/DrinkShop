@@ -37,7 +37,7 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
                 }
                 localStorageService.remove(key);
                 localStorageService.set(key, tmp)
-                $window.alert(product.amount + " items of " + product.DrinkName + " was added successfully to the your cart ");
+                $window.alert(product.amount + " items of " + product.DrinkName + " was added successfully to your cart ");
                 product.inCart =true ;
 
             }
