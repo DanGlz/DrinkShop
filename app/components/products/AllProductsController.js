@@ -6,6 +6,8 @@ angular.module("myApp")
     .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService','productDetailsService','ngDialog',
         function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService ,productDetailsService,ngDialog) {
         let self = this;
+        self.Products= getAllProductsService.allProducts
+        self.recommendedProducts = getRecommendedProductsService.recommendedProducts
         self.filterBy=""
         self.categories= [
             {label :"All", category:""},
@@ -13,19 +15,17 @@ angular.module("myApp")
             {label  :"Spirits",category:"Spirits"},
             {label  :"Wine",category:"Wine"}];
          self.getAllProducts=""
-// to put into variable !!
-            getRecommendedProductsService.getRecommendedProducts().then(function (results) {
-                //createRecommendedTable(results.data).then(function () {
-                self.recommendedProducts = results.data
-                getAllProductsService.getAllProducts2().then(function (results) {
-                    self.Products = results.data
-                    // console.log(self.Products)
-                }, function (error) {
-                    self.errorMessage = error.data;
-                    console.log('get all products didnt succeed');
-                })
-            })
 
+            if(self.Products.length===0 || self.recommendedProducts===0) {
+                getRecommendedProductsService.getRecommendedProducts().then(function () {
+                    self.recommendedProducts = getRecommendedProductsService.recommendedProducts
+                    getAllProductsService.getAllProducts().then(function () {
+                        self.Products = getAllProductsService.allProducts
+                    }, function () {
+                        console.log('Failed to get all products!');
+                    })
+                })
+            }
 
         self.ReadMore =  function (product) {
             productDetailsService.setProduct(product)

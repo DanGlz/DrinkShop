@@ -62,7 +62,7 @@ app.config( ['$routeProvider', function($routeProvider) {
             templateUrl : "components/home/top5products.html",
         })
         .when("/getAllProducts", {
-            templateUrl : "components/products/getAllProducts.html",
+            templateUrl : "components/products/AllProducts.html",
         })
         .when("/register", {
             templateUrl : "components/register/register.html",

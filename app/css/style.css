@@ -439,11 +439,11 @@ li.list_desc h4 a:hover {
 }
 
 .c1 {
-    background: url(../images/img-sprite.png) no-repeat -66px -8px;
-    width: 22px;
-    height: 24px;
-    display: inline-block;
-    vertical-align: middle;
+     background: url(../images/img-sprite.png) no-repeat -66px -8px;
+     width: 22px;
+     height: 24px;
+     display: inline-block;
+     vertical-align: middle;
 }
 
 .icon1 .profile_img {
