@@ -8,6 +8,7 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
 
     let service = {};
     service.addToCart = function (product ){
+        product.inCart =true ;
         if(parseInt(product.amount)) {
             if (parseInt(product.StockAmount) < parseInt(product.amount)) {
                 $window.alert("The stock for this item is " + product.StockAmount + ", you can`t order " + product.amount + " items")

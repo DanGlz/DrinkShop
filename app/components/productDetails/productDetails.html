@@ -11,9 +11,9 @@
 <div  ng-controller="productDetailsController as PDC" background-color="green" >
 
         <img ng-src="{{src}}"  alt=""/>
-        <span>
-						<span >Recommended</span>
-					</span>
+        <span ng-show="PDC.product.inCart">
+            <span class="span_product_details_order" > your order: {{PDC.product.amount}} </span>
+		</span>
         <div >
             <h3>{{PDC.product.DrinkName}}</a></h3>
             <p>{{PDC.product.Description}} </p>
@@ -28,8 +28,8 @@
 
 
             <ul >
-                <li  ng-click="PDC.addToCart(PDC.product)" ng-show="PDC.product.amount==0"><a >Add To Cart</a></li>
-                <li  ng-click="PDC.deleteFromCart(PDC.product)" ng-show="PDC.product.amount>0"><a >Delete from Cart</a></li>
+                <li  ng-click="PDC.addToCart(PDC.product)" ng-show= "!PDC.product.inCart" align="center"><a  href="">Add To Cart</a></li>
+                <li class="sd" ng-click="PDC.deleteFromCart(PDC.product)" ng-show="PDC.product.inCart" align="center" ;><a  href="" >Delete from Cart</a></li>
 
                 <div > </div>
             </ul>

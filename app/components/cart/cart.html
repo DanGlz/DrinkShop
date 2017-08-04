@@ -7,10 +7,9 @@
     <h3 align="left">Total cost : {{CRTC.totalCost}}</h3>
     <div class="shop_top">
         <div class="container">
-
-
-            <label>Search: </label>
-            <input type="text" ng-model="CRTC.filterBy">
+        <div ng-show="!CRTR.cartEmpty">
+            <label >Search: </label>
+                 <input type="text" ng-model="CRTC.filterBy">
             <label> Category: </label>
             <select ng-model="CRTC.SelectedCategory"
                     ng-options="c.label for c in CRTC.categories">
@@ -19,7 +18,10 @@
             <select ng-model="CRTC.SelectedCountry"
                     ng-options="c.label for c in CRTC.country">
             </select>
-
+        </div>
+            <div ng-show="CRTR.cartEmpty" align="center">
+                <h1>Your cart is empty</h1>
+            </div>
             <div class="row shop_box-top">
                 <!-- All products-->
                 <div class="col-md-3 shop_box" ng-repeat="p in CRTC.itemInCart | filter : {CategoryName:CRTC.SelectedCategory.category ,Country:CRTC.SelectedCountry.category } |

@@ -36,6 +36,10 @@
                     }
                 }
                 self.itemInCart =values
+                self.cartEmpty= false
+                if (parseInt(self.itemInCart.length) ==0 ){
+                    self.cartEmpty= true
+                }
                 totalAmount() ;
             }
             self.deleteFromCart = function (product) {
