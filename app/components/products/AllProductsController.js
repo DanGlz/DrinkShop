@@ -3,9 +3,12 @@
  */
 
 angular.module("myApp")
-        .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService','productDetailsService','ngDialog',
-        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService ,productDetailsService,ngDialog) {
+        .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService','productDetailsService','ngDialog','UserLogInService','$location',
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService ,productDetailsService,ngDialog,UserLogInService,$location) {
         let self = this;
+            if (!UserLogInService.isLoggedIn){
+                $location.path('/');
+            }
         self.Products= getAllProductsService.allProducts
         self.recommendedProducts = getRecommendedProductsService.recommendedProducts
         self.filterBy=""
