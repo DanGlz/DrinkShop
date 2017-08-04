@@ -37,7 +37,10 @@ angular.module("myApp")
                 controller: 'productDetailsController'
             });
         }
-        self.addToCart =  CartService.addToCart;
+        self.addToCart = function(p){
+             console.log("saddsa")
+             CartService.addToCart(p);
+        }
 
         self.propertyName = 'DrinkID';
         $scope.reverse = true;
