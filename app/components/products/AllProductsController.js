@@ -3,6 +3,9 @@
  */
 
 angular.module("myApp")
+    .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService',
+        'CartService',
+        function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService) {
     .controller('getAllProductsController', ['getAllProductsService','$scope','getRecommendedProductsService','CartService','productDetailsService','ngDialog',
         function (getAllProductsService ,$scope,getRecommendedProductsService ,CartService ,productDetailsService,ngDialog) {
         let self = this;
