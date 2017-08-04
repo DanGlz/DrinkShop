@@ -2,9 +2,8 @@
  * Created by Dan gleyzer on 25-Jun-17.
  */
 angular.module("myApp")
-    .controller('homePageProductsController', ['$scope','$http','UserLogInService','CartService',
-        'homePageProductsService',
-        function ($scope,$http,UserLogInService,CartService,homePageProductsService) {
+    .controller('homePageProductsController', ['$scope','$http','UserLogInService','CartService','homePageProductsService','productDetailsService','ngDialog',
+        function ($scope,$http,UserLogInService,CartService,homePageProductsService,productDetailsService,ngDialog){
         let self = this;
         self.isLoggedIn = UserLogInService.isLoggedIn
         self.newestProducts= homePageProductsService.newestProducts;
@@ -12,7 +11,7 @@ angular.module("myApp")
         self.reqTopFiveUrl ="http://localhost:3100/Products/GetTopFiveProducts";
         self.addToCart = CartService.addToCart ;
 
-        if(self.newestProducts.length=== 0 || self.topFiveProducts.length === 0 ) {
+        if(self.newestProducts.length === 0 || self.topFiveProducts.length === 0 ) {
             $http.get(self.reqTopFiveUrl).then(function (response) {
                 self.topFiveProducts = response.data
                 homePageProductsService.topFiveProducts = response.data
@@ -41,8 +40,13 @@ angular.module("myApp")
                 }
                 self.propertyName = propertyName;
             };
-
-
-
+            self.ReadMore = function (product) {
+                console.log("dsfs")
+                productDetailsService.setProduct(product)
+                ngDialog.open({
+                    template: "components/productDetails/productDetails.html",
+                    controller: 'productDetailsController'
+                });
+            }
 
     }]);

@@ -8,10 +8,10 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
 
     let service = {};
     service.addToCart = function (product ){
-        product.inCart =true ;
         if(parseInt(product.amount)) {
             if (parseInt(product.StockAmount) < parseInt(product.amount)) {
                 $window.alert("The stock for this item is " + product.StockAmount + ", you can`t order " + product.amount + " items")
+                product.inCart =true ;
                 return
             }
             UserLogInService.checkCookie();
@@ -19,9 +19,11 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
             let valueStored = localStorageService.get(key);
             //console.log (product.amount)
             if (!valueStored) {
-                if (localStorageService.set(key, product))
+                if (localStorageService.set(key, product)) {
                     $window.alert("The drink " + product.DrinkName + " was added successfully to your cart");
-                else
+                    product.inCart = true;
+                }
+            else
                     console.log('Failed to add the products to cart');
             }
             else {
@@ -36,6 +38,8 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
                 localStorageService.remove(key);
                 localStorageService.set(key, tmp)
                 $window.alert(product.amount + " items of " + product.DrinkName + " was added successfully to the your cart ");
+                product.inCart =true ;
+
             }
         }
         else{
@@ -52,6 +56,7 @@ angular.module("myApp").factory('CartService', ['localStorageService','$window',
         let valueStored = localStorageService.get(key);
         if (valueStored) {
             localStorageService.remove(key);
+            product.inCart =false ;
         }
         else
             $window.alert('Failed to delete the product');

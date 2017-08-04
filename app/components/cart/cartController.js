@@ -2,8 +2,12 @@
  * Created by nitzan on 24/07/17.
  */
     angular.module("myApp")
-        .controller('cartController', ['$http','CartService','localStorageService','$scope','UserLogInService','ngDialog','productDetailsService',
-            function ($http,CartService ,localStorageService ,$scope,UserLogInService,ngDialog ,productDetailsService ) {
+        .controller('cartController', ['$http','CartService','localStorageService','$scope','UserLogInService','ngDialog','productDetailsService','$location',
+            function ($http,CartService ,localStorageService ,$scope,UserLogInService,ngDialog ,productDetailsService,$location) {
+            if (!UserLogInService.isLoggedIn){
+                $location.path('/');
+
+            }
             var self = this;
             self.filterBy="";
             self.categories= [
@@ -36,26 +40,26 @@
                     }
                 }
                 self.itemInCart =values
-                self.cartEmpty= false
-                if (parseInt(self.itemInCart.length) ==0 ){
-                    self.cartEmpty= true
-                }
-                totalAmount() ;
+
+               totalAmount () ;
             }
             self.deleteFromCart = function (product) {
                 var index = self.itemInCart.indexOf(product);
-                console.log(index)
                 self.itemInCart.splice(index, 1);
                 CartService.deleteFromCart(product);
                 totalAmount() ;
             }
-            function totalAmount(){
-                self.totalCost = 0 ;
+           function totalAmount (){
+               self.totalCost = 0 ;
                for (var i =0 ; i< self.itemInCart.length ; i++) {
                    var TMPproduct = self.itemInCart[i]
                    self.totalCost += (parseInt(TMPproduct.amount) * parseInt(TMPproduct.Price))
                }
-            }
+               self.cartEmpty= false
+               if (parseInt(self.itemInCart.length) ==0 ){
+                   self.cartEmpty= true
+               }
+           };
 
             $scope.reverse = true;
             $scope.src = "http://www.hinnawi.org.il/wp-content/uploads/%D7%91%D7%99%D7%A8%D7%94-%D7%92%D7%95%D7%9C%D7%93%D7%A1%D7%98%D7%90%D7%A8-%D7%9C%D7%90-%D7%9E%D7%A1%D7%95%D7%A0%D7%9F-330-%D7%91%D7%A7%D7%91%D7%95%D7%A7-280x280.png"
@@ -67,13 +71,18 @@
                 self.propertyName = propertyName;
             };
 
-            self.showAdvanced = function (product) {
-                productDetailsService.setProduct(product)
+            self.showMore = function (product) {
+                productDetailsService.setProduct(product )
                 ngDialog.open({
                     template:"components/productDetails/productDetails.html",
                     controller: 'productDetailsController'
                 });
             };
-
+            self.moveToPreviousPurchases = function() {
+                $location.path('/PreviousPurchases');
+            }
+            self.moveToPurchases=function() {
+                $location.path('/Purchases');
+            }
 
         }]);

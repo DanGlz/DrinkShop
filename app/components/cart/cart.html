@@ -4,10 +4,15 @@
 
 
 <div class="main" ng-controller="cartController as CRTC" ng-model="CRTC.cartList">
-    <h3 align="left">Total cost : {{CRTC.totalCost}}</h3>
+
+    <input type="button" value="Previous Purchases" style="float: right;  font-size: 22px;  background-color: black; border: white;
+    color: white; margin: 0.5% " ng-click="CRTC.moveToPreviousPurchases()">
+    <h3 align="left">Total cost : {{CRTC.totalCost}}$</h3>
+
+    
     <div class="shop_top">
         <div class="container">
-        <div ng-show="!CRTR.cartEmpty">
+        <div ng-show="!CRTC.cartEmpty">
             <label >Search: </label>
                  <input type="text" ng-model="CRTC.filterBy">
             <label> Category: </label>
@@ -19,7 +24,7 @@
                     ng-options="c.label for c in CRTC.country">
             </select>
         </div>
-            <div ng-show="CRTR.cartEmpty" align="center">
+            <div ng-show="CRTC.cartEmpty" align="center">
                 <h1>Your cart is empty</h1>
             </div>
             <div class="row shop_box-top">
@@ -38,16 +43,23 @@
                             </span><br>
                             <ul class="buttons">
                                 <li class="cart" ng-click="CRTC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
-                                    <li class="shop_btn" ng-click="CRTC.showAdvanced(p)"><a href="">Read More</a> </li>
+                                    <li class="shop_btn" ng-click="CRTC.showMore(p)"><a href="">Read More</a> </li>
                                 <div class="clear"> </div>
                             </ul>
                         </div>
                 </div>
+
             </div>
+            <input type="button" value="Purchase now" style="float: right;  font-size: 22px;  background-color: black; border: white;
+    color: white; " ng-click="CRTC.moveToPurchases()">
+
         </div>
+
     </div>
     <footer>
-        <h2 align="center"> Total cost : {{CRTC.totalCost}}</h2>
+
+
+        <h2 align="center"> Total cost : {{CRTC.totalCost}}$</h2>
 
     </footer>
 </div>

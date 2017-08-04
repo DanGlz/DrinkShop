@@ -1,0 +1,42 @@
+
+
+<div class="main" ng-controller="PreviousPurchasesController as PPC">
+    <div class="shop_top">
+        <div class="container">
+            <div ng-show="!PPC.noPreviousPurchases">
+                <label >Search: </label>
+                <input type="text" ng-model="PPC.filterBy">
+            </div>
+            <div ng-show="!PPC.noPreviousPurchases" align="center">
+                <h1>You do not have previous purchases</h1>
+            </div>
+            <div class="row shop_box-top">
+                <!-- All products-->
+                <div class="col-md-3 shop_box" ng-repeat="p in PPC.PreviousPurchases" >
+                    <img ng-src="{{src}}" class="img-responsive" alt=""/>
+                    <div class="shop_desc">
+                        <label>{{p.DrinkName}}</label>
+                        <p>{{p.Description}} </p>
+                        <span class="actual" >Category: {{p.CategoryName}} </span><br>
+                        <span class="actual" >Country: {{p.Country}} </span><br>
+                        <span class="actual">Price: {{p.Price}}</span><br>
+                        <span class="actual">Quantity:
+                                <label>{{p.amount}}</label>
+                            </span><br>
+                        <ul class="buttons">
+                            <li class="cart" ng-click="PPC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
+                            <li class="shop_btn" ng-click="PPC.showMore(p)"><a href="">Read More</a> </li>
+                            <div class="clear"> </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -6,9 +6,8 @@
 app.factory('productDetailsService', ['$http', function($http) {
     let service = {};
 
-    service.setProduct = function (product){
+    service.setProduct = function (product ){
         service.product = product ;
-
 
     }
     service.getProduct = function(){
