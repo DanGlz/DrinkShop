@@ -5,7 +5,7 @@
             <form  name="register" ng-submit="RGC.register(form-register.$valid)" novalidate>
                 <div class="register-top-grid">
                     <div>
-                        <label for="username">Username</label>
+                        <label for="username">* Username</label>
                         <input id="username"
                                ng-minlength="3"
                                ng-maxlength="8"
@@ -41,11 +41,7 @@
                         <input id="Address" type="text" name="AddressInput" ng-model="RGC.user.Address" class="validate" >
                         <p ng-show="RGC.AddressInput.$invalid && !RGC.AddressInput.$pristine" class="help-block">Address is required</p>
                     </div><!--the user Address-->
-                    <div >
-                        <label for="City">City</label>
-                        <input id="City" type="text" name="CityInput" ng-model="RGC.user.City" class="validate" >
-                        <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
-                    </div><!--the user City-->
+
                     <div >
                         <label for="AnswersQ1">* {{RGC.Q1}}</label>
                         <input id="AnswersQ1"
@@ -66,7 +62,11 @@
                                ng-required="true">
                         <p ng-show="RGC.AnswersQ2Input.$invalid && !RGC.AnswersQ2Input.$pristine" class="help-block">validation answer is required</p>
                     </div><!--the last AnswersQ2 -->
-
+                    <div >
+                        <label for="City">City</label>
+                        <input id="City" type="text" name="CityInput" ng-model="RGC.user.City" class="validate" >
+                        <p ng-show="RGC.CityInput.$invalid && !RGC.CityInput.$pristine" class="help-block">City is required</p>
+                    </div><!--the user City-->
                     <div >
                         <label for="Phone">Phone</label>
                         <input id="Phone" type="tel" name="PhoneInput" ng-model="RGC.user.Phone" class="validate" >
@@ -90,7 +90,7 @@
 
 
                     <div><!--the user password -->
-                        <label for="password">Password</label>
+                        <label for="password">* Password</label>
                         <input
                                 id="password"
                                 type="password"
