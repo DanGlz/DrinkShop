@@ -2484,4 +2484,7 @@ fieldset.input input[type="submit"]:hover {
         margin: 10px 0;
     }
 }
-
+.span_product_details_order{
+    font-weight: bold;
+    font-weight: 700;
+}
