@@ -1254,7 +1254,7 @@ ul.footer_box li a:hover {
 }
 
 .shop_desc {
-    border: 1px solid #E0E0E0;
+    border: 1.5px solid #E0E0E0;
     padding: 5%;
 }
 
@@ -1312,14 +1312,16 @@ ul.buttons {
     text-transform: uppercase;
     font-weight: 600;
     text-decoration: none;
+    text-shadow: 2px 2px 2px whitesmoke;
+
 }
 
 .shop_btn a:hover {
-    color: #E92546;
+    color: orange;
 }
 
 .cart a:hover {
-    color: #FFAF02;
+    color: forestgreen;
 }
 
 .shop_box-top {
