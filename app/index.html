@@ -3,54 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Drink Store</title>
-    <!--start of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <!-- design -->
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="css/style.css" rel='stylesheet' type='text/css' />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
-    <script src="js/fwslider.js"></script>
-
-    <!--<script src="js/jquery.easydropdown.js"></script>-->
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".dropdown img.flag").addClass("flagvisibility");
-
-            $(".dropdown dt a").click(function() {
-                $(".dropdown dd ul").toggle();
-            });
-
-            $(".dropdown dd ul li a").click(function() {
-                var text = $(this).html();
-                $(".dropdown dt a span").html(text);
-                $(".dropdown dd ul").hide();
-                $("#result").html("Selected value is: " + getSelectedValue("sample"));
-            });
-
-            function getSelectedValue(id) {
-                return $("#" + id).find("dt a span.value").html();
-            }
-
-            $(document).bind('click', function(e) {
-                var $clicked = $(e.target);
-                if (! $clicked.parents().hasClass("dropdown"))
-                    $(".dropdown dd ul").hide();
-            });
-
-
-            $("#flagSwitcher").click(function() {
-                $(".dropdown img.flag").toggleClass("flagvisibility");
-            });
-        });
-    </script>
-
-
-    <!--end of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
+    <script src="js/jquery.easydropdown.js"></script>
+    <!--end of design-->
 
     <script src="angularScripts/angular.js"></script>
     <script src="angularScripts/angular-cookies/angular-cookies.js"></script>
@@ -58,7 +19,6 @@
     <script type="text/javascript" src="angularScripts/angular-route.js"></script>
     <script type="text/javascript" src="angularScripts/angular-local-storage.min.js"></script>
 
-    <script type="text/javascript" src="StorageExampleController.js"></script>
     <script type="text/javascript" src="components/home/homePageProductsController.js"></script>
     <script type="text/javascript" src="components/home/homePageProductsService.js"></script>
     <script type="text/javascript" src="components/products/AllProductsController.js"></script>
@@ -69,7 +29,6 @@
     <script type="text/javascript" src="components/productDetails/productDetailsController.js"></script>
     <script type="text/javascript" src="components/PreviousPurchases/PreviousPurchasesController.js"></script>
 
-
     <script type="text/javascript" src="components/login/UserLoginService.js"></script>
     <script type="text/javascript" src="components/products/getAllProductsService.js"></script>
     <script type="text/javascript" src="components/passwordRetrieve/passwordRetrieveService.js"></script>
@@ -78,7 +37,6 @@
     <script type="text/javascript" src="components/cart/CartService.js"></script>
     <script type="text/javascript" src="components/productDetails/productDetailsService.js"></script>
 
-
     <link rel="stylesheet" href="angularScripts/ng-dialog/css/ngDialog.min.css">
     <link rel="stylesheet" href="angularScripts/ng-dialog/css/ngDialog-theme-default.min.css">
     <script src="angularScripts/ng-dialog/js/ngDialog.min.js"></script>
@@ -86,7 +44,7 @@
 </head>
 <body>
 
-<!--start of new design!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
 <div class="header" ng-controller="mainController as mainCtrl">
     <div class="container">
         <div class="row">
@@ -106,8 +64,7 @@
                             <li><a ng-show="mainCtrl.userService.isLoggedIn" ng-href="#/getAllProducts">Products</a></li>
                             <li><a ng-hide="mainCtrl.userService.isLoggedIn" ng-href="#/register">Register</a></li>
                             <li ng-hide="mainCtrl.userService.isLoggedIn" >  <a ng-href="#/login">Login</a></li>
-                            <li><a>About</a></li>
-                            <div class="clear"><br></div>
+                            <li><a ng-href="#/about">About</a></li>                            <div class="clear"><br></div>
                         </ul>
                         <script type="text/javascript" src="js/responsive-nav.js"></script>
                     </div>

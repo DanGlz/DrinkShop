@@ -5,9 +5,10 @@
 
 <div class="main" ng-controller="cartController as CRTC" ng-model="CRTC.cartList">
 
+
     <input type="button" value="Previous Purchases" style="float: right;  font-size: 22px;  background-color: black; border: white;
     color: white; margin: 0.5% " ng-click="CRTC.moveToPreviousPurchases()">
-    <h3 align="left">Total cost : {{CRTC.totalCost}}$</h3>
+        <h3 align="left">Total cost : {{CRTC.totalCost}}$</h3>
 
     
     <div class="shop_top">
@@ -43,7 +44,7 @@
                                 <label>{{p.amount}}</label>
                             </span><br>
                             <ul class="buttons">
-                                <li class="cart" ng-click="CRTC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
+                                <li class="cart" ng-click="CRTC.deleteFromCart(p)"><a href="">Delete</a></li>
                                     <li class="shop_btn" ng-click="CRTC.showMore(p)"><a href="">Read More</a> </li>
                                 <div class="clear"> </div>
                             </ul>
@@ -51,7 +52,7 @@
                 </div>
 
             </div>
-            <input type="button" value="Purchase now" style="float: right;  font-size: 22px;  background-color: black; border: white;
+            <input type="button" value="Buy now" style="float: right;  font-size: 22px;  background-color: black; border: white;
     color: white; " ng-click="CRTC.moveToPurchases()">
 
         </div>
