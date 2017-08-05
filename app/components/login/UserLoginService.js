@@ -1,7 +1,7 @@
 /**
  * Created by Dan gleyzer on 26-Jun-17.
  */
-app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
+app.factory('UserLogInService', ['$http','$cookies',"$route", function($http,$cookies,$route) {
     let service = {};
 
     service.isLoggedIn = false;
@@ -20,6 +20,13 @@ app.factory('UserLogInService', ['$http','$cookies', function($http,$cookies) {
                 return Promise.reject();
             });
     };
+
+    service.logout=function () {
+        if($cookies.get('DrinkShop')) {
+            $cookies.remove('DrinkShop')
+            $route.reload();
+        }
+    }
 
     service.checkCookie= function () {
         var isUserLoggedIn = $cookies.get('DrinkShop')
