@@ -82,7 +82,7 @@
                 $location.path('/PreviousPurchases');
             }
             self.moveToPurchases=function() {
-                $location.path('/Purchases');
+                $location.path('/Purchase');
             }
 
         }]);

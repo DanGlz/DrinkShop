@@ -43,6 +43,9 @@ app.config( ['$routeProvider', function($routeProvider) {
         .when("/PreviousPurchases", {
             templateUrl : "components/PreviousPurchases/PreviousPurchases.html",
         })
+        .when("/Purchase", {
+            templateUrl : "components/Purchase/Purchase.html",
+        })
         .otherwise({redirect: '/',
         });
 
