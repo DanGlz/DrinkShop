@@ -11,7 +11,7 @@
             </div>
             <div class="row shop_box-top">
                 <!-- All products-->
-                <div class="col-md-3 shop_box" ng-repeat="p in PPC.PreviousPurchases" >
+                <div class="col-md-3 shop_box" ng-repeat="p in PC.PreviousPurchases" >
                     <img ng-src="{{src}}" class="img-responsive" alt=""/>
                     <div class="shop_desc">
                         <label>{{p.DrinkName}}</label>
@@ -23,8 +23,8 @@
                                 <label>{{p.amount}}</label>
                             </span><br>
                         <ul class="buttons">
-                            <li class="cart" ng-click="PPC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
-                            <li class="shop_btn" ng-click="PPC.showMore(p)"><a href="">Read More</a> </li>
+                            <li class="cart" ng-click="PC.deleteFromCart(p)"><a href="">Delete from Cart</a></li>
+                            <li class="shop_btn" ng-click="PC.showMore(p)"><a href="">Read More</a> </li>
                             <div class="clear"> </div>
                         </ul>
                     </div>
