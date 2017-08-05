@@ -11,33 +11,6 @@ app.controller('mainController', ['UserLogInService', function (UserLogInService
     vm.userService = UserLogInService;
 }]);
 //-------------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------------
-app.controller('citiesController', ['$http', 'CityModel', function($http, CityModel) {
-        let self = this;
-        self.fieldToOrderBy = "name";
-        // self.cities = [];
-        self.getCities = function () {
-            $http.get('/cities')
-                .then(function (res) {
-                    // self.cities = res.data;
-                    //We build now cityModel for each city
-                    self.cities = [];
-                    angular.forEach(res.data, function (city) {
-                        self.cities.push(new CityModel(city));
-                    });
-                });
-        };
-        self.addCity = function () {
-          let city = new CityModel(self.myCity);
-          if (city) {
-              city.add();
-              self.getCities();
-          }
-        };
-    }]);
-//-------------------------------------------------------------------------------------------------------------------
-
-//-------------------------------------------------------------------------------------------------------------------
 app.config(['$locationProvider', function($locationProvider) {
     $locationProvider.hashPrefix('');
 }]);
@@ -51,12 +24,6 @@ app.config( ['$routeProvider', function($routeProvider) {
         .when("/login", {
             templateUrl : "components/login/login2.html",
             controller : "UserLoginController"
-        })
-        .when("/cities", {
-            templateUrl : "views/cities.html",
-        })
-        .when("/StorageExample", {
-            templateUrl : "views/StorageExample.html",
         })
         .when("/about", {
             templateUrl : "components/about/aboutPage.html",
@@ -80,4 +47,3 @@ app.config( ['$routeProvider', function($routeProvider) {
         });
 
 }]);
-//-------------------------------------------------------------------------------------------------------------------
