@@ -10,28 +10,21 @@
 <body>
 <div  ng-controller="productDetailsController as PDC" background-color="green" >
 
-        <img ng-src="{{PDC.product.Image}}"  alt="" height="250" />
-        <span ng-show="PDC.product.inCart">
-            <span class="span_product_details_order" > your order: {{PDC.product.amount}} </span>
-		</span>
+        <img ng-src="{{PDC.product.Image}}"  alt="" height="250" style="text-align: center"/>
         <div >
-            <h3>{{PDC.product.DrinkName}}</a></h3>
+            <br>
+            <h3 style="font-weight: bold">{{PDC.product.DrinkName}}</a></h3>
             <p>{{PDC.product.Description}} </p>
-            <span >Category: {{PDC.product.CategoryName}} </span><br>
-            <span>Price: {{PDC.product.Price}}</span><br>
-            <span >Available Stock: {{PDC.product.StockAmount}}</span><br>
-            <span >Description: {{PDC.product.Description}}</span><br>
-            <span ng-show="PDC.product.amount>0" >Amount orders: {{PDC.product.amount}}</span><br>
-            <span >Country: {{PDC.product.Country}}</span><br>
-            <span >ABV: {{PDC.product.ABV}}</span><br>
-            <span >Type: {{PDC.product.Type}}</span><br>
-
-
+            <br>
+            <span ><b>Category:</b> {{PDC.product.CategoryName}} </span><br>
+            <span><b>Price:</b> {{PDC.product.Price}}</span><br>
+            <span ><b>Available Stock:</b> {{PDC.product.StockAmount}}</span><br>
+            <span ><b>Country:</b> {{PDC.product.Country}}</span><br>
+            <span ><b>Year:</b> {{PDC.product.Year}}</span><br>
+            <span ><b>ABV:</b> {{PDC.product.ABV}}</span><br>
+            <span ><b>Type:</b> {{PDC.product.Type}}</span><br>
+            <span ng-show="PDC.product.inCart" ><b>Quantity in cart:</b> {{PDC.product.amount}} items </span> <br>
             <ul >
-                <!--
-                <li  ng-click="PDC.addToCart(PDC.product)" ng-show= "!PDC.product.inCart" align="center"><a  href="">Add To Cart</a></li>
-                <li class="sd" ng-click="PDC.deleteFromCart(PDC.product)" ng-show="PDC.product.inCart" align="center" ;><a  href="" >Delete from Cart</a></li>
-          !-->
                 <div > </div>
             </ul>
         </div>

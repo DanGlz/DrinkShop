@@ -307,7 +307,7 @@ ul.icon1 {
 }
 
 .icon1 li:hover > a {
-    color: #fafafa;
+    color: #44f3fa;
 }
 
 * html .icon1 li a:hover { /* IE6 only */

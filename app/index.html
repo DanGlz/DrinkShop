@@ -56,6 +56,8 @@
                         <span ng-show="mainCtrl.userService.isLoggedIn">
                                     ,Your Last login: {{mainCtrl.userService.lastLoginDate}}
                                 </span>
+                        <a style="margin-left: 12px; text-decoration: underline" ng-show="mainCtrl.userService.isLoggedIn" href="index.html" ng-click="mainCtrl.logout()">
+                            Log out</a></li>
                     </div>
                     <div class="logo">
                         <a href="index.html"><img src="images/logo.png" alt=""/></a>
@@ -66,7 +68,11 @@
                             <li><a ng-show="mainCtrl.userService.isLoggedIn" ng-href="#/getAllProducts">Products</a></li>
                             <li><a ng-hide="mainCtrl.userService.isLoggedIn" ng-href="#/register">Register</a></li>
                             <li ng-hide="mainCtrl.userService.isLoggedIn" >  <a ng-href="#/login">Login</a></li>
-                            <li><a ng-href="#/about">About</a></li>                            <div class="clear"><br></div>
+                            <li><a ng-href="#/about">About</a></li>
+
+
+
+                        <div class="clear"><br></div>
                         </ul>
                         <script type="text/javascript" src="js/responsive-nav.js"></script>
                     </div>

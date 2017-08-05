@@ -7,8 +7,8 @@
 
 
     <input type="button" value="Previous Purchases" style="float: right;  font-size: 22px;  background-color: black; border: white;
-    border-radius: 10px ; color: white; margin: 0.5% " ng-click="CRTC.moveToPreviousPurchases()">
-        <h3 align="left">Total cost : {{CRTC.totalCost}}$</h3>
+    border-radius: 10px ; color: white; margin: 0.7% " ng-click="CRTC.moveToPreviousPurchases()">
+        <h3  align="left" style="font-family: sans-serif;margin: 0.8%">Total cost : {{CRTC.totalCost}}$</h3>
 
     
     <div class="shop_top">
@@ -50,19 +50,13 @@
                             </ul>
                         </div>
                 </div>
-
             </div>
-            <input type="button" value="Buy now" style="float: right;  font-size: 22px;  background-color: black; border: white;
-    color: white; border-radius: 10px ; " ng-click="CRTC.moveToPurchases()">
-
         </div>
-
     </div>
-    <footer>
-
-
-        <h2 align="center"> Total cost : {{CRTC.totalCost}}$</h2>
-
+    <footer align="center" style="margin-bottom: 20px" >
+        <h2 align="center" style="margin-bottom: 20px; font-family: sans-serif"> Total cost : {{CRTC.totalCost}}$</h2>
+        <input type="button" value="Buy now" style="float: inherit; text-align: center;  font-size: 22px;  background-color: black; border: white;
+    color: white; border-radius: 8px ; width: 130px " ng-click="CRTC.moveToPurchases()">
     </footer>
 </div>
 

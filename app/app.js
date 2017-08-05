@@ -9,6 +9,10 @@ app.controller('mainController', ['UserLogInService', function (UserLogInService
     let vm = this;
     UserLogInService.checkCookie();
     vm.userService = UserLogInService;
+
+    vm.logout = function () {
+        UserLogInService.logout();
+    }
 }]);
 //-------------------------------------------------------------------------------------------------------------------
 app.config(['$locationProvider', function($locationProvider) {
@@ -22,7 +26,7 @@ app.config( ['$routeProvider', function($routeProvider) {
             controller : "mainController"
         })
         .when("/login", {
-            templateUrl : "components/login/login2.html",
+            templateUrl : "components/login/login.html",
             controller : "UserLoginController"
         })
         .when("/about", {
