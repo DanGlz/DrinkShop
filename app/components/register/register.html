@@ -113,26 +113,25 @@
                     <div>
                         <label>Favorite Categories:</label>
                         <br>
-                        <label ng-repeat="catgory in RGC.catgorys">
-                            <input  class="squaredThree"
+                        <label ng-repeat="catgory in RGC.catgorys" style="font-weight: 400; margin-right: 15px" >
+                            <input
+                                    class="checkbox"
                                     type="checkbox"
                                     value="{{catgory}}"
                                     ng-checked="selection.indexOf(catgory) > -1"
                                     ng-click="RGC.selecteCatgory(catgory)"
+                                    style="text-align: left"
                             > {{catgory}}
-                            <br>
                         </label>
-
-
                     </div><!--the user Categories-->
                 </div>
 
                 <div class="clear"> </div>
                 <div class="space-top text-center">
-                    <button ng-disabled="form-register.$invalid" class="waves-effect waves-light btn done">
-                        <i class="material-icons left">Done</i>
+                    <button ng-disabled="form-register.$invalid" style="background: black ; color: white;
+                            font-weight: bold;width: 200px; font-size: medium " class="waves-effect waves-light btn done ">
+                        <i class="material-icons left">Submit</i>
                     </button>
-
                 </div>
             </form>
         </div>
