@@ -11,9 +11,6 @@
 <div  ng-controller="productDetailsController as PDC" background-color="green" >
 
         <img ng-src="{{PDC.product.Image}}"  alt="" height="250" style="text-align: center"/>
-        <span ng-show="PDC.product.inCart">
-            <span class="span_product_details_order" > your order: {{PDC.product.amount}} </span>
-		</span>
         <div >
             <br>
             <h3 style="font-weight: bold">{{PDC.product.DrinkName}}</a></h3>
@@ -22,11 +19,11 @@
             <span ><b>Category:</b> {{PDC.product.CategoryName}} </span><br>
             <span><b>Price:</b> {{PDC.product.Price}}</span><br>
             <span ><b>Available Stock:</b> {{PDC.product.StockAmount}}</span><br>
-            <span ng-show="PDC.product.amount>0" ><b>Order Quantity:</b> {{PDC.product.amount}}</span><br>
             <span ><b>Country:</b> {{PDC.product.Country}}</span><br>
             <span ><b>Year:</b> {{PDC.product.Year}}</span><br>
             <span ><b>ABV:</b> {{PDC.product.ABV}}</span><br>
             <span ><b>Type:</b> {{PDC.product.Type}}</span><br>
+            <span ng-show="PDC.product.inCart" ><b>Quantity in cart:</b> {{PDC.product.amount}} items </span> <br>
             <ul >
                 <div > </div>
             </ul>

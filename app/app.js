@@ -13,8 +13,6 @@ app.controller('mainController', ['UserLogInService', function (UserLogInService
     vm.logout = function () {
         UserLogInService.logout();
     }
-
-
 }]);
 //-------------------------------------------------------------------------------------------------------------------
 app.config(['$locationProvider', function($locationProvider) {
