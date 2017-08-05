@@ -58,8 +58,8 @@ app.config( ['$routeProvider', function($routeProvider) {
         .when("/StorageExample", {
             templateUrl : "views/StorageExample.html",
         })
-        .when("/top5products", {
-            templateUrl : "components/home/top5products.html",
+        .when("/about", {
+            templateUrl : "components/about/aboutPage.html",
         })
         .when("/getAllProducts", {
             templateUrl : "components/products/AllProducts.html",
