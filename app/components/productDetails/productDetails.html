@@ -10,7 +10,7 @@
 <body>
 <div  ng-controller="productDetailsController as PDC" background-color="green" >
 
-        <img ng-src="{{src}}"  alt=""/>
+        <img ng-src="{{PDC.product.Image}}"  alt="" height="250" />
         <span ng-show="PDC.product.inCart">
             <span class="span_product_details_order" > your order: {{PDC.product.amount}} </span>
 		</span>
